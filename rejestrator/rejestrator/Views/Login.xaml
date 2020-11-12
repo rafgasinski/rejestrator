@@ -18,7 +18,6 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-325"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-415"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="-445"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="-445"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Logo">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -30,7 +29,6 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-325"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-415"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="-445"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="-445"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="MoveRight">
@@ -39,24 +37,22 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-390"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-285"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-240"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-195"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-185"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-90"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-60"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-30"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Logo">
                 <EasingDoubleKeyFrame KeyTime="0" Value="-450"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-390"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-285"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-240"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-195"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-185"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-90"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-60"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-30"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
@@ -94,42 +90,41 @@
         <Rectangle Fill="Black" HorizontalAlignment="Left" Height="500" Stroke="Black" VerticalAlignment="Top" Width="900" Grid.ColumnSpan="90" Grid.RowSpan="5"/>
         <Grid x:Name="ADMIN" Grid.ColumnSpan="3" Grid.Column="6" Margin="25,35,23,23.333" Grid.RowSpan="5">
 
-            <TextBlock HorizontalAlignment="Center" Height="30" Grid.Row="0" TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Foreground="White" FontFamily="Tw Cen MT" Text="Sign in" FontSize="24" TextAlignment="Center" Margin="37.5,0,39.5,411.667"/>
-            <TextBox HorizontalAlignment="Center" Height="40" TextWrapping="Wrap" Text="Username" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT" Margin="0,0,2,310"/>
+            <TextBlock HorizontalAlignment="Center" Height="30" Grid.Row="0" TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Foreground="White" FontFamily="Tw Cen MT" Text="Logowanie" FontSize="24" TextAlignment="Center" Margin="37.5,0,39.5,411.667"/>
+            <TextBox HorizontalAlignment="Center" Height="40" TextWrapping="Wrap" Text="Nazwa użytkownika" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT" Margin="0,0,2,310"/>
             <PasswordBox HorizontalAlignment="Center" Height="40" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT" Margin="0,0,2,243.334"/>
             <Path Data="M565,166.66667 L785,166.66667" Fill="White" HorizontalAlignment="Left" Height="1" Margin="0,131.667,0,0" Stretch="Fill" Stroke="White" VerticalAlignment="Top" Width="221"/>
             <Path Data="M565,233.33333 L786,233.33333" Fill="White" HorizontalAlignment="Left" Height="1" Margin="0,198.333,0,0" Stretch="Fill" Stroke="White" VerticalAlignment="Top" Width="222"/>
-            <Button Content="Sign in" Margin ="75,218.333,77,0" HorizontalAlignment="Center" Height="30" VerticalAlignment="Top" Width="70"/>
+            <Button  Style="{StaticResource RoundButtonTemplate}" Content="Login" Margin ="75,218.333,77,0" HorizontalAlignment="Center" Height="30" VerticalAlignment="Top" Width="70" Background="White" FontFamily="Tw Cen MT" FontSize="16"/>
 
-            <Button  x:Name="SwitchToPinView" Content="" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="20" Margin="100,421.667,102,0"/>
-
+            <Button  x:Name="SwitchToPinView" Style="{StaticResource RoundButtonTemplate}" Content="⌂" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="20" Margin="100,421.667,102,0" Background="White" FontFamily="Tw Cen MT" FontSize="14"/>
 
         </Grid>
 
 
         <Grid x:Name="PIN" Grid.ColumnSpan="4" Grid.Column="1" Margin="20,35,70,23.333" Grid.RowSpan="5">
 
-            <TextBlock HorizontalAlignment="Center" Height="30" Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Foreground="White" FontFamily="Tw Cen MT" Text="Sign in" FontSize="24" TextAlignment="Center" Margin="42.5,0,82.5,411.667"/>
-            <TextBox HorizontalAlignment="Center" Height="35" TextWrapping="Wrap" Text="ID" Width="160" VerticalAlignment="Center" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="16" FontFamily="Tw Cen MT" Margin="35,80.833,75,325.834"/>
+            <TextBlock HorizontalAlignment="Center" Height="30" Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Foreground="White" FontFamily="Tw Cen MT" Text="Logowanie" FontSize="24" TextAlignment="Center" Margin="42.5,0,82.5,411.667"/>
+            <TextBox HorizontalAlignment="Center" Height="35" TextWrapping="Wrap" Text="ID" Width="160" VerticalAlignment="Center" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT" Margin="35,80.833,75,325.834"/>
             <Path Data="M145,150.83333 L305,150.83333" Fill="White" HorizontalAlignment="Left" Height="1" Margin="35,115.833,0,0" Stretch="Fill" Stroke="White" VerticalAlignment="Top" Width="161"/>
 
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="1" Height="50" Margin="0,218.333,220,0" VerticalAlignment="Top" Width="50" HorizontalAlignment="Center"/>
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="4" Height="50" VerticalAlignment="Center" Width="50" HorizontalAlignment="Center" Margin="0,273.333,220,118.334"/>
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="7" Height="50" Margin="0,0,220,63.334" VerticalAlignment="Bottom" Width="50" HorizontalAlignment="Center"/>
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="2" Height="50" Margin="90,218.333,130,0" VerticalAlignment="Top" Width="50" HorizontalAlignment="Center"/>
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="5" Height="50" Margin="90,273.333,130,118.334" VerticalAlignment="Center" Width="50" HorizontalAlignment="Center"/>
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="8" Height="50" Margin="90,0,130,63.334" VerticalAlignment="Bottom" Width="50" HorizontalAlignment="Center"/>
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="3" Height="50" Margin="180,218.333,40,0" VerticalAlignment="Top" Width="50" HorizontalAlignment="Center"/>
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="6" Height="50" Margin="180,273.333,40,118.334" VerticalAlignment="Center" Width="50" HorizontalAlignment="Center"/>
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="9" Height="50" Margin="180,0,40,63.334" VerticalAlignment="Bottom" Width="50" HorizontalAlignment="Center"/>
-            <Button Style="{StaticResource RoundButtonTemplate}" Content="B" Height="30" Margin="0,0,0,63.334" VerticalAlignment="Bottom" Width="30" HorizontalAlignment="Right"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="1" Height="50" Margin="0,218.333,220,0" VerticalAlignment="Top" Width="50" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="20"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="4" Height="50" VerticalAlignment="Center" Width="50" HorizontalAlignment="Center" Margin="0,273.333,220,118.334" Background="White" FontFamily="Tw Cen MT" FontSize="20"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="7" Height="50" Margin="0,0,220,63.334" VerticalAlignment="Bottom" Width="50" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="20"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="2" Height="50" Margin="90,218.333,130,0" VerticalAlignment="Top" Width="50" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="20"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="5" Height="50" Margin="90,273.333,130,118.334" VerticalAlignment="Center" Width="50" HorizontalAlignment="Center" FontFamily="Tw Cen MT" FontSize="20" Background="White"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="8" Height="50" Margin="90,0,130,63.334" VerticalAlignment="Bottom" Width="50" HorizontalAlignment="Center" FontFamily="Tw Cen MT" Background="#FFFFFBFB" FontSize="20"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="3" Height="50" Margin="180,218.333,40,0" VerticalAlignment="Top" Width="50" HorizontalAlignment="Center" FontFamily="Tw Cen MT" FontSize="20" Background="White"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="6" Height="50" Margin="180,273.333,40,118.334" VerticalAlignment="Center" Width="50" HorizontalAlignment="Center" FontFamily="Tw Cen MT" FontSize="20" Background="White"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="9" Height="50" Margin="180,0,40,63.334" VerticalAlignment="Bottom" Width="50" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="20"/>
+            <Button Style="{StaticResource RoundButtonTemplate}" Content="🡐" Height="30" Margin="0,0,0,63.334" VerticalAlignment="Bottom" Width="30" HorizontalAlignment="Right" Background="White" FontSize="14" FontFamily="Tw Cen MT"/>
 
             <Ellipse Margin="50,152.5,0,264.167" Fill="White" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
             <Ellipse Fill="White" Margin="85,152.5,0,264.167" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
             <Ellipse Fill="White" Margin="0,152.5,125,264.167"  HorizontalAlignment="Right" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" />
             <Ellipse Margin="155,152.5,0,264.167" Fill="White" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
 
-            <Button x:Name="SwitchToAdminView" Content="" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="20" Margin="105,421.667,145,0"/>
+            <Button x:Name="SwitchToAdminView"  Style="{StaticResource RoundButtonTemplate}" Content="⌂" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="20" Margin="105,421.667,145,0" Background="White" FontFamily="Tw Cen MT" FontSize="14"/>
 
         </Grid>
         <Grid x:Name="SLIDE" Grid.ColumnSpan="5" Grid.Column="5" Grid.RowSpan="5">
@@ -147,7 +142,7 @@
                     </TransformGroup>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle x:Name="Logo" HorizontalAlignment="Left" Height="94.167" VerticalAlignment="Top" Width="290" Margin="87,44,0,0" RenderTransformOrigin="0.5,0.5" Grid.Row="1">
+            <Rectangle x:Name="Logo" HorizontalAlignment="Left" Height="84.5" VerticalAlignment="Center" Width="230" Margin="110,54,0,220.5" RenderTransformOrigin="0.5,0.5" Grid.Row="1">
                 <Rectangle.Fill>
                     <ImageBrush ImageSource="Rejestrator.png"/>
                 </Rectangle.Fill>

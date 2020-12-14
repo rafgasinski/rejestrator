@@ -61,6 +61,17 @@
                 OnPropertyChanged(nameof(Pin));
             }
         }
+
+        private string _username = string.Empty;
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                _username = value;
+                OnPropertyChanged(nameof(Username));
+            }
+        }
         #endregion
 
         #region Commands
@@ -88,7 +99,20 @@
                     if(ID.Length < ProgramInfo.ID_LENGTH && string.IsNullOrEmpty(Pin))
                         ID = $"{ID}{x}";
                     else if (Pin.Length < ProgramInfo.PIN_LENGTH && ID.Length == ProgramInfo.ID_LENGTH)
+                    {
                         Pin = $"{Pin}{x}";
+                        if (Pin.Length == ProgramInfo.PIN_LENGTH)
+                        {
+                            if (loginModel.LoginEmployee(ID, Pin))
+                            {
+                                GoToDashboard.Execute(null);
+                            }
+                            else
+                            {
+
+                            }
+                        }    
+                    } 
                 }));
             }
         }
@@ -119,6 +143,22 @@
                 {
                     LeftAvailable ^= true;
                     RightAvailable ^= true;
+
+                    ClearAllFields.Execute(null);
+                }));
+            }
+        }
+
+        private ICommand _clearAllFields;
+
+        public ICommand ClearAllFields
+        {
+            get
+            {
+                return _clearAllFields ?? (_clearAllFields = new RelayCommand(x =>
+                {
+                    ID = string.Empty;
+                    Pin = string.Empty;
                 }));
             }
         }

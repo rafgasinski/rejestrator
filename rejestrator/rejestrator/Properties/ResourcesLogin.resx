@@ -117,4 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ButtonLogin" xml:space="preserve">
+    <value>Zaloguj</value>
+  </data>
+  <data name="LabelID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="LabelLogin" xml:space="preserve">
+    <value>Nazwa użytkownika</value>
+  </data>
+  <data name="LabelPassword" xml:space="preserve">
+    <value>Hasło</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Logowanie</value>
+  </data>
 </root>

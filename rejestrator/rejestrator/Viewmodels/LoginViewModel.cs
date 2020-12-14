@@ -95,6 +95,53 @@
                 OnPropertyChanged(nameof(Error));
             }
         }
+
+        #region Dots
+        private bool _dot1 = false;
+        public bool Dot1
+        {
+            get => _dot1;
+            set
+            {
+                _dot1 = value;
+                OnPropertyChanged(nameof(Dot1));
+            }
+        }
+
+        private bool _dot2 = false;
+        public bool Dot2
+        {
+            get => _dot2;
+            set
+            {
+                _dot2 = value;
+                OnPropertyChanged(nameof(Dot2));
+            }
+        }
+
+        private bool _dot3 = false;
+        public bool Dot3
+        {
+            get => _dot3;
+            set
+            {
+                _dot3 = value;
+                OnPropertyChanged(nameof(Dot3));
+            }
+        }
+
+        private bool _dot4 = false;
+        public bool Dot4
+        {
+            get => _dot4;
+            set
+            {
+                _dot4 = value;
+                OnPropertyChanged(nameof(Dot4));
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Commands
@@ -153,6 +200,16 @@
                     else if (Pin.Length < ProgramInfo.PIN_LENGTH && ID.Length == ProgramInfo.ID_LENGTH)
                     {
                         Pin = $"{Pin}{x}";
+
+                        if (Pin.Length == 1)
+                            Dot1 = true;
+                        else if (Pin.Length == 2)
+                            Dot2 = true;
+                        else if (Pin.Length == 3)
+                            Dot3 = true;
+                        else if (Pin.Length == 4)
+                            Dot4 = true;
+
                         if (Pin.Length == ProgramInfo.PIN_LENGTH)
                         {
                             if (loginModel.LoginEmployee(ID, Pin))
@@ -180,7 +237,18 @@
                     if (Utils.Between(ID.Length, 0, ProgramInfo.ID_LENGTH) && string.IsNullOrEmpty(Pin))
                         ID = ID.Substring(0, ID.Length - 1);
                     else if(Utils.Between(Pin.Length, 0, ProgramInfo.PIN_LENGTH) && ID.Length == ProgramInfo.ID_LENGTH)
+                    {
                         Pin = Pin.Substring(0, Pin.Length - 1);
+                        if (Pin.Length == 0)
+                            Dot1 = false;
+                        else if (Pin.Length == 1)
+                            Dot2 = false;
+                        else if (Pin.Length == 2)
+                            Dot3 = false;
+                        else if (Pin.Length == 3)
+                            Dot4 = false;
+                    }
+                        
                 }));
             }
         }
@@ -214,6 +282,10 @@
                     Username = string.Empty;
                     Password = string.Empty;
                     Error = string.Empty;
+                    Dot1 = false;
+                    Dot2 = false;
+                    Dot3 = false;
+                    Dot4 = false;
                 }));
             }
         }

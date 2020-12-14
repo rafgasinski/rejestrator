@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:rejestrator.Views"
              xmlns:vm="clr-namespace:rejestrator.Viewmodels"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:resx="clr-namespace:rejestrator.Properties"
              xmlns:utils="clr-namespace:rejestrator.Utils"
+             xmlns:conv="clr-namespace:rejestrator.Converters"
              mc:Ignorable="d"
              x:Name="root"
              d:DesignHeight="500" d:DesignWidth="900">
@@ -66,6 +67,9 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1.396"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+
+        <conv:BrushColorConverter x:Key="BConverter"></conv:BrushColorConverter>
+
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="SwitchToAdminView">
@@ -100,10 +104,16 @@
         <Rectangle x:Name="rectangle" Fill="Black" HorizontalAlignment="Left" Height="500" Stroke="Black" VerticalAlignment="Top" Width="900" Grid.ColumnSpan="10" Grid.RowSpan="5"/>
 
         <TextBlock HorizontalAlignment="Center" Height="30" Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="3" TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Foreground="White" FontFamily="Tw Cen MT" Text="{Binding Source={x:Static resx:ResourcesLogin.Title}}" FontSize="24" TextAlignment="Center"/>
-        <TextBox  x:Name="TextBoxUserName" Text="{Binding Path=Username, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center" Height="40" Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT"/>
+        <TextBox x:Name="TextBoxUserName" Text="{Binding Path=Username, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center" Height="40" Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT" utils:FocusAdvancement.AdvancesByEnterKey="True" />
         <Label Grid.Row="1" Grid.Column="5" Content="{Binding Source={x:Static resx:ResourcesLogin.LabelLogin}}" Foreground="White" Margin="59,27,70,6" VerticalAlignment="Center" HorizontalAlignment="Center" Height="34" Width="51" Grid.ColumnSpan="2" FontFamily="Tw Cen MT" />
         <Label Grid.Row="2" Grid.Column="5" Content="{Binding Source={x:Static resx:ResourcesLogin.LabelPassword}}" Foreground="White" Margin="59,27,70,6" VerticalAlignment="Center" HorizontalAlignment="Center" Height="34" Width="51" Grid.ColumnSpan="2" RenderTransformOrigin="0.529,0.667" FontFamily="Tw Cen MT"/>
-        <PasswordBox x:Name="PasswordBox" utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Height="40" Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="3" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT"/>
+        <PasswordBox x:Name="PasswordBox" utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Height="40" Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="3" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT">
+            <PasswordBox.InputBindings>
+                <KeyBinding 
+                    Key="Enter" 
+                    Command="{Binding LoginAdmin}" />
+            </PasswordBox.InputBindings>
+        </PasswordBox>
         <Label x:Name="ErrorLoginPassword" Grid.Row="2" Grid.Column="6" Foreground="Red" Margin="70,62,0,155" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="50" Width="130" FontFamily="Tw Cen MT" RenderTransformOrigin="0.5,0.5" FontSize="15" Content="{Binding Error}" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
 
         <Path Data="M565,166.66667 L785,166.66667" Fill="White" Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="1" Stretch="Fill" Stroke="White" VerticalAlignment="Top" Width="220" Margin="25,0,0,0"/>
@@ -119,10 +129,10 @@
 
         <Label x:Name="ErrorLoginPin" Grid.Row="1" Grid.Column="1" Foreground="Red" Margin="71,45,69,39" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="50" Width="130" FontFamily="Tw Cen MT" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2" FontSize="15" Content="{Binding Error}" Grid.ColumnSpan="3"/>
         <PasswordBox x:Name="PinBox" utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Pin}" HorizontalAlignment="Center" Height="40" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT" Visibility="Hidden"/>
-        <Ellipse Fill="White" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="70,0,0,0" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
-        <Ellipse Fill="White" Grid.Row="2" Grid.Column="2" Margin="15,0,0,0" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
-        <Ellipse Fill="White" Grid.Row="2" Grid.Column="2" Margin="0,0,15,0" HorizontalAlignment="Right" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" />
-        <Ellipse Fill="White" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="85,0,0,0" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
+        <Ellipse Fill="{Binding Path=Dot1, Converter={StaticResource BConverter}}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="70,0,0,0" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
+        <Ellipse Fill="{Binding Path=Dot2, Converter={StaticResource BConverter}}" Grid.Row="2" Grid.Column="2" Margin="15,0,0,0" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
+        <Ellipse Fill="{Binding Path=Dot3, Converter={StaticResource BConverter}}" Grid.Row="2" Grid.Column="2" Margin="0,0,15,0" HorizontalAlignment="Right" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" />
+        <Ellipse Fill="{Binding Path=Dot4, Converter={StaticResource BConverter}}" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="85,0,0,0" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
 
         <Button x:Name="btn1" Style="{StaticResource RoundButtonTemplate}" Grid.Row="3" Grid.Column="1" Content="1" Height="50" VerticalAlignment="Top" Width="50" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="20" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn1, Path=Content}"/>
         <Button x:Name="btn4" Style="{StaticResource RoundButtonTemplate}" Grid.Row="3" Grid.Column="1" Content="4" Height="50" VerticalAlignment="Center" Width="50" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="20" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn4, Path=Content}"/>

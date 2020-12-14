@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BrushColorConverter.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Properties\ResourcesLogin.Designer.cs">
@@ -88,6 +89,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourcesLogin.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\FocusAdvancement.cs" />
     <Compile Include="Utils\PasswordBoxAssistant.cs" />
     <Compile Include="Utils\ProgramInfo.cs" />
     <Compile Include="Utils\Utils.cs" />

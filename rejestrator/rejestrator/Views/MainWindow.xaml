@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:rejestrator.Views"
         mc:Ignorable="d"
-        WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
     Title="MainWindow" Height="500" Width="900">
     <Grid>
         <ContentControl Content="{Binding CurrentPageViewModel}" />

@@ -5,6 +5,7 @@
     using rejestrator.Models;
     using rejestrator.Utils;
     using System.Windows.Input;
+    using rejestrator.Properties;
 
     public class LoginViewModel : ViewModelBase, IPageViewModel
     {
@@ -72,6 +73,28 @@
                 OnPropertyChanged(nameof(Username));
             }
         }
+
+        private string _password = string.Empty;
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        private string _error = string.Empty;
+        public string Error
+        {
+            get => _error;
+            set
+            {
+                _error = value;
+                OnPropertyChanged(nameof(Error));
+            }
+        }
         #endregion
 
         #region Commands
@@ -84,6 +107,35 @@
                 return _goToDashboard ?? (_goToDashboard = new RelayCommand(x =>
                 {
                     Mediator.Notify(Token.GO_TO_DASHBOARD);
+                }));
+            }
+        }
+
+        private ICommand _goToAdminDashboard;
+
+        public ICommand GoToAdminDashboard
+        {
+            get
+            {
+                return _goToAdminDashboard ?? (_goToAdminDashboard = new RelayCommand(x =>
+                {
+                    Mediator.Notify(Token.GO_TO_ADMIN_DASHBOARD);
+                }));
+            }
+        }
+
+        private ICommand _loginAdmin;
+
+        public ICommand LoginAdmin
+        {
+            get
+            {
+                return _loginAdmin ?? (_loginAdmin = new RelayCommand(x =>
+                {
+                    if (loginModel.LoginAdmin(Username, Password))
+                        GoToAdminDashboard.Execute(null);
+                    else
+                        DisplayError.Execute(null);
                 }));
             }
         }
@@ -109,7 +161,7 @@
                             }
                             else
                             {
-
+                                DisplayError.Execute(null);
                             }
                         }    
                     } 
@@ -159,6 +211,23 @@
                 {
                     ID = string.Empty;
                     Pin = string.Empty;
+                    Username = string.Empty;
+                    Password = string.Empty;
+                    Error = string.Empty;
+                }));
+            }
+        }
+
+        private ICommand _displayError;
+
+        public ICommand DisplayError
+        {
+            get
+            {
+                return _displayError ?? (_displayError = new RelayCommand(x =>
+                {
+                    ClearAllFields.Execute(null);
+                    Error = ResourcesLogin.Error;
                 }));
             }
         }

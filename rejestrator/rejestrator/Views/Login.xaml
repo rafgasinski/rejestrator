@@ -11,107 +11,114 @@
              mc:Ignorable="d"
              x:Name="root"
              d:DesignHeight="500" d:DesignWidth="900">
-      <UserControl.Resources>
-            <Storyboard x:Key="MoveToLeft">
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Background2">
-                    <EasingDoubleKeyFrame KeyTime="0" Value="-75"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-114"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-162"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-223.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-298.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-379.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-414"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-450"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="-450"/>
-                </DoubleAnimationUsingKeyFrames>
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Logo">
-                    <EasingDoubleKeyFrame KeyTime="0" Value="-75"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-114"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-162"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-223.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-298.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-379.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-414"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-450"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="-450"/>
-                </DoubleAnimationUsingKeyFrames>
-            </Storyboard>
-            <Storyboard x:Key="MoveToRight">
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Background2">
-                    <EasingDoubleKeyFrame KeyTime="0" Value="-376.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-313.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-249"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-184.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-124.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-73.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-25.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-0.978"/>
-                </DoubleAnimationUsingKeyFrames>
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Logo">
-                    <EasingDoubleKeyFrame KeyTime="0" Value="-376.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-313.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-249"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-184.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-124.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-73.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-25.5"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-0.978"/>
-                </DoubleAnimationUsingKeyFrames>
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="Background2">
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
-                    <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1.396"/>
-                </DoubleAnimationUsingKeyFrames>
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="Logo">
-                        <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
-                        <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1.396"/>
-                </DoubleAnimationUsingKeyFrames>
-            </Storyboard>
-      </UserControl.Resources>
-      <UserControl.Triggers>
-            <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="SwitchToAdminView">
-                <BeginStoryboard Storyboard="{StaticResource MoveToLeft}"/>
-            </EventTrigger>
-            <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="SwitchToPinView">
-                <BeginStoryboard x:Name="MoveToRight_BeginStoryboard1" Storyboard="{StaticResource MoveToRight}"/>
-            </EventTrigger>
-      </UserControl.Triggers>
-      <Grid>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="100"/>
-              <RowDefinition/>
-              <RowDefinition/>
-              <RowDefinition Height="3*"/>
-              <RowDefinition/>
-            </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <Storyboard x:Key="MoveToLeft">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Background2">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-75"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-114"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-162"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-223.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-298.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-379.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-414"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-450"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="-450"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Logo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-75"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-114"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-162"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-223.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-298.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-379.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-414"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-450"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="-450"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="MoveToRight">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Background2">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-376.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-313.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-249"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-184.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-124.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-73.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-25.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-0.978"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="Logo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-376.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-313.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-249"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-184.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-124.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-73.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-25.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-0.978"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="Background2">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1.396"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="Logo">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1.396"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="SwitchToAdminView">
+            <BeginStoryboard Storyboard="{StaticResource MoveToLeft}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="SwitchToPinView">
+            <BeginStoryboard x:Name="MoveToRight_BeginStoryboard1" Storyboard="{StaticResource MoveToRight}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
 
         <Rectangle x:Name="rectangle" Fill="Black" HorizontalAlignment="Left" Height="500" Stroke="Black" VerticalAlignment="Top" Width="900" Grid.ColumnSpan="10" Grid.RowSpan="5"/>
 
         <TextBlock HorizontalAlignment="Center" Height="30" Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="3" TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Foreground="White" FontFamily="Tw Cen MT" Text="{Binding Source={x:Static resx:ResourcesLogin.Title}}" FontSize="24" TextAlignment="Center"/>
-        <TextBox  x:Name="TextBoxUserName" Text="{Binding Username}"  HorizontalAlignment="Center" Height="40" Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT"/>
-        <PasswordBox x:Name="PasswordBox" utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Pin}" HorizontalAlignment="Center" Height="40" Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="3" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT"/>
+        <TextBox  x:Name="TextBoxUserName" Text="{Binding Path=Username, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center" Height="40" Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT"/>
+        <Label Grid.Row="1" Grid.Column="5" Content="{Binding Source={x:Static resx:ResourcesLogin.LabelLogin}}" Foreground="White" Margin="59,27,70,6" VerticalAlignment="Center" HorizontalAlignment="Center" Height="34" Width="51" Grid.ColumnSpan="2" FontFamily="Tw Cen MT" />
+        <Label Grid.Row="2" Grid.Column="5" Content="{Binding Source={x:Static resx:ResourcesLogin.LabelPassword}}" Foreground="White" Margin="59,27,70,6" VerticalAlignment="Center" HorizontalAlignment="Center" Height="34" Width="51" Grid.ColumnSpan="2" RenderTransformOrigin="0.529,0.667" FontFamily="Tw Cen MT"/>
+        <PasswordBox x:Name="PasswordBox" utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Height="40" Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="3" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT"/>
+        <Label x:Name="ErrorLoginPassword" Grid.Row="2" Grid.Column="6" Foreground="Red" Margin="70,62,0,155" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="50" Width="130" FontFamily="Tw Cen MT" RenderTransformOrigin="0.5,0.5" FontSize="15" Content="{Binding Error}" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+
         <Path Data="M565,166.66667 L785,166.66667" Fill="White" Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="1" Stretch="Fill" Stroke="White" VerticalAlignment="Top" Width="220" Margin="25,0,0,0"/>
         <Path Data="M565,233.33333 L786,233.33333" Fill="White" Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="1" Stretch="Fill" Stroke="White" VerticalAlignment="Top" Width="220" Margin="25,64,0,0"/>
-        <Button Command="{Binding GoToDashboard}" Style="{StaticResource RoundButtonTemplate}" Content="{Binding Source={x:Static resx:ResourcesLogin.ButtonLogin}}" Grid.Row="3" Grid.Column="6" Grid.ColumnSpan="3" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="70" Background="White" FontFamily="Tw Cen MT" FontSize="16"/>
+        <Button Command="{Binding LoginAdmin}" Style="{StaticResource RoundButtonTemplate}" Content="{Binding Source={x:Static resx:ResourcesLogin.ButtonLogin}}" Grid.Row="3" Grid.Column="6" Grid.ColumnSpan="3" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="70" Background="White" FontFamily="Tw Cen MT" FontSize="16"/>
 
         <Button  x:Name="SwitchToPinView" Style="{StaticResource RoundButtonTemplate}" Content="⌂" Grid.Row="4" Grid.Column="7" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="20" Background="White" FontFamily="Tw Cen MT" FontSize="14" IsEnabled="{Binding RightAvailable}" Command="{Binding ChangeLoginMethod}"/>
 
         <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Height="30" TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Foreground="White" FontFamily="Tw Cen MT" Text="{Binding Source={x:Static resx:ResourcesLogin.Title}}" FontSize="24" TextAlignment="Center"/>
-        <TextBox x:Name="TextBoxID" Text="{Binding ID}" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Height="35" TextWrapping="Wrap" Width="160" VerticalAlignment="Center" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT"/>
+        <TextBox x:Name="TextBoxID" Text="{Binding ID}" Focusable="False" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Height="35" TextWrapping="Wrap" Width="160" VerticalAlignment="Center" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT"/>
+        <Label Grid.Row="1" Grid.Column="1" Content="{Binding Source={x:Static resx:ResourcesLogin.LabelID}}" Foreground="White" Margin="20,16,35,16" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="35" FontFamily="Tw Cen MT"/>
         <Path Data="M145,150.83333 L305,150.83333" Fill="White" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" Height="1" Stretch="Fill" Stroke="White" VerticalAlignment="Center" Width="160" Margin="55,50,55,16"/>
 
+        <Label x:Name="ErrorLoginPin" Grid.Row="1" Grid.Column="1" Foreground="Red" Margin="71,45,69,39" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Height="50" Width="130" FontFamily="Tw Cen MT" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2" FontSize="15" Content="{Binding Error}" Grid.ColumnSpan="3"/>
+        <PasswordBox x:Name="PinBox" utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Pin}" HorizontalAlignment="Center" Height="40" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Width="220" VerticalAlignment="Bottom" Background="{x:Null}" Foreground="White" SelectionBrush="#FFA2A2A2" BorderBrush="{x:Null}" FontSize="20" FontFamily="Tw Cen MT" Visibility="Hidden"/>
         <Ellipse Fill="White" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="70,0,0,0" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
         <Ellipse Fill="White" Grid.Row="2" Grid.Column="2" Margin="15,0,0,0" HorizontalAlignment="Left" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25"/>
         <Ellipse Fill="White" Grid.Row="2" Grid.Column="2" Margin="0,0,15,0" HorizontalAlignment="Right" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" />
@@ -130,21 +137,21 @@
 
         <Button x:Name="SwitchToAdminView" Style="{StaticResource RoundButtonTemplate}" Grid.Row="4" Grid.Column="2" Content="⌂" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="20" Background="White" FontFamily="Tw Cen MT" FontSize="14" IsEnabled="{Binding LeftAvailable}" Command="{Binding ChangeLoginMethod}"/>
 
-            <Grid x:Name="SLIDE" Grid.ColumnSpan="5" Grid.Column="5" Grid.RowSpan="5" Visibility="Hidden">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="141*"/>
-                    <RowDefinition Height="359*"/>
-                </Grid.RowDefinitions>
-                <Rectangle x:Name="Background2" Fill="White" HorizontalAlignment="Left" Height="500" Stroke="Black" VerticalAlignment="Top" Width="450" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2">
-                    <Rectangle.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Rectangle.RenderTransform>
-                </Rectangle>
+        <Grid x:Name="SLIDE" Grid.ColumnSpan="5" Grid.Column="5" Grid.RowSpan="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="141*"/>
+                <RowDefinition Height="359*"/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="Background2" Fill="White" HorizontalAlignment="Left" Height="500" Stroke="Black" VerticalAlignment="Top" Width="450" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
             <Rectangle x:Name="Logo" HorizontalAlignment="Left" Height="84.5" VerticalAlignment="Center" Width="230" Margin="110,54,0,220.5" RenderTransformOrigin="0.5,0.5" Grid.Row="1">
                 <Rectangle.Fill>
                     <ImageBrush ImageSource="Rejestrator.png"/>

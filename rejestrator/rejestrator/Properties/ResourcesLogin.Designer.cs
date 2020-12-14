@@ -70,7 +70,16 @@ namespace rejestrator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ID.
+        ///   Looks up a localized string similar to Błąd logowania!.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID:.
         /// </summary>
         public static string LabelID {
             get {
@@ -79,7 +88,7 @@ namespace rejestrator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nazwa użytkownika.
+        ///   Looks up a localized string similar to Login:.
         /// </summary>
         public static string LabelLogin {
             get {
@@ -88,7 +97,7 @@ namespace rejestrator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hasło.
+        ///   Looks up a localized string similar to Hasło:.
         /// </summary>
         public static string LabelPassword {
             get {

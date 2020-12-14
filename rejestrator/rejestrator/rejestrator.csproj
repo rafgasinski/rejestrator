@@ -91,6 +91,7 @@
     <Compile Include="Utils\PasswordBoxAssistant.cs" />
     <Compile Include="Utils\ProgramInfo.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <Compile Include="Viewmodels\AdminDashboardViewModel.cs" />
     <Compile Include="Viewmodels\BaseViewModel\EventArgs.cs" />
     <Compile Include="Viewmodels\BaseViewModel\RelayCommand.cs" />
     <Compile Include="Viewmodels\BaseViewModel\ViewModelBase.cs" />
@@ -100,12 +101,19 @@
     <Compile Include="Viewmodels\Navigator\IPageViewModel.cs" />
     <Compile Include="Viewmodels\Navigator\Mediator.cs" />
     <Compile Include="Viewmodels\Navigator\Token.cs" />
+    <Compile Include="Views\AdminDashboard.xaml.cs">
+      <DependentUpon>AdminDashboard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AdminDashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -53,15 +53,22 @@
             ChangeViewModel(PageViewModels[1]);
         }
 
+        private void OnGoAdminDashboard(object obj)
+        {
+            ChangeViewModel(PageViewModels[2]);
+        }
+
         public MainWindowViewModel()
         {
             PageViewModels.Add(new LoginViewModel());
             PageViewModels.Add(new DashboardViewModel());
+            PageViewModels.Add(new AdminDashboardViewModel());
 
             CurrentPageViewModel = PageViewModels[0];
 
             Mediator.Subscribe(Token.GO_TO_LOGIN, OnGoLoginScreen);
             Mediator.Subscribe(Token.GO_TO_DASHBOARD, OnGoDashboard);
+            Mediator.Subscribe(Token.GO_TO_ADMIN_DASHBOARD, OnGoAdminDashboard);
         }
     }
 }

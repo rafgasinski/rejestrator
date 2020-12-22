@@ -1,33 +1,34 @@
 ﻿namespace rejestrator.Database
 {
-    using System.Data.SQLite;
+    using System;
     using System.IO;
+    using MySql.Data.MySqlClient;
     class Database
     {
-        private static SQLiteConnection myConnection;
-        public static SQLiteConnection MyConnection()
-        {
-            if (!File.Exists("./database.sqlite3"))
-            {
-                SQLiteConnection.CreateFile("database.sqlite3");
-            }
-            myConnection = new SQLiteConnection("Data Source=database.sqlite3");
-            return myConnection;
-        }
+        private static MySqlConnection DBConnect;
+
         public static void OpenConnection()
         {
-            if (myConnection.State != System.Data.ConnectionState.Open)
+            if(DBConnect.State != System.Data.ConnectionState.Open)
             {
-                myConnection.Open();
+                DBConnect.Open();
             }
         }
 
         public static void CloseConnection()
         {
-            if (myConnection.State != System.Data.ConnectionState.Closed)
+            if (DBConnect.State != System.Data.ConnectionState.Closed)
             {
-                myConnection.Close();
+                DBConnect.Close();
             }
+        }
+
+        public static MySqlConnection DBConnection()
+        {
+            string ConnectString = "datasource = localhost; username = root; password=; database = rejestrator";
+            DBConnect = new MySqlConnection(ConnectString);
+
+            return DBConnect;
         }
     }
 }

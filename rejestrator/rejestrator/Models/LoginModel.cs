@@ -1,6 +1,6 @@
 ﻿namespace rejestrator.Models
 {
-    using System.Data.SQLite;
+    using MySql.Data.MySqlClient;
     using rejestrator.Database;
     public class LoginModel
     {
@@ -25,13 +25,13 @@
             bool canLogin = false;
 
             string query = @"SELECT COUNT(`id`) FROM `employees` WHERE `employeeID`=@id AND `pin`=@pin GROUP BY `id`";
-            using (SQLiteCommand myCommand = new SQLiteCommand(query, Database.MyConnection()))
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
                 myCommand.Parameters.AddWithValue("@id", id);
                 myCommand.Parameters.AddWithValue("@pin", pin);
                 myCommand.CommandText = query;
-                SQLiteDataReader result = myCommand.ExecuteReader();
+                MySqlDataReader result = myCommand.ExecuteReader();
                 if (result.HasRows)
                     canLogin = true;
                 Database.CloseConnection();
@@ -44,13 +44,13 @@
             bool canLogin = false;
 
             string query = @"SELECT COUNT(`id`) FROM `administrators` WHERE `username`=@username AND `password`=@password GROUP BY `id`";
-            using (SQLiteCommand myCommand = new SQLiteCommand(query, Database.MyConnection()))
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
                 myCommand.Parameters.AddWithValue("@username", username);
                 myCommand.Parameters.AddWithValue("@password", password);
                 myCommand.CommandText = query;
-                SQLiteDataReader result = myCommand.ExecuteReader();
+                MySqlDataReader result = myCommand.ExecuteReader();
                 if (result.HasRows)
                     canLogin = true;
                 Database.CloseConnection();

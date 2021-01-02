@@ -58,17 +58,31 @@
             ChangeViewModel(PageViewModels[2]);
         }
 
+        private void OnGoAdminEmployees(object obj)
+        {
+            ChangeViewModel(PageViewModels[3]);
+        }
+
+        private void OnGoAdminRaport(object obj)
+        {
+            ChangeViewModel(PageViewModels[4]);
+        }
+
         public MainWindowViewModel()
         {
             PageViewModels.Add(new LoginViewModel());
             PageViewModels.Add(new DashboardViewModel());
             PageViewModels.Add(new AdminDashboardViewModel());
+            PageViewModels.Add(new AdminEmployeesViewModel());
+            PageViewModels.Add(new AdminRaportViewModel());
 
             CurrentPageViewModel = PageViewModels[0];
 
             Mediator.Subscribe(Token.GO_TO_LOGIN, OnGoLoginScreen);
             Mediator.Subscribe(Token.GO_TO_DASHBOARD, OnGoDashboard);
             Mediator.Subscribe(Token.GO_TO_ADMIN_DASHBOARD, OnGoAdminDashboard);
+            Mediator.Subscribe(Token.GO_TO_ADMIN_EMPLOYEES, OnGoAdminEmployees);
+            Mediator.Subscribe(Token.GO_TO_ADMIN_RAPORT, OnGoAdminRaport);
         }
     }
 }

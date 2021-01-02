@@ -47,6 +47,9 @@
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=8.0.22.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -98,6 +101,8 @@
     <Compile Include="Utils\ProgramInfo.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="Viewmodels\AdminDashboardViewModel.cs" />
+    <Compile Include="Viewmodels\AdminEmployeesViewModel.cs" />
+    <Compile Include="Viewmodels\AdminRaportViewModel.cs" />
     <Compile Include="Viewmodels\BaseViewModel\EventArgs.cs" />
     <Compile Include="Viewmodels\BaseViewModel\RelayCommand.cs" />
     <Compile Include="Viewmodels\BaseViewModel\ViewModelBase.cs" />
@@ -110,6 +115,12 @@
     <Compile Include="Views\AdminDashboard.xaml.cs">
       <DependentUpon>AdminDashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AdminEmployees.xaml.cs">
+      <DependentUpon>AdminEmployees.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminRaport.xaml.cs">
+      <DependentUpon>AdminRaport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
@@ -121,6 +132,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AdminDashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminEmployees.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminRaport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

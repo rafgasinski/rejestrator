@@ -180,7 +180,11 @@
                 return _loginAdmin ?? (_loginAdmin = new RelayCommand(x =>
                 {
                     if (loginModel.LoginAdmin(Username, Password))
+                    {
+                        LeftAvailable ^= true;
+                        RightAvailable ^= true;
                         GoToAdminDashboard.Execute(null);
+                    }
                     else
                         DisplayError.Execute(null);
                 }));
@@ -214,6 +218,8 @@
                         {
                             if (loginModel.LoginEmployee(ID, Pin))
                             {
+                                LeftAvailable ^= true;
+                                RightAvailable ^= true;
                                 GoToDashboard.Execute(null);
                             }
                             else

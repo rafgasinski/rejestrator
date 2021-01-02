@@ -24,5 +24,12 @@
         <DataTemplate DataType="{x:Type vs:AdminDashboardViewModel}">
             <local:AdminDashboard />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vs:AdminEmployeesViewModel}">
+            <local:AdminEmployees />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vs:AdminRaportViewModel}">
+            <local:AdminRaport />
+        </DataTemplate>
+
     </Application.Resources>
 </Application>

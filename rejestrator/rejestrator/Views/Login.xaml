@@ -164,7 +164,7 @@
             </Rectangle>
             <Rectangle x:Name="Logo" HorizontalAlignment="Left" Height="84.5" VerticalAlignment="Center" Width="230" Margin="110,54,0,220.5" RenderTransformOrigin="0.5,0.5" Grid.Row="1">
                 <Rectangle.Fill>
-                    <ImageBrush ImageSource="Rejestrator.png"/>
+                    <ImageBrush ImageSource="/rejestrator;component/Assets/Rejestrator.png"/>
                 </Rectangle.Fill>
                 <Rectangle.RenderTransform>
                     <TransformGroup>

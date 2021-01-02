@@ -83,6 +83,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BrushColorConverter.cs" />
+    <Compile Include="CustomControls\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Database\Database.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Properties\ResourcesLogin.Designer.cs">
@@ -113,6 +116,10 @@
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Page Include="CustomControls\Menu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\AdminDashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -169,15 +176,35 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Rejestrator.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Views\Rejestrator.png" />
+    <Resource Include="Assets\Rejestrator.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Viewmodels\BaseViewModel\EventRaiser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\logout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\home1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

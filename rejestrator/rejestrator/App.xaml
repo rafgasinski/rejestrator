@@ -4,17 +4,19 @@
              xmlns:local="clr-namespace:rejestrator.Views"
              xmlns:vs="clr-namespace:rejestrator.Viewmodels">
     <Application.Resources>
+        
         <Style x:Key="RoundButtonTemplate" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20" Background="{TemplateBinding Background}" BorderThickness ="1">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="Hand"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
         <DataTemplate DataType="{x:Type vs:LoginViewModel}">
             <local:Login />
         </DataTemplate>
@@ -32,4 +34,5 @@
         </DataTemplate>
 
     </Application.Resources>
+    
 </Application>

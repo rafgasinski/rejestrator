@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="rejestrator.CustomControls.FullNameLabel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:rejestrator.CustomControls"
+             mc:Ignorable="d" >
+    <Grid>
+        <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White">
+            <Label Content="{Binding AdminName}" FontFamily="Tw Cen MT" FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </Border>
+    </Grid>
+</UserControl>

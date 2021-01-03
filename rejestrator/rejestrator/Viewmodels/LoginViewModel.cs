@@ -6,6 +6,7 @@
     using rejestrator.Utils;
     using System.Windows.Input;
     using rejestrator.Properties;
+    using System;
 
     public class LoginViewModel : ViewModelBase, IPageViewModel
     {
@@ -172,7 +173,7 @@
         }
 
         private ICommand _loginAdmin;
-
+    
         public ICommand LoginAdmin
         {
             get
@@ -181,8 +182,11 @@
                 {
                     if (loginModel.LoginAdmin(Username, Password))
                     {
+                        AdminDashboardViewModel.AdminName = loginModel.GetAdminName(loginModel.GetAdminID(Username, Password));
+                        AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
                         LeftAvailable ^= true;
                         RightAvailable ^= true;
+                        ClearAllFields.Execute(null);
                         GoToAdminDashboard.Execute(null);
                     }
                     else
@@ -218,8 +222,10 @@
                         {
                             if (loginModel.LoginEmployee(ID, Pin))
                             {
+                                loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("MM/dd/yyyy H:mm"));
                                 LeftAvailable ^= true;
                                 RightAvailable ^= true;
+                                ClearAllFields.Execute(null);
                                 GoToDashboard.Execute(null);
                             }
                             else

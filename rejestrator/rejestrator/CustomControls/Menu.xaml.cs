@@ -27,13 +27,12 @@ namespace rejestrator.CustomControls
 
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {
-            // Set tooltip visibility
-
             if (Tg_Btn.IsChecked == true)
             {
                 tt_home.Visibility = Visibility.Collapsed;
                 tt_workers.Visibility = Visibility.Collapsed;
                 tt_raport.Visibility = Visibility.Collapsed;
+                tt_add.Visibility = Visibility.Collapsed;
                 tt_signout.Visibility = Visibility.Collapsed;
             }
             else
@@ -41,6 +40,7 @@ namespace rejestrator.CustomControls
                 tt_home.Visibility = Visibility.Visible;
                 tt_workers.Visibility = Visibility.Visible;
                 tt_raport.Visibility = Visibility.Visible;
+                tt_add.Visibility = Visibility.Visible;
                 tt_signout.Visibility = Visibility.Visible;
             }
         }

@@ -4,16 +4,47 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:customcontrols="clr-namespace:rejestrator.CustomControls"
-             xmlns:local="clr-namespace:rejestrator.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:rejestrator.Views" xmlns:viewmodels="clr-namespace:rejestrator.Viewmodels" d:DataContext="{d:DesignInstance Type=viewmodels:EmployeeListingViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
-    <Grid>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-        <customcontrols:Menu Grid.Column="0"/>
+        <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Canvas.ZIndex="2"/>
+
+        <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
+            <customcontrols:FullNameLabel/>
+        </Label>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
+                   Foreground="White"
+                   FontFamily="TW Cen MT"
+                   FontSize="26"
+                   Text="Logowania:" />
+
+        <customcontrols:ListingControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="70,10,0,0" Canvas.ZIndex="1"
+            DataContext="{Binding EmployeeListingViewModel}"
+            FontSize="14" />
+
+
+
+
 
     </Grid>
 </UserControl>

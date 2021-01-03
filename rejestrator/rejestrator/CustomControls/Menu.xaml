@@ -6,7 +6,8 @@
              xmlns:core="using:Microsoft.Xaml.Behav"
 xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
              xmlns:local="clr-namespace:rejestrator.CustomControls"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="900">
     <UserControl.Resources>
 
         <ImageBrush x:Key="tb_mouse_over" ImageSource="/rejestrator;component/Assets/menu.png"/>
@@ -38,6 +39,9 @@ xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
 
             <Setter Property="Foreground"
                     Value="Black"/>
+
+            <Setter Property="FontFamily" 
+                    Value="Tw Cen MT"/>
 
             <Setter Property="FontSize"
                     Value="20"/>
@@ -116,10 +120,10 @@ xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
 
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Background="Transparent">
 
 
-        <Grid Background="Black">
+        <Grid>
 
 
             <Grid>
@@ -180,6 +184,7 @@ xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
                                       Height="30"
                                       Width="30"
                                       BorderThickness="0"
+                                      Cursor="Hand"
                                       Style="{StaticResource tb_style}" Unchecked="Tg_Btn_Unchecked" Checked="Tg_Btn_Checked">
 
                             <ToggleButton.Background>
@@ -253,22 +258,22 @@ xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
                                       Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" 
                                       >
 
-                            <StackPanel Orientation="Horizontal"
+                            <Button Command="{Binding GoToAdminDashboard}" Cursor="Hand" Background="White" BorderThickness="0">
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Button Command="{Binding GoToAdminDashboard}" Background="White" BorderThickness="0">
                                     <Image Source="/rejestrator;component/Assets/home1.png"
                                        Stretch="Fill"
                                        Margin="3,0,0,0"/>
-                                </Button>
 
-                                <TextBlock Text="Menu"
+
+                                    <TextBlock Text="Menu"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
-                                
 
-                            </StackPanel>
 
+                                </StackPanel>
+                            </Button>
 
                             <ListViewItem.ToolTip>
 
@@ -284,20 +289,22 @@ xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
                                       Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
                                       >
 
-                            <StackPanel Orientation="Horizontal"
+                            <Button Command="{Binding GoToAdminEmployees}" Cursor="Hand" Background="White" BorderThickness="0">
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Button Command="{Binding GoToAdminEmployees}" Background="White" BorderThickness="0">
                                     <Image Source="/rejestrator;component/Assets/users.png"
                                        Stretch="Fill"
                                        Margin="3,0,0,0"/>
-                                </Button>
 
-                                <TextBlock Text="Pracownicy"
+
+                                    <TextBlock Text="Pracownicy"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
-                            </StackPanel>
+
+                                </StackPanel>
+                            </Button>
 
 
                             <ListViewItem.ToolTip>
@@ -310,27 +317,26 @@ xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
 
                         </ListViewItem>
 
-
-
-
                         <ListViewItem HorizontalAlignment="Left"
                                       Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
                                       >
 
-                            <StackPanel Orientation="Horizontal"
+                            <Button Command="{Binding GoToAdminRaport}" Cursor="Hand" Background="White" BorderThickness="0">
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Button Command="{Binding GoToAdminRaport}" Background="White" BorderThickness="0">
                                     <Image Source="/rejestrator;component/Assets/list.png"
                                        Stretch="Fill"
                                        Margin="3,0,0,0"/>
-                                </Button>
 
-                                <TextBlock Text="Raport"
+
+                                    <TextBlock Text="Raport"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
-                            </StackPanel>
+
+                                </StackPanel>
+                            </Button>
 
                             <ListViewItem.ToolTip>
 
@@ -342,25 +348,59 @@ xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
 
                         </ListViewItem>
 
+                        <ListViewItem HorizontalAlignment="Left"
+                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
+                                      >
+
+                            <Button Command="{Binding AddPanel}" Cursor="Hand" Background="White" BorderThickness="0">
+                                <StackPanel Orientation="Horizontal"
+                                        Width="230">
+
+                                    <Image Source="/rejestrator;component/Assets/plus.png"
+                                       Stretch="Fill"
+                                       Margin="3,0,0,0"/>
+
+
+                                    <TextBlock Text="Dodaj"
+                                           Margin="25,0,0,0"
+                                           Style="{StaticResource font_style}"/>
+
+
+                                </StackPanel>
+                            </Button>
+
+
+                            <ListViewItem.ToolTip>
+
+                                <ToolTip x:Name="tt_add"
+                                         Content="Dodaj"
+                                         Style="{StaticResource tt_style}"/>
+
+                            </ListViewItem.ToolTip>
+
+                        </ListViewItem>
+
 
                         <ListViewItem HorizontalAlignment="Left"
                                       Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
                                       >
 
-                            <StackPanel Orientation="Horizontal"
+                            <Button Command="{Binding GoToLogin}" Cursor="Hand" Background="White" BorderThickness="0">
+                                <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Button Command="{Binding GoToLogin}" Background="White" BorderThickness="0">
                                     <Image Source="/rejestrator;component/Assets/logout.png"
                                        Stretch="Fill"
                                        Margin="3,0,0,0"/>
-                                </Button>
 
-                                <TextBlock Text="Wyloguj"
+
+                                    <TextBlock Text="Wyloguj"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
-                            </StackPanel>
+
+                                </StackPanel>
+                            </Button>
 
 
                             <ListViewItem.ToolTip>

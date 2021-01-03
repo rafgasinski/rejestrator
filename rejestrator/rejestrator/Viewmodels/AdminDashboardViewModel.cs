@@ -3,11 +3,27 @@
     using rejestrator.Viewmodels.BaseViewModel;
     using rejestrator.Viewmodels.Navigator;
     using System.Windows.Input;
+    using rejestrator.Models;
 
     public class AdminDashboardViewModel : ViewModelBase, IPageViewModel
     {
-        private ICommand _goToLogin;
+        private static AdminDashboardViewModel _instance = new AdminDashboardViewModel();
+        public static AdminDashboardViewModel Instance { get { return _instance; } }
+        public static EmployeeListingViewModel EmployeeListingViewModel { get; set; }
 
+        public string adminName { get; set; }
+
+        #region Singleton
+
+        public AdminDashboardViewModel()
+        {
+        }
+        #endregion
+
+        #region Properties
+        public static string AdminName { get; set; }
+        #endregion
+        private ICommand _goToLogin;
         public ICommand GoToLogin
         {
             get
@@ -57,5 +73,6 @@
                 }));
             }
         }
+
     }
 }

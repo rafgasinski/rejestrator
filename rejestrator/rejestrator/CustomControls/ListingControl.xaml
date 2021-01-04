@@ -47,7 +47,7 @@
         </Style>
     </UserControl.Resources>
     
-    <Grid>
+    <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -55,7 +55,7 @@
 
         <TextBox Grid.Row="0" Text="{Binding EmployeesFilter, UpdateSourceTrigger=PropertyChanged}" FontFamily="TW Cen MT" Background="Black" Foreground="White" BorderThickness="1" BorderBrush="White" Margin="5,0,10,0"/>
 
-        <ListView Grid.Row="1" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="16" Margin="5,10,10,0"
+        <ListView Grid.Row="1" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="18" Margin="5,10,10,0"
             BorderThickness="0"
             ItemsSource="{Binding EmployeesCollectionView}">
             <ListView.ItemContainerStyle>
@@ -72,10 +72,10 @@
                     </Setter>
                 </Style>
             </ListView.ItemContainerStyle>
-         
+
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                    <GridViewColumn>
+                    <GridViewColumn Width="210">
                         <GridViewColumnHeader Content="Pracownik"/>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -83,7 +83,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn>
+                    <GridViewColumn Width="210">
                         <GridViewColumnHeader Content="Data"/>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

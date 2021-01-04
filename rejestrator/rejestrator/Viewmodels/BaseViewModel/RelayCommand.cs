@@ -44,6 +44,7 @@
     {
         private readonly Predicate<object> _canExecute;
         private readonly Action<object> _execute;
+        private Action onAdd;
 
         public RelayCommand(Action<object> execute)
            : this(execute, null)
@@ -59,6 +60,11 @@
             }
             _execute = execute;
             _canExecute = canExecute;
+        }
+
+        public RelayCommand(Action onAdd)
+        {
+            this.onAdd = onAdd;
         }
 
         public bool CanExecute(object parameter)

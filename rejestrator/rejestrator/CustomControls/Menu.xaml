@@ -352,7 +352,7 @@ xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
                                       Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
                                       >
 
-                            <Button Command="{Binding AddPanel}" Cursor="Hand" Background="White" BorderThickness="0">
+                            <Button Command="{Binding AddCommand}" Cursor="Hand" Background="White" BorderThickness="0">
                                 <StackPanel Orientation="Horizontal"
                                         Width="230">
 

@@ -7,6 +7,8 @@
     using System.Windows.Input;
     using rejestrator.Properties;
     using System;
+    using System.Windows.Data;
+    using System.Collections.Generic;
 
     public class LoginViewModel : ViewModelBase, IPageViewModel
     {
@@ -182,8 +184,19 @@
                 {
                     if (loginModel.LoginAdmin(Username, Password))
                     {
+                        List<string> namesList = new List<string>();
+
+                        loginModel.GetEmployeesFullNames(namesList);
+
                         AdminDashboardViewModel.AdminName = loginModel.GetAdminName(loginModel.GetAdminID(Username, Password));
                         AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
+
+                        foreach (var name in namesList)
+                            AdminDashboardViewModel.employeesList.Add(name);
+
+                        Employee.Queries = new CollectionView(AdminDashboardViewModel.employeesList);
+                        Employee.Queries.MoveCurrentTo(AdminDashboardViewModel.employeesList[0]);
+                        Employee.Queries.CurrentChanged += new EventHandler(AdminDashboardViewModel.queries_CurrentChanged);
                         LeftAvailable ^= true;
                         RightAvailable ^= true;
                         ClearAllFields.Execute(null);

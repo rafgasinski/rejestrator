@@ -2,6 +2,8 @@
 {
     using MySql.Data.MySqlClient;
     using rejestrator.Database;
+    using System.Collections.Generic;
+
     public class LoginModel
     {
         #region Singleton
@@ -166,6 +168,27 @@
             }
 
             return employeeSurnname;
+        }
+
+        public void GetEmployeesFullNames(List<string> names)
+        {
+            string employeeSurnname = string.Empty;
+
+            string query = @"SELECT name,surname FROM `employees`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        names.Add(result.GetString(0) + " " + result.GetString(1));
+                    }
+                }
+                Database.CloseConnection();
+            }
         }
 
         public void InsertLoginDate(string id, string name, string surname, string date)

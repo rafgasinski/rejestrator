@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:customcontrols="clr-namespace:rejestrator.CustomControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:rejestrator.Views" xmlns:viewmodels="clr-namespace:rejestrator.Viewmodels" d:DataContext="{d:DesignInstance Type=viewmodels:EmployeeListingViewModel}"
+             xmlns:local="clr-namespace:rejestrator.Views" xmlns:viewmodels="clr-namespace:rejestrator.Viewmodels"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
     <UserControl.Resources>
@@ -14,37 +14,125 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="Visibility" TargetType="{x:Type TextBox}">
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="True">
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
+
     </UserControl.Resources>
-    <Grid Background="Black">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="70"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
 
-        <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Canvas.ZIndex="2"/>
+    <materialDesign:DialogHost>
+        <materialDesign:DialogHost.DialogContentTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:Employee}">
+                <StackPanel Margin="30">
 
-        <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
-            <customcontrols:FullNameLabel/>
-        </Label>
+                    <TextBox x:Name="IDBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id" />
+                    <TextBox x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin" />
+                    <TextBox x:Name="NameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
+                    <TextBox x:Name="SurnameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
+                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="60" FontSize="16" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" IsSynchronizedWithCurrentItem="True"/>
+                    <TextBox x:Name="TaskBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Task}" FontSize="16" materialDesign:HintAssist.Hint="Zadanie" />
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button 
+                                IsDefault="True"
+                                Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                Width="90"
+                                Height="70"
+                                Command="{Binding MyButtonClickCommand}">
+                            <Image Source="/rejestrator;component/Assets/profile-user.png"
+                                       Stretch="Fill"/>
+                        </Button>
+                        <Button
+                                IsDefault="False"
+                                Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                Width="100"
+                                Height="80"
+                                Margin="10,0,0,0"
+                                Grid.Column="1"
+                                Command="{Binding MyButtonClickCommand2}">
+                            <Image Source="/rejestrator;component/Assets/daily-tasks.png"
+                                       Stretch="Fill" />
+                        </Button>
+                        <Button
+                                IsCancel="True"
+                                Visibility="{Binding ChangeControlVisibility2, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                Width="90"
+                                Height="70"
+                                Margin="10,0,0,0"
+                                Grid.Column="2"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                            <Image Source="/rejestrator;component/Assets/cancel1.png"
+                                       Stretch="Fill" />
+                        </Button>
+                        
+                        <Button Content="_Dodaj" 
+                                Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                IsDefault="True"
+                                Width="80"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                CommandParameter="{Binding}"/>
+                        <Button Content="_Anuluj" 
+                                Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                IsCancel="True"
+                                Width="80"
+                                Margin="10,0,0,0"
+                                Grid.Column="1"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                        <Button Content="_Dodaj" 
+                                Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                IsDefault="True"
+                                Width="80"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                CommandParameter="{Binding}"/>
+                        <Button Content="_Anuluj" 
+                                Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                IsCancel="True"
+                                Width="80"
+                                Margin="10,0,0,0"
+                                Grid.Column="1"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </Grid>
+                </StackPanel>
+            </DataTemplate>
+        </materialDesign:DialogHost.DialogContentTemplate>
+
+        <Grid Background="Black">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Canvas.ZIndex="2"/>
+
+            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
+                <customcontrols:FullNameLabel/>
+            </Label>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
                    Foreground="White"
                    FontFamily="TW Cen MT"
                    FontSize="26"
                    Text="Logowania:" />
 
-        <customcontrols:ListingControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="70,10,0,0" Canvas.ZIndex="1"
+            <customcontrols:ListingControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="70,10,0,0" Canvas.ZIndex="1"
             DataContext="{Binding EmployeeListingViewModel}"
             FontSize="14" />
+        </Grid>
 
+    </materialDesign:DialogHost>
 
-
-
-
-    </Grid>
 </UserControl>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -24,5 +25,18 @@ namespace rejestrator.CustomControls
         {
             InitializeComponent();
         }
-    }
+
+		private void calendarButton_Loaded(object sender, EventArgs e)
+		{
+			CalendarDayButton button = (CalendarDayButton)sender;
+			DateTime date = (DateTime)button.DataContext;
+			button.DataContextChanged += new DependencyPropertyChangedEventHandler(calendarButton_DataContextChanged);
+		}
+
+		private void calendarButton_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			CalendarDayButton button = (CalendarDayButton)sender;
+			DateTime date = (DateTime)button.DataContext;
+		}
+	}
 }

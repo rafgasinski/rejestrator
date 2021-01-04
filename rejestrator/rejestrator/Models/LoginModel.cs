@@ -170,11 +170,9 @@
             return employeeSurnname;
         }
 
-        public void GetEmployeesFullNames(List<string> names)
+        public void GetEmployeesFullNamesandID(List<string> names)
         {
-            string employeeSurnname = string.Empty;
-
-            string query = @"SELECT name,surname FROM `employees`";
+            string query = @"SELECT employeeID,name,surname FROM `employees`";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
@@ -184,7 +182,7 @@
                 {
                     while (result.Read())
                     {
-                        names.Add(result.GetString(0) + " " + result.GetString(1));
+                        names.Add(result.GetString(0) + " " + result.GetString(1) + " " + result.GetString(2));
                     }
                 }
                 Database.CloseConnection();

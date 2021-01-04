@@ -19,6 +19,20 @@
             }
         }
 
+        private string _id;
+        public string Id
+        {
+            get
+            {
+                return _id;
+            }
+            private set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+
         private string _name;
         public string Name
         {
@@ -47,8 +61,9 @@
             }
         }
 
-        public EmployeeViewModel(string name, string date)
+        public EmployeeViewModel(string id, string name, string date)
         {
+            Id = id;
             Name = name;
             Date = date;
         }

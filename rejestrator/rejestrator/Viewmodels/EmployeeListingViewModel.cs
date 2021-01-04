@@ -12,6 +12,8 @@
     {
         private readonly List<EmployeeViewModel> _employeeViewModels;
 
+        public List<string> logsIdList = new List<string>();
+
         public List<string> logsDatesList = new List<string>();
 
         public List<string> logsNamesList = new List<string>();
@@ -51,13 +53,15 @@
             EmployeesCollectionView.Filter = FilterEmployees;
             EmployeesCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(EmployeeViewModel.Date)));
             EmployeesCollectionView.SortDescriptions.Add(new SortDescription(nameof(EmployeeViewModel.Name), ListSortDirection.Ascending));
+            EmployeesCollectionView.SortDescriptions.Add(new SortDescription(nameof(EmployeeViewModel.Id), ListSortDirection.Ascending));
         }
 
         private bool FilterEmployees(object obj)
         {
             if (obj is EmployeeViewModel employeeViewModel)
             {
-                return employeeViewModel.Name.IndexOf(EmployeesFilter, StringComparison.OrdinalIgnoreCase) >= 0 || employeeViewModel.Date.IndexOf(EmployeesFilter, StringComparison.OrdinalIgnoreCase) >= 0;
+                return employeeViewModel.Name.IndexOf(EmployeesFilter, StringComparison.OrdinalIgnoreCase) >= 0 || employeeViewModel.Date.IndexOf(EmployeesFilter, StringComparison.OrdinalIgnoreCase) >= 0
+                    || employeeViewModel.Id.IndexOf(EmployeesFilter, StringComparison.OrdinalIgnoreCase) >= 0;
             }
 
             return false;
@@ -65,8 +69,9 @@
 
         private IEnumerable<EmployeeViewModel> GetEmployeeViewModels()
         {
+            adminModel.GetLogsEmployeeID(logsIdList);
             adminModel.GetLogsDates(logsDatesList);
-            adminModel.GetLogsNames(logsNamesList);
+            adminModel.GetLogsNames(logsNamesList);      
 
             List<EmployeeViewModel> listOfModels = new List<EmployeeViewModel>();
             
@@ -74,7 +79,7 @@
             {
                 for(int i = 0; i<logsDatesList.Count; i++)
                 {
-                    yield return new EmployeeViewModel(logsNamesList[i], logsDatesList[i]);
+                    yield return new EmployeeViewModel(logsIdList[i], logsNamesList[i], logsDatesList[i]);
                 }
             }
         }

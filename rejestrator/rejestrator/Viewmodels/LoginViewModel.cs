@@ -184,15 +184,19 @@
                 {
                     if (loginModel.LoginAdmin(Username, Password))
                     {
-                        List<string> namesList = new List<string>();
+                        List<string> employeeList = new List<string>();
+                        string adminName = loginModel.GetAdminName(loginModel.GetAdminID(Username, Password));
 
-                        loginModel.GetEmployeesFullNames(namesList);
+                        loginModel.GetEmployeesFullNamesandID(employeeList);
 
-                        AdminDashboardViewModel.AdminName = loginModel.GetAdminName(loginModel.GetAdminID(Username, Password));
+                        AdminDashboardViewModel.AdminName = adminName;
+                        AdminEmployeesViewModel.AdminName = adminName;
+                        AdminRaportViewModel.AdminName = adminName;
+
                         AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
 
-                        foreach (var name in namesList)
-                            AdminDashboardViewModel.employeesList.Add(name);
+                        foreach (var employee in employeeList)
+                            AdminDashboardViewModel.employeesList.Add(employee);
 
                         Employee.Queries = new CollectionView(AdminDashboardViewModel.employeesList);
                         Employee.Queries.MoveCurrentTo(AdminDashboardViewModel.employeesList[0]);

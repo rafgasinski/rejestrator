@@ -75,6 +75,14 @@
 
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
+                    <GridViewColumn Width="70">
+                        <GridViewColumnHeader Content="Id"/>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Padding="0 0 50 0" Text="{Binding Id}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Width="210">
                         <GridViewColumnHeader Content="Pracownik"/>
                         <GridViewColumn.CellTemplate>

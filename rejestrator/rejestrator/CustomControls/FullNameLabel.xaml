@@ -4,10 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:rejestrator.CustomControls"
+             xmlns:resx="clr-namespace:rejestrator.Properties"
              mc:Ignorable="d" >
     <Grid>
         <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White">
-            <Label Content="{Binding AdminName}" FontFamily="Tw Cen MT" FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <TextBlock FontFamily="Tw Cen MT" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Padding="15">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} {1}!">
+                        <Binding Source="{x:Static resx:Resources.Welcome}"/>
+                        <Binding Path="Name"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </Border>
     </Grid>
 </UserControl>

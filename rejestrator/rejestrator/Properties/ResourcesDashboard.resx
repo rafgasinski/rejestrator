@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Welcome" xml:space="preserve">
-    <value>Witaj</value>
+  <data name="Available" xml:space="preserve">
+    <value>DOSTĘPNE</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>ZAKOŃCZONE</value>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>W TRAKCIE</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Wyloguj</value>
   </data>
 </root>

@@ -108,8 +108,16 @@
     <Compile Include="Models\AdminModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+<<<<<<< Updated upstream
     <Compile Include="Models\TaskDoneModel.cs" />
     <Compile Include="Models\TaskInProgressModel.cs" />
+=======
+    <Compile Include="Properties\ResourcesDashboard.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesDashboard.resx</DependentUpon>
+    </Compile>
+>>>>>>> Stashed changes
     <Compile Include="Properties\ResourcesLogin.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -207,8 +215,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\ResourcesDashboard.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesDashboard.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\ResourcesLogin.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

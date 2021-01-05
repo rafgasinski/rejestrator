@@ -1,5 +1,6 @@
 ﻿namespace rejestrator.Models
 {
+<<<<<<< Updated upstream
     using rejestrator.Viewmodels.BaseViewModel;
     using rejestrator.Viewmodels.Navigator;
 
@@ -67,5 +68,24 @@
             Name = name;
             Date = date;
         }
+=======
+    public class EmployeeModel
+    {
+        #region Singleton
+        private static EmployeeModel _instance = null;
+        public static EmployeeModel Instance
+        {
+            get 
+            {
+                if(_instance == null)
+                {
+                    _instance = new EmployeeModel();
+                }
+
+                return _instance;
+            }
+        }
+        #endregion
+>>>>>>> Stashed changes
     }
 }

@@ -4,7 +4,6 @@
     using rejestrator.Viewmodels.Navigator;
     using System.Windows.Input;
     using rejestrator.Models;
-    using System.Collections.ObjectModel;
     using MaterialDesignThemes.Wpf;
     using System.Windows.Data;
     using System;
@@ -58,7 +57,7 @@
         #endregion
 
         #region Properties
-        public static string AdminName { get; set; }
+        public static string Name { get; set; }
         #endregion
 
         private ICommand _goToLogin;

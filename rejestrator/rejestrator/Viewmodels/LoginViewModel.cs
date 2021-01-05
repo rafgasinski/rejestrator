@@ -186,6 +186,7 @@
                     {
                         string adminName = loginModel.GetAdminName(loginModel.GetAdminID(Username, Password));
 
+<<<<<<< Updated upstream
                         AdminDashboardViewModel.AdminName = adminName;
                         AdminEmployeesViewModel.AdminName = adminName;
                         AdminRaportViewModel.AdminName = adminName;
@@ -195,10 +196,30 @@
                         LeftAvailable ^= true;
                         RightAvailable ^= true;
                         ClearAllFields.Execute(null);
+=======
+                        loginModel.GetEmployeesFullNamesandID(employeeList);
+
+                        AdminDashboardViewModel.Name = adminName;
+                        AdminEmployeesViewModel.Name = adminName;
+                        AdminRaportViewModel.Name = adminName;
+
+                        AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
+
+                        foreach (var employee in employeeList)
+                            AdminDashboardViewModel.employeesList.Add(employee);
+
+                        Employee.Queries = new CollectionView(AdminDashboardViewModel.employeesList);
+                        Employee.Queries.MoveCurrentTo(AdminDashboardViewModel.employeesList[0]);
+                        Employee.Queries.CurrentChanged += new EventHandler(AdminDashboardViewModel.queries_CurrentChanged);
+
+                        ClearFields();
+                        ResetLoginMethod();
+
+>>>>>>> Stashed changes
                         GoToAdminDashboard.Execute(null);
                     }
                     else
-                        DisplayError.Execute(null);
+                        DisplayError();
                 }));
             }
         }
@@ -230,15 +251,26 @@
                         {
                             if (loginModel.LoginEmployee(ID, Pin))
                             {
+<<<<<<< Updated upstream
                                 loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
                                 LeftAvailable ^= true;
                                 RightAvailable ^= true;
                                 ClearAllFields.Execute(null);
+=======
+                                string emploeeName = loginModel.GetEmployeeFullName(ID);
+                                DashboardViewModel.Name = emploeeName;
+
+                                loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/mm/yyyy hh:mm"));
+
+                                ClearFields();
+                                ResetLoginMethod();
+
+>>>>>>> Stashed changes
                                 GoToDashboard.Execute(null);
                             }
                             else
                             {
-                                DisplayError.Execute(null);
+                                DisplayError();
                             }
                         }    
                     } 
@@ -284,45 +316,40 @@
                     LeftAvailable ^= true;
                     RightAvailable ^= true;
 
-                    ClearAllFields.Execute(null);
+                    ClearFields();
                 }));
             }
         }
 
-        private ICommand _clearAllFields;
+        #endregion
 
-        public ICommand ClearAllFields
+        #region Methods
+
+        private void ClearFields()
         {
-            get
-            {
-                return _clearAllFields ?? (_clearAllFields = new RelayCommand(x =>
-                {
-                    ID = string.Empty;
-                    Pin = string.Empty;
-                    Username = string.Empty;
-                    Password = string.Empty;
-                    Error = string.Empty;
-                    Dot1 = false;
-                    Dot2 = false;
-                    Dot3 = false;
-                    Dot4 = false;
-                }));
-            }
+            ID = string.Empty;
+            Pin = string.Empty;
+            Username = string.Empty;
+            Password = string.Empty;
+            Error = string.Empty;
+            Dot1 = false;
+            Dot2 = false;
+            Dot3 = false;
+            Dot4 = false;
         }
 
-        private ICommand _displayError;
-
-        public ICommand DisplayError
+        private void ResetLoginMethod()
         {
-            get
-            {
-                return _displayError ?? (_displayError = new RelayCommand(x =>
-                {
-                    ClearAllFields.Execute(null);
-                    Error = ResourcesLogin.Error;
-                }));
-            }
+            LeftAvailable = true;
+            RightAvailable = false;
         }
+
+        private void DisplayError()
+        {
+            ClearFields();
+            Error = ResourcesLogin.Error;
+        }
+
         #endregion
     }
 }

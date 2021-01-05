@@ -20,7 +20,7 @@
         #endregion
 
         #region Properties
-        public static string AdminName { get; set; }
+        public static string Name { get; set; }
         #endregion
     }
 }

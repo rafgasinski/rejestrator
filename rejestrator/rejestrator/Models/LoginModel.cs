@@ -74,7 +74,7 @@
                 if (result.HasRows)
                 {
                     result.Read();
-                    adminFullName = result.GetString(0) + " " + result.GetString(1);
+                    adminFullName = $"{result.GetString(0)} {result.GetString(1)}";
                 }
                 Database.CloseConnection();
             }
@@ -124,6 +124,28 @@
                 Database.CloseConnection();
             }
             return employeeId;
+        }
+
+        public string GetEmployeeFullName(string id)
+        {
+            string employeeFullName = string.Empty;
+
+            string query = @"SELECT name,surname FROM `employees` WHERE `employeeID`=@employeeID";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@employeeID", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    employeeFullName = $"{result.GetString(0)} {result.GetString(1)}";
+                }
+                Database.CloseConnection();
+            }
+
+            return employeeFullName;
         }
 
         public string GetEmployeeName(string id)

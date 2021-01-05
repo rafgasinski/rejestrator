@@ -21,7 +21,7 @@
 
         public ICollectionView EmployeesCollectionView { get; set; }
 
-        public static ObservableCollection<EmployeeModel> _employeeCollectionView;
+        public static ObservableCollection<AllLogsModel> _employeeCollectionView;
 
         private string _employeesFilter = string.Empty;
         public string EmployeesFilter
@@ -44,24 +44,23 @@
         {
             adminModel = AdminModel.Instance;       
 
-            _employeeCollectionView = new ObservableCollection<EmployeeModel>();
+            _employeeCollectionView = new ObservableCollection<AllLogsModel>();
 
-            foreach (EmployeeModel employeeViewModel in GetEmployeeViewModels())
+            foreach (AllLogsModel employeeViewModel in GetEmployeeViewModels())
             {
                 _employeeCollectionView.Add(employeeViewModel);
             }
 
             EmployeesCollectionView = CollectionViewSource.GetDefaultView(_employeeCollectionView);
             EmployeesCollectionView.Filter = FilterEmployees;
-            EmployeesCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(EmployeeModel.Date)));
-            EmployeesCollectionView.SortDescriptions.Add(new SortDescription(nameof(EmployeeModel.Date), ListSortDirection.Descending));
-            EmployeesCollectionView.SortDescriptions.Add(new SortDescription(nameof(EmployeeModel.Name), ListSortDirection.Ascending));
-            EmployeesCollectionView.SortDescriptions.Add(new SortDescription(nameof(EmployeeModel.Id), ListSortDirection.Ascending));
+            EmployeesCollectionView.SortDescriptions.Add(new SortDescription(nameof(AllLogsModel.Date), ListSortDirection.Descending));
+            EmployeesCollectionView.SortDescriptions.Add(new SortDescription(nameof(AllLogsModel.Id), ListSortDirection.Ascending));
+            EmployeesCollectionView.SortDescriptions.Add(new SortDescription(nameof(AllLogsModel.Name), ListSortDirection.Ascending));
         }
 
         private bool FilterEmployees(object obj)
         {
-            if (obj is EmployeeModel employeeViewModel)
+            if (obj is AllLogsModel employeeViewModel)
             {
                 return employeeViewModel.Name.IndexOf(EmployeesFilter, StringComparison.OrdinalIgnoreCase) >= 0 || employeeViewModel.Date.IndexOf(EmployeesFilter, StringComparison.OrdinalIgnoreCase) >= 0
                     || employeeViewModel.Id.IndexOf(EmployeesFilter, StringComparison.OrdinalIgnoreCase) >= 0;
@@ -70,7 +69,7 @@
             return false;
         }
 
-        public IEnumerable<EmployeeModel> GetEmployeeViewModels()
+        public IEnumerable<AllLogsModel> GetEmployeeViewModels()
         {
             logsIdList.Clear();
             logsNamesList.Clear();
@@ -80,13 +79,13 @@
             adminModel.GetLogsDates(logsDatesList);
             adminModel.GetLogsNames(logsNamesList);      
 
-            List<EmployeeModel> listOfModels = new List<EmployeeModel>();
+            List<AllLogsModel> listOfModels = new List<AllLogsModel>();
             
             if(logsDatesList.Count == logsNamesList.Count)
             {
                 for(int i = 0; i<logsDatesList.Count; i++)
                 {
-                    yield return new EmployeeModel(logsIdList[i], logsNamesList[i], logsDatesList[i]);
+                    yield return new AllLogsModel(logsIdList[i], logsNamesList[i], logsDatesList[i]);
                 }
             }
         }

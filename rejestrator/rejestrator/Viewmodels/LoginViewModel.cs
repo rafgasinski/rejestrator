@@ -184,20 +184,7 @@
                 {
                     if (loginModel.LoginAdmin(Username, Password))
                     {
-                        string adminName = loginModel.GetAdminName(loginModel.GetAdminID(Username, Password));
-
-<<<<<<< Updated upstream
-                        AdminDashboardViewModel.AdminName = adminName;
-                        AdminEmployeesViewModel.AdminName = adminName;
-                        AdminRaportViewModel.AdminName = adminName;
-
-                        AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
-
-                        LeftAvailable ^= true;
-                        RightAvailable ^= true;
-                        ClearAllFields.Execute(null);
-=======
-                        loginModel.GetEmployeesFullNamesandID(employeeList);
+                        string adminName = loginModel.GetAdminFullName(Username);
 
                         AdminDashboardViewModel.Name = adminName;
                         AdminEmployeesViewModel.Name = adminName;
@@ -205,17 +192,9 @@
 
                         AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
 
-                        foreach (var employee in employeeList)
-                            AdminDashboardViewModel.employeesList.Add(employee);
-
-                        Employee.Queries = new CollectionView(AdminDashboardViewModel.employeesList);
-                        Employee.Queries.MoveCurrentTo(AdminDashboardViewModel.employeesList[0]);
-                        Employee.Queries.CurrentChanged += new EventHandler(AdminDashboardViewModel.queries_CurrentChanged);
-
+                        LeftAvailable ^= true;
+                        RightAvailable ^= true;
                         ClearFields();
-                        ResetLoginMethod();
-
->>>>>>> Stashed changes
                         GoToAdminDashboard.Execute(null);
                     }
                     else
@@ -251,21 +230,14 @@
                         {
                             if (loginModel.LoginEmployee(ID, Pin))
                             {
-<<<<<<< Updated upstream
-                                loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
-                                LeftAvailable ^= true;
-                                RightAvailable ^= true;
-                                ClearAllFields.Execute(null);
-=======
                                 string emploeeName = loginModel.GetEmployeeFullName(ID);
                                 DashboardViewModel.Name = emploeeName;
 
-                                loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/mm/yyyy hh:mm"));
+                                loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
 
                                 ClearFields();
                                 ResetLoginMethod();
 
->>>>>>> Stashed changes
                                 GoToDashboard.Execute(null);
                             }
                             else
@@ -349,7 +321,6 @@
             ClearFields();
             Error = ResourcesLogin.Error;
         }
-
         #endregion
     }
 }

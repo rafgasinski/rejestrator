@@ -8,7 +8,6 @@
              xmlns:customcontrols="clr-namespace:rejestrator.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
-
     <UserControl.Resources>
         <Style x:Key="TaskList" TargetType="ListView">
             <Setter Property="Margin" Value="15"/>
@@ -17,7 +16,7 @@
             <Setter Property="BorderBrush" Value="White"/>
         </Style>
     </UserControl.Resources>
-    
+
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -34,7 +33,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="0.2*"/>
             </Grid.ColumnDefinitions>
-            
+
             <customcontrols:FullNameLabel Grid.Column="0" Margin="15"/>
 
             <Button Grid.Column="2" Margin="15" Command="{Binding GoToLogin}" Content="{Binding Source={x:Static resx:ResourcesDashboard.Logout}}" Style="{StaticResource RoundButtonTemplate}"/>

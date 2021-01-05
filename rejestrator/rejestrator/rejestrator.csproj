@@ -106,18 +106,16 @@
     </Compile>
     <Compile Include="Database\Database.cs" />
     <Compile Include="Models\AdminModel.cs" />
+    <Compile Include="Models\AllLogsModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
-<<<<<<< Updated upstream
     <Compile Include="Models\TaskDoneModel.cs" />
     <Compile Include="Models\TaskInProgressModel.cs" />
-=======
     <Compile Include="Properties\ResourcesDashboard.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourcesDashboard.resx</DependentUpon>
     </Compile>
->>>>>>> Stashed changes
     <Compile Include="Properties\ResourcesLogin.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -4,6 +4,7 @@
     using rejestrator.Viewmodels.Navigator;
     using System.Windows.Input;
     using rejestrator.Models;
+    using System.Collections.ObjectModel;
     using MaterialDesignThemes.Wpf;
     using System.Windows.Data;
     using System;
@@ -18,7 +19,7 @@
         public static AdminDashboardViewModel Instance { get { return _instance; } }
         public static EmployeeListingViewModel EmployeeListingViewModel { get; set; }
         public static ObservableCollection<string> employeesList = new ObservableCollection<string>();
-        public static ObservableCollection<string> workItems = new ObservableCollection<string> { "Dzienny, Nocny" };
+        public static ObservableCollection<string> workItems = new ObservableCollection<string> { "Dzienny", "Nocny" };
 
         private ICommand _addCommand;
 
@@ -129,7 +130,7 @@
                 return _reload ?? (_reload = new RelayCommand(x =>
                 {
                     EmployeeListingViewModel._employeeCollectionView.Clear();
-                    foreach (EmployeeModel employeeViewModel in EmployeeListingViewModel.GetEmployeeViewModels())
+                    foreach (AllLogsModel employeeViewModel in EmployeeListingViewModel.GetEmployeeViewModels())
                     {
                         EmployeeListingViewModel._employeeCollectionView.Add(employeeViewModel);
                     }

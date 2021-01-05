@@ -60,15 +60,15 @@
             return canLogin;
         }
 
-        public string GetAdminName(string id)
+        public string GetAdminFullName(string username)
         {
             string adminFullName = string.Empty;
 
-            string query = @"SELECT name,surname FROM `administrators` WHERE `id`=@id";
+            string query = @"SELECT name,surname FROM `administrators` WHERE `username`=@username";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.Parameters.AddWithValue("@username", username);
                 myCommand.CommandText = query;
                 MySqlDataReader result = myCommand.ExecuteReader();
                 if (result.HasRows)
@@ -125,6 +125,7 @@
             }
             return employeeId;
         }
+
 
         public string GetEmployeeFullName(string id)
         {

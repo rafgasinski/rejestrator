@@ -34,9 +34,9 @@
                     <TextBox x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin" />
                     <TextBox x:Name="NameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
                     <TextBox x:Name="SurnameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
-                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" IsSynchronizedWithCurrentItem="True"/>
-                    
-                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="60" FontSize="16" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" IsSynchronizedWithCurrentItem="True"/>
+                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" IsSynchronizedWithCurrentItem="True"/>
+
+                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="60" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" IsSynchronizedWithCurrentItem="True"/>
                     <TextBox x:Name="TaskBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="250" Text="{Binding Task}" FontSize="16" materialDesign:HintAssist.Hint="Zadanie" />
 
                     <Grid Margin="0,10,0,0">

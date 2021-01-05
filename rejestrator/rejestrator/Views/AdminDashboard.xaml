@@ -49,7 +49,7 @@
                                 IsDefault="True"
                                 Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Width="90"
-                                Height="70"
+                                Height="65"
                                 Command="{Binding MyButtonClickCommand}">
                             <Image Source="/rejestrator;component/Assets/profile-user.png"
                                        Stretch="Fill"/>
@@ -69,7 +69,7 @@
                                 IsCancel="True"
                                 Visibility="{Binding ChangeControlVisibility2, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Width="90"
-                                Height="70"
+                                Height="65"
                                 Margin="10,0,0,0"
                                 Grid.Column="2"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">

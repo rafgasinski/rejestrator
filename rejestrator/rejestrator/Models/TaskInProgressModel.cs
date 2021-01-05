@@ -1,9 +1,8 @@
-﻿namespace rejestrator.Viewmodels
+﻿namespace rejestrator.Models
 {
     using rejestrator.Viewmodels.BaseViewModel;
     using rejestrator.Viewmodels.Navigator;
-
-    public class EmployeeViewModel : ViewModelBase, IPageViewModel
+    public class TaskInProgressModel : ViewModelBase, IPageViewModel
     {
         private bool _isSelected;
         public bool IsSelected
@@ -19,31 +18,17 @@
             }
         }
 
-        private string _id;
-        public string Id
+        private string _task;
+        public string Task
         {
             get
             {
-                return _id;
+                return _task;
             }
             private set
             {
-                _id = value;
-                OnPropertyChanged(nameof(Id));
-            }
-        }
-
-        private string _name;
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            private set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
+                _task = value;
+                OnPropertyChanged(nameof(Task));
             }
         }
 
@@ -61,10 +46,9 @@
             }
         }
 
-        public EmployeeViewModel(string id, string name, string date)
+        public TaskInProgressModel(string task, string date)
         {
-            Id = id;
-            Name = name;
+            Task = task;
             Date = date;
         }
     }

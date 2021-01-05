@@ -62,6 +62,92 @@
             }
         }
 
+        public void GetLogsDatesForEmployee(List<string> dates, string id)
+        {
+
+            string query = @"SELECT date FROM `logs` WHERE `employeeID`=@id ORDER BY date DESC ";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        dates.Add(result.GetString(0));
+                    }
+                }
+                Database.CloseConnection();
+            }
+        }
+
+        public void GetLogsTasksForEmployee(List<string> tasks, string id)
+        {
+
+            string query = @"SELECT task FROM `tasks` WHERE `employeeID`=@id";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        tasks.Add(result.GetString(0));
+                    }
+                }
+                Database.CloseConnection();
+            }
+        }
+
+        public void GetLogsTasksInProgressForEmployee(List<TaskInProgressModel> tasks, string id)
+        {
+
+            string query = @"SELECT task, date FROM `tasksinprogress` WHERE `employeeID`=@id ORDER BY date DESC ";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        var temp = new TaskInProgressModel(result.GetString(0), result.GetString(1));
+                        tasks.Add(temp);
+                    }
+                }
+                Database.CloseConnection();
+            }
+        }
+
+        public void GetLogsTasksDoneForEmployee(List<TaskDoneModel> tasks, string id)
+        {
+
+            string query = @"SELECT task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id ORDER BY enddate DESC ";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        var temp = new TaskDoneModel(result.GetString(0), result.GetString(1), result.GetString(2), result.GetString(3));
+                        tasks.Add(temp);
+                    }
+                }
+                Database.CloseConnection();
+            }
+        }
+
         public void GetLogsNames(List<string> names)
         {
 
@@ -103,6 +189,25 @@
             }
         }
 
+        public void GetEmployeesFullNamesandID(List<string> names)
+        {
+            string query = @"SELECT employeeID,name,surname FROM `employees`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        names.Add(result.GetString(0) + " " + result.GetString(1) + " " + result.GetString(2));
+                    }
+                }
+                Database.CloseConnection();
+            }
+        }
+
         public bool EmployeeIDUsed(string id)
         {
             bool employeeId = false;
@@ -124,30 +229,9 @@
             return employeeId;
         }
 
-        public bool TaskAlreadyIn(string id)
+        public void InsertEmployee(string id, string pin, string name, string surname, string shift)
         {
-            bool taskUsed = false;
-
-            string query = @"SELECT COUNT(`task`) FROM `tasks` WHERE `employeeID`=@id GROUP BY `task`";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", id);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    result.Read();
-                    taskUsed = true;
-                }
-                Database.CloseConnection();
-            }
-            return taskUsed;
-        }
-
-        public void InsertEmployee(string id, string pin, string name, string surname)
-        {
-            string query = @"INSERT INTO `employees`(`employeeID`, `pin`, `name`, `surname`) VALUES(@id,@pin,@name,@surname)";
+            string query = @"INSERT INTO `employees`(`employeeID`, `pin`, `name`, `surname`, `shift`) VALUES(@id,@pin,@name,@surname,@shift)";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
@@ -155,21 +239,20 @@
                 myCommand.Parameters.AddWithValue("@pin", pin);
                 myCommand.Parameters.AddWithValue("@name", name);
                 myCommand.Parameters.AddWithValue("@surname", surname);
+                myCommand.Parameters.AddWithValue("@shift", shift);
                 myCommand.CommandText = query;
                 myCommand.ExecuteNonQuery();
                 Database.CloseConnection();
             }
         }
 
-        public void InsertTask(string id, string name, string surname, string task)
+        public void InsertTask(string id, string task)
         {
-            string query = @"INSERT INTO `tasks`(`employeeID`, `name`, `surname`, `task`) VALUES(@id,@name,@surname,@task)";
+            string query = @"INSERT INTO `tasks`(`employeeID`, `task`) VALUES(@id,@task)";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
                 myCommand.Parameters.AddWithValue("@id", id); 
-                myCommand.Parameters.AddWithValue("@name", name);
-                myCommand.Parameters.AddWithValue("@surname", surname);
                 myCommand.Parameters.AddWithValue("@task", task);
                 myCommand.CommandText = query;
                 myCommand.ExecuteNonQuery();

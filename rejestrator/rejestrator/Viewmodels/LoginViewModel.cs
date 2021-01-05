@@ -184,10 +184,7 @@
                 {
                     if (loginModel.LoginAdmin(Username, Password))
                     {
-                        List<string> employeeList = new List<string>();
                         string adminName = loginModel.GetAdminName(loginModel.GetAdminID(Username, Password));
-
-                        loginModel.GetEmployeesFullNamesandID(employeeList);
 
                         AdminDashboardViewModel.AdminName = adminName;
                         AdminEmployeesViewModel.AdminName = adminName;
@@ -195,12 +192,6 @@
 
                         AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
 
-                        foreach (var employee in employeeList)
-                            AdminDashboardViewModel.employeesList.Add(employee);
-
-                        Employee.Queries = new CollectionView(AdminDashboardViewModel.employeesList);
-                        Employee.Queries.MoveCurrentTo(AdminDashboardViewModel.employeesList[0]);
-                        Employee.Queries.CurrentChanged += new EventHandler(AdminDashboardViewModel.queries_CurrentChanged);
                         LeftAvailable ^= true;
                         RightAvailable ^= true;
                         ClearAllFields.Execute(null);
@@ -239,7 +230,7 @@
                         {
                             if (loginModel.LoginEmployee(ID, Pin))
                             {
-                                loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("MM/dd/yyyy H:mm"));
+                                loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
                                 LeftAvailable ^= true;
                                 RightAvailable ^= true;
                                 ClearAllFields.Execute(null);

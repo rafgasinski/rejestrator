@@ -34,6 +34,7 @@ namespace rejestrator.CustomControls
                 tt_raport.Visibility = Visibility.Collapsed;
                 tt_add.Visibility = Visibility.Collapsed;
                 tt_signout.Visibility = Visibility.Collapsed;
+                tt_reload.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -42,6 +43,7 @@ namespace rejestrator.CustomControls
                 tt_raport.Visibility = Visibility.Visible;
                 tt_add.Visibility = Visibility.Visible;
                 tt_signout.Visibility = Visibility.Visible;
+                tt_reload.Visibility = Visibility.Visible;
             }
         }
 

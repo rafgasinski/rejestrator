@@ -106,7 +106,10 @@
     </Compile>
     <Compile Include="Database\Database.cs" />
     <Compile Include="Models\AdminModel.cs" />
+    <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\TaskDoneModel.cs" />
+    <Compile Include="Models\TaskInProgressModel.cs" />
     <Compile Include="Properties\ResourcesLogin.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -124,7 +127,6 @@
     <Compile Include="Viewmodels\BaseViewModel\ViewModelBase.cs" />
     <Compile Include="Viewmodels\DashboardViewModel.cs" />
     <Compile Include="Viewmodels\EmployeeListingViewModel.cs" />
-    <Compile Include="Viewmodels\EmployeeViewModel.cs" />
     <Compile Include="Viewmodels\LoginViewModel.cs" />
     <Compile Include="Viewmodels\MainWindowViewModel.cs" />
     <Compile Include="Viewmodels\Navigator\IPageViewModel.cs" />
@@ -258,6 +260,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\cancel1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\reload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\left-arrow.png" />
+    <Resource Include="Assets\right-arrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

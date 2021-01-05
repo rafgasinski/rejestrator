@@ -5,6 +5,9 @@
     using rejestrator.Viewmodels.BaseViewModel;
     using rejestrator.Viewmodels.Navigator;
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Data;
     using System.Windows.Input;
@@ -14,6 +17,112 @@
         private static AdminEmployeesViewModel _instance = new AdminEmployeesViewModel();
         public static AdminEmployeesViewModel Instance { get { return _instance; } }
 
+        public static ObservableCollection<string> ListOfEmployees { get; set; } = new ObservableCollection<string>();
+
+        private ObservableCollection<string> _dates = new ObservableCollection<string>();
+        public ObservableCollection<string> Dates
+        {
+            get { return _dates; }
+            set
+            {
+                _dates = value;
+                OnPropertyChanged("Dates");
+            }
+        }
+
+        private ObservableCollection<string> _tasks = new ObservableCollection<string>();
+        public ObservableCollection<string> Tasks
+        {
+            get { return _tasks; }
+            set
+            {
+                _tasks = value;
+                OnPropertyChanged("Tasks");
+            }
+        }
+
+        private ObservableCollection<TaskInProgressModel> _tasksInProgress = new ObservableCollection<TaskInProgressModel>();
+        public ObservableCollection<TaskInProgressModel> TasksInProgress
+        {
+            get { return _tasksInProgress; }
+            set
+            {
+                _tasksInProgress = value;
+                OnPropertyChanged("TasksInProgress");
+            }
+        }
+
+        private ObservableCollection<TaskDoneModel> _tasksDone = new ObservableCollection<TaskDoneModel>();
+        public ObservableCollection<TaskDoneModel> TasksDone
+        {
+            get { return _tasksDone; }
+            set
+            {
+                _tasksDone = value;
+                OnPropertyChanged("TasksDone");
+            }
+        }
+
+        private string _selectedEmployee;
+        public string SelectedEmployee
+        {
+            get { return _selectedEmployee; }
+            set
+            {
+                _selectedEmployee = value;
+                PopulateLists();
+            }
+        }
+
+        private void PopulateLists()
+        {
+            Dates.Clear();
+            Tasks.Clear();
+            TasksInProgress.Clear();
+            TasksDone.Clear();
+
+            if(_selectedEmployee != null)
+            {
+                string[] words = _selectedEmployee.Split(' ');
+
+                List<string> datesToAdd = new List<string>();
+                List<string> tasksToAdd = new List<string>();
+                List<TaskInProgressModel> taskInProgressToAdd = new List<TaskInProgressModel>();
+                List<TaskDoneModel> tasksDoneToAdd = new List<TaskDoneModel>();
+
+                adminModel.GetLogsDatesForEmployee(datesToAdd, words[0]);
+                adminModel.GetLogsTasksForEmployee(tasksToAdd, words[0]);
+                adminModel.GetLogsTasksInProgressForEmployee(taskInProgressToAdd, words[0]);
+                adminModel.GetLogsTasksDoneForEmployee(tasksDoneToAdd, words[0]);
+
+                foreach (var date in datesToAdd)
+                    Dates.Add(date);
+                foreach (var task in tasksToAdd)
+                    Tasks.Add(task);
+                foreach (var task in taskInProgressToAdd)
+                    TasksInProgress.Add(task);
+                foreach (var task in tasksDoneToAdd)
+                    TasksDone.Add(task);
+            }
+        }
+
+        private void PopulateTaskLists()
+        {
+            Tasks.Clear();
+
+            if (_selectedEmployee != null)
+            {
+                string[] words = _selectedEmployee.Split(' ');
+
+                List<string> tasksToAdd = new List<string>();
+
+                adminModel.GetLogsTasksForEmployee(tasksToAdd, words[0]);
+
+                foreach (var task in tasksToAdd)
+                    Tasks.Add(task);
+            }
+        }
+
         private ICommand _addCommand;
 
         public ICommand AddCommand
@@ -22,7 +131,34 @@
             {
                 return _addCommand ?? (_addCommand = new RelayCommand(x =>
                 {
+                    List<string> employeeList = new List<string>();
+
+                    AdminDashboardViewModel.employeesList.Clear();
+
+                    adminModel.GetEmployeesFullNamesandID(employeeList);
+
+                    foreach (var employee in employeeList)
+                        AdminDashboardViewModel.employeesList.Add(employee);
+
+                    Employee.Queries = new CollectionView(AdminDashboardViewModel.employeesList);
+                    Employee.Queries.CurrentChanged += new EventHandler(AdminDashboardViewModel.queries_CurrentChanged);
+
+                    Employee.TwoWays = new CollectionView(AdminDashboardViewModel.workItems);
+
                     OnAdd();
+                }));
+            }
+        }
+
+        private ICommand _reload;
+
+        public ICommand Reload
+        {
+            get
+            {
+                return _reload ?? (_reload = new RelayCommand(x =>
+                {
+                    PopulateLists();
                 }));
             }
         }
@@ -33,6 +169,9 @@
         public AdminEmployeesViewModel()
         {
             adminModel = AdminModel.Instance;
+
+            _myCommand = new MyCommand(FuncToCall, FuncToEvaluate);
+            _myCommand2 = new MyCommand(FuncToCall2, FuncToEvaluate);
         }
         #endregion
 
@@ -60,6 +199,7 @@
             {
                 return _goToAdminDashboard ?? (_goToAdminDashboard = new RelayCommand(x =>
                 {
+                    AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
                     Mediator.Notify(Token.GO_TO_ADMIN_DASHBOARD);
                 }));
             }
@@ -101,9 +241,9 @@
                     {
                         if (!adminModel.EmployeeIDUsed(item.ID))
                         {
-                            adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname);
-                            AdminDashboardViewModel.employeesList.Add(item.ID + " " + item.Name + " " + item.Surname);
-                            Employee.Queries = new CollectionView(AdminDashboardViewModel.employeesList);
+                            string shift = getCurrentItemEmployee();
+                            adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);
+                            ListOfEmployees.Add(item.ID + " " + item.Name + " " + item.Surname);
                         }
                         else
                         {
@@ -122,14 +262,8 @@
                         string temp = getCurrentListItem();
                         string[] words = temp.Split(' ');
 
-                        if (!adminModel.TaskAlreadyIn(words[0]))
-                        {
-                            adminModel.InsertTask(words[0], words[1], words[2], item.Task);
-                        }
-                        else
-                        {
-                            MessageBox.Show("To zadanie zostało już przypisane!");
-                        }
+                        adminModel.InsertTask(words[0], item.Task);
+                        PopulateTaskLists();
                     }
                 }
             }
@@ -140,10 +274,119 @@
             var currentQuery = (string)Employee.Queries.CurrentItem;
         }
 
+        public static void twoWays_CurrentChanged(object sender, EventArgs e)
+        {
+            var currentQuery = (string)Employee.TwoWays.CurrentItem;
+        }
+
         public string getCurrentListItem()
         {
             var currentQuery = (string)Employee.Queries.CurrentItem;
             return currentQuery;
+        }
+
+        public string getCurrentItemEmployee()
+        {
+            var currentQuery = (string)Employee.TwoWays.CurrentItem;
+            return currentQuery;
+        }
+
+        private ICommand _myCommand;
+
+        public ICommand SwitchPage
+        {
+            get { return _myCommand; }
+            set { _myCommand = value; }
+        }
+
+        private ICommand _myCommand2;
+
+        public ICommand SwitchPage2
+        {
+            get { return _myCommand2; }
+            set { _myCommand2 = value; }
+        }
+
+        public ICommand SwitchBackPage2
+        {
+            get { return _myCommand2; }
+            set { _myCommand2 = value; }
+        }
+
+        public ICommand SwitchBackPage
+        {
+            get { return _myCommand; }
+            set { _myCommand = value; }
+        }
+
+
+        private void FuncToCall(object context)
+        {
+            if (this.ChangeControlVisibility == Visibility.Collapsed && this.ChangeControlVisibility2 == Visibility.Visible)
+            {
+                this.ChangeControlVisibility = Visibility.Visible;
+                this.ChangeControlVisibility2 = Visibility.Collapsed;
+            }
+            else
+            {
+                this.ChangeControlVisibility = Visibility.Collapsed;
+                this.ChangeControlVisibility2 = Visibility.Visible;
+            }
+        }
+
+        private void FuncToCall2(object context)
+        {
+            if (this.ChangeControlVisibility2 == Visibility.Collapsed && this.ChangeControlVisibility3 == Visibility.Visible)
+            {
+                this.ChangeControlVisibility2 = Visibility.Visible;
+                this.ChangeControlVisibility3 = Visibility.Collapsed;
+            }
+            else
+            {
+                this.ChangeControlVisibility2 = Visibility.Collapsed;
+                this.ChangeControlVisibility3 = Visibility.Visible;
+            }
+        }
+
+        private bool FuncToEvaluate(object context)
+        {
+            return true;
+        }
+
+        private Visibility _visibility = Visibility.Visible;
+
+        public Visibility ChangeControlVisibility
+        {
+            get { return _visibility; }
+            set
+            {
+                _visibility = value;
+                this.OnPropertyChanged("ChangeControlVisibility");
+            }
+        }
+
+        private Visibility _visibility2 = Visibility.Collapsed;
+
+        public Visibility ChangeControlVisibility2
+        {
+            get { return _visibility2; }
+            set
+            {
+                _visibility2 = value;
+                this.OnPropertyChanged("ChangeControlVisibility2");
+            }
+        }
+
+        private Visibility _visibility3 = Visibility.Collapsed;
+
+        public Visibility ChangeControlVisibility3
+        {
+            get { return _visibility3; }
+            set
+            {
+                _visibility3 = value;
+                this.OnPropertyChanged("ChangeControlVisibility3");
+            }
         }
     }
 }

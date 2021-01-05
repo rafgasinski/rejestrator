@@ -18,7 +18,8 @@
         private static AdminDashboardViewModel _instance = new AdminDashboardViewModel();
         public static AdminDashboardViewModel Instance { get { return _instance; } }
         public static EmployeeListingViewModel EmployeeListingViewModel { get; set; }
-        public static IList<string> employeesList = new List<string>();
+        public static ObservableCollection<string> employeesList = new ObservableCollection<string>();
+        public static ObservableCollection<string> workItems = new ObservableCollection<string> { "Dzienny, Nocny" };
 
         private ICommand _addCommand;
 
@@ -28,7 +29,21 @@
             {
                 return _addCommand ?? (_addCommand = new RelayCommand(x =>
                 {
-                    OnAdd();
+                    List<string> employeeList = new List<string>();
+
+                    employeesList.Clear();
+
+                    adminModel.GetEmployeesFullNamesandID(employeeList);
+
+                    foreach (var employee in employeeList)
+                        employeesList.Add(employee);
+
+                    Employee.Queries = new CollectionView(employeesList);
+                    Employee.Queries.CurrentChanged += new EventHandler(queries_CurrentChanged);
+
+                    Employee.TwoWays = new CollectionView(workItems);
+
+                    OnAdd();           
                 }));
             }
         }
@@ -79,6 +94,15 @@
             {
                 return _goToAdminEmployees ?? (_goToAdminEmployees = new RelayCommand(x =>
                 {
+                    List<string> employeeList = new List<string>();
+
+                    AdminEmployeesViewModel.ListOfEmployees.Clear();
+
+                    adminModel.GetEmployeesFullNamesandID(employeeList);
+
+                    foreach (var employee in employeeList)
+                        AdminEmployeesViewModel.ListOfEmployees.Add(employee);
+
                     Mediator.Notify(Token.GO_TO_ADMIN_EMPLOYEES);
                 }));
             }
@@ -97,6 +121,23 @@
             }
         }
 
+        private ICommand _reload;
+
+        public ICommand Reload
+        {
+            get
+            {
+                return _reload ?? (_reload = new RelayCommand(x =>
+                {
+                    EmployeeListingViewModel._employeeCollectionView.Clear();
+                    foreach (EmployeeModel employeeViewModel in EmployeeListingViewModel.GetEmployeeViewModels())
+                    {
+                        EmployeeListingViewModel._employeeCollectionView.Add(employeeViewModel);
+                    }
+                }));
+            }
+        }
+
         private async void OnAdd()
         {
             if (await DialogHost.Show(new Employee()) is Employee item)
@@ -107,9 +148,8 @@
                     {
                         if(!adminModel.EmployeeIDUsed(item.ID))
                         {
-                            adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname);
-                            AdminDashboardViewModel.employeesList.Add(item.ID + " " + item.Name + " " + item.Surname);
-                            Employee.Queries = new CollectionView(AdminDashboardViewModel.employeesList);
+                            string shift = getCurrentItemEmployee();
+                            adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);
                         }
                         else
                         {
@@ -128,14 +168,7 @@
                         string temp = getCurrentListItem();
                         string[] words = temp.Split(' ');
 
-                        if (!adminModel.TaskAlreadyIn(words[0]))
-                        {
-                            adminModel.InsertTask(words[0], words[1], words[2], item.Task);
-                        }
-                        else
-                        {
-                            MessageBox.Show("To zadanie zostało już przypisane!");
-                        }
+                        adminModel.InsertTask(words[0], item.Task);
                     }
                 }    
             }
@@ -146,9 +179,20 @@
             var currentQuery = (string)Employee.Queries.CurrentItem;
         }
 
+        public static void twoWays_CurrentChanged(object sender, EventArgs e)
+        {
+            var currentQuery = (string)Employee.TwoWays.CurrentItem;
+        }
+
         public string getCurrentListItem()
         {
             var currentQuery = (string)Employee.Queries.CurrentItem;
+            return currentQuery;
+        }
+
+        public string getCurrentItemEmployee()
+        {
+            var currentQuery = (string)Employee.TwoWays.CurrentItem;
             return currentQuery;
         }
 
@@ -162,6 +206,7 @@
         public string Pin { get; set; }
         public string Task { get; set; }
         public static CollectionView Queries { get; set; }
+        public static CollectionView TwoWays { get; set; }
 
         public Employee()
         {

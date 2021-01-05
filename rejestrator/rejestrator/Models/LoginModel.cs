@@ -170,25 +170,6 @@
             return employeeSurnname;
         }
 
-        public void GetEmployeesFullNamesandID(List<string> names)
-        {
-            string query = @"SELECT employeeID,name,surname FROM `employees`";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    while (result.Read())
-                    {
-                        names.Add(result.GetString(0) + " " + result.GetString(1) + " " + result.GetString(2));
-                    }
-                }
-                Database.CloseConnection();
-            }
-        }
-
         public void InsertLoginDate(string id, string name, string surname, string date)
         {
             string query = @"INSERT INTO `logs`(`employeeID`, `name`, `surname`, `date`) VALUES(@id,@name,@surname,@date)";

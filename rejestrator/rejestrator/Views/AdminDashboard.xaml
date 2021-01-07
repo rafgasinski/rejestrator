@@ -34,10 +34,10 @@
                     <TextBox x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin" />
                     <TextBox x:Name="NameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
                     <TextBox x:Name="SurnameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
-                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" IsSynchronizedWithCurrentItem="True"/>
+                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
 
-                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="60" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" IsSynchronizedWithCurrentItem="True"/>
-                    <TextBox x:Name="TaskBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="250" Text="{Binding Task}" FontSize="16" materialDesign:HintAssist.Hint="Zadanie" />
+                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="80" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True"/>
+                    <TextBox x:Name="TaskBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Task}" FontSize="16" materialDesign:HintAssist.Hint="Zadanie" />
 
                     <Grid Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
@@ -50,7 +50,8 @@
                                 Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Width="90"
                                 Height="65"
-                                Command="{Binding MyButtonClickCommand}">
+                                ToolTip="Dodaj pracownika"
+                                Command="{Binding EmployeeAddViewCommand}">
                             <Image Source="/rejestrator;component/Assets/profile-user.png"
                                        Stretch="Fill"/>
                         </Button>
@@ -61,7 +62,8 @@
                                 Height="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
-                                Command="{Binding MyButtonClickCommand2}">
+                                ToolTip="Dodaj zadanie"
+                                Command="{Binding TaskAddViewCommand}">
                             <Image Source="/rejestrator;component/Assets/daily-tasks.png"
                                        Stretch="Fill" />
                         </Button>
@@ -76,34 +78,42 @@
                             <Image Source="/rejestrator;component/Assets/cancel1.png"
                                        Stretch="Fill" />
                         </Button>
-                        
-                        <Button Content="_Dodaj" 
+
+                        <Grid Margin="0,0,0,0" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="_Dodaj" 
                                 Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsDefault="False"
                                 Width="80"
+                                Grid.Column="0"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                                 CommandParameter="{Binding}"/>
-                        <Button Content="_Anuluj" 
+                            <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                        <Button Content="_Dodaj" 
+                            <Button Content="_Dodaj" 
                                 Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsDefault="False"
                                 Width="80"
-                                Margin="35,0,0,0"
+                                Grid.Column="0"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                                 CommandParameter="{Binding}"/>
-                        <Button Content="_Anuluj" 
+                            <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                        </Grid>
                     </Grid>
                 </StackPanel>
             </DataTemplate>
@@ -132,6 +142,7 @@
             <customcontrols:ListingControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="70,10,0,0" Canvas.ZIndex="1"
             DataContext="{Binding EmployeeListingViewModel}"
             FontSize="14" />
+            
         </Grid>
 
     </materialDesign:DialogHost>

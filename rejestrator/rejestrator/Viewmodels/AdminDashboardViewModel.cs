@@ -38,10 +38,9 @@
                     foreach (var employee in employeeList)
                         employeesList.Add(employee);
 
-                    Employee.Queries = new CollectionView(employeesList);
-                    Employee.Queries.CurrentChanged += new EventHandler(queries_CurrentChanged);
+                    Employee.Queries = new ObservableCollection<string>(employeesList);
 
-                    Employee.TwoWays = new CollectionView(workItems);
+                    Employee.TwoWays = new ObservableCollection<string>(workItems);
 
                     OnAdd();           
                 }));
@@ -103,6 +102,8 @@
                     foreach (var employee in employeeList)
                         AdminEmployeesViewModel.ListOfEmployees.Add(employee);
 
+                    AdminEmployeesViewModel.PopulateLists();
+
                     Mediator.Notify(Token.GO_TO_ADMIN_EMPLOYEES);
                 }));
             }
@@ -150,6 +151,7 @@
                         {
                             string shift = getCurrentItemEmployee();
                             adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);
+                            AdminEmployeesViewModel.ListOfEmployees.Add($"{item.ID} {item.Name} {item.Surname}");
                         }
                         else
                         {
@@ -169,30 +171,21 @@
                         string[] words = temp.Split(' ');
 
                         adminModel.InsertTask(words[0], item.Task);
+                        AdminEmployeesViewModel.PopulateTaskLists();
                     }
                 }    
             }
         }
 
-        public static void queries_CurrentChanged(object sender, EventArgs e)
-        {
-            var currentQuery = (string)Employee.Queries.CurrentItem;
-        }
-
-        public static void twoWays_CurrentChanged(object sender, EventArgs e)
-        {
-            var currentQuery = (string)Employee.TwoWays.CurrentItem;
-        }
-
         public string getCurrentListItem()
         {
-            var currentQuery = (string)Employee.Queries.CurrentItem;
+            var currentQuery = (string)Employee.SelectedEmployee;
             return currentQuery;
         }
 
         public string getCurrentItemEmployee()
         {
-            var currentQuery = (string)Employee.TwoWays.CurrentItem;
+            var currentQuery = (string)Employee.SelectedShift;
             return currentQuery;
         }
 
@@ -205,8 +198,8 @@
         public string ID { get; set; }
         public string Pin { get; set; }
         public string Task { get; set; }
-        public static CollectionView Queries { get; set; }
-        public static CollectionView TwoWays { get; set; }
+        public static ObservableCollection<string> Queries { get; set; }
+        public static ObservableCollection<string> TwoWays { get; set; }
 
         public Employee()
         {
@@ -214,9 +207,29 @@
             _myCommand2 = new MyCommand(FuncToCall2, FuncToEvaluate);
         }
 
+        private static string _selectedEmployee;
+        public static string SelectedEmployee
+        {
+            get { return _selectedEmployee; }
+            set
+            {
+                _selectedEmployee = value;
+            }
+        }
+
+        private static string _selectedShift;
+        public static string SelectedShift
+        {
+            get { return _selectedShift; }
+            set
+            {
+                _selectedShift = value;
+            }
+        }
+
         private ICommand _myCommand;
 
-        public ICommand MyButtonClickCommand
+        public ICommand EmployeeAddViewCommand
         {
             get { return _myCommand; }
             set { _myCommand = value; }
@@ -224,7 +237,7 @@
 
         private ICommand _myCommand2;
 
-        public ICommand MyButtonClickCommand2
+        public ICommand TaskAddViewCommand
         {
             get { return _myCommand2; }
             set { _myCommand2 = value; }

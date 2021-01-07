@@ -71,10 +71,10 @@
                     <TextBox x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin" />
                     <TextBox x:Name="NameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
                     <TextBox x:Name="SurnameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
-                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" IsSynchronizedWithCurrentItem="True"/>
+                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
 
-                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="60" FontSize="16" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" IsSynchronizedWithCurrentItem="True"/>
-                    <TextBox x:Name="TaskBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="250" Text="{Binding Task}" FontSize="16" materialDesign:HintAssist.Hint="Zadanie" />
+                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="80" FontSize="16" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True"/>
+                    <TextBox x:Name="TaskBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Task}" FontSize="16" materialDesign:HintAssist.Hint="Zadanie" />
 
                     <Grid Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
@@ -87,7 +87,8 @@
                                 Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Width="90"
                                 Height="65"
-                                Command="{Binding MyButtonClickCommand}">
+                                ToolTip="Dodaj pracownika"
+                                Command="{Binding EmployeeAddViewCommand}">
                             <Image Source="/rejestrator;component/Assets/profile-user.png"
                                        Stretch="Fill"/>
                         </Button>
@@ -98,7 +99,8 @@
                                 Height="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
-                                Command="{Binding MyButtonClickCommand2}">
+                                ToolTip="Dodaj zadanie"
+                                Command="{Binding TaskAddViewCommand}">
                             <Image Source="/rejestrator;component/Assets/daily-tasks.png"
                                        Stretch="Fill" />
                         </Button>
@@ -114,33 +116,41 @@
                                        Stretch="Fill" />
                         </Button>
 
-                        <Button Content="_Dodaj" 
+                        <Grid Margin="0,0,0,0" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="_Dodaj" 
                                 Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsDefault="False"
                                 Width="80"
+                                Grid.Column="0"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                                 CommandParameter="{Binding}"/>
-                        <Button Content="_Anuluj" 
+                            <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                        <Button Content="_Dodaj" 
+                            <Button Content="_Dodaj" 
                                 Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsDefault="False"
                                 Width="80"
-                                Margin="35,0,0,0"
+                                Grid.Column="0"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                                 CommandParameter="{Binding}"/>
-                        <Button Content="_Anuluj" 
+                            <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                        </Grid>
                     </Grid>
                 </StackPanel>
             </DataTemplate>
@@ -162,9 +172,10 @@
             <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Canvas.ZIndex="3"/>
 
             <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="50" Margin="70,10,140,0">
-                <ComboBox Grid.Row="0" Background="White" FontFamily="TW Cen MT"
+                <ComboBox Grid.Row="0" Background="White" FontFamily="TW Cen MT" Text="{Binding SelectedEmployee}"
                    FontSize="26" Foreground="Black" MaxDropDownHeight="135" Width="290"
-                      ItemsSource="{Binding Path=ListOfEmployees}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True" Canvas.ZIndex="2"/>
+                      ItemsSource="{Binding Path=ListOfEmployees}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True" Canvas.ZIndex="2">
+                </ComboBox>
             </Border>
 
             <TextBlock Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
@@ -230,7 +241,7 @@
                 </StackPanel>
             </Button>
 
-            <ListView Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="18" Margin="78,10,227,0"
+            <ListView Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="14" Margin="78,10,227,0"
             BorderThickness="0" Width="230"
             ItemsSource="{Binding Dates}">
                 <ListView.ItemContainerStyle>
@@ -252,14 +263,14 @@
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
                         <GridViewColumn Width="220">
-                            <GridViewColumnHeader Content="Data"/>
+                            <GridViewColumnHeader FontSize="16" Content="Data"/>
                         </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
 
-            <ListView Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="18" Margin="150,10,200,0"
-            BorderThickness="0" Width="370"
+            <ListView Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="14" Margin="150,10,40,0"
+            BorderThickness="0" Width="500"
             ItemsSource="{Binding Tasks}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
@@ -279,15 +290,15 @@
 
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                        <GridViewColumn Width="350">
-                            <GridViewColumnHeader Content="Zadanie"/>
+                        <GridViewColumn Width="480">
+                            <GridViewColumnHeader FontSize="16" Content="Zadanie"/>
                         </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
 
-            <ListView Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="18" Margin="75,10,10,0"
-            BorderThickness="0" Width="810" Grid.Column="0" Grid.ColumnSpan="4"
+            <ListView Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="1" Margin="75,10,0,0"
+            BorderThickness="0" Width="830" Grid.Column="0" Grid.ColumnSpan="4"
             ItemsSource="{Binding TasksInProgress}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
@@ -307,8 +318,8 @@
 
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                        <GridViewColumn Width="400">
-                            <GridViewColumnHeader Content="Zadanie"/>
+                        <GridViewColumn Width="520">
+                            <GridViewColumnHeader FontSize="16" Content="Zadanie"/>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Padding="0 0 50 0" Text="{Binding Task}"/>
@@ -316,7 +327,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Width="150">
-                            <GridViewColumnHeader Content="Data"/>
+                            <GridViewColumnHeader FontSize="16" Content="Start"/>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Padding="0 0 50 0" Text="{Binding Date}"/>
@@ -327,7 +338,7 @@
                 </ListView.View>
             </ListView>
 
-            <ListView Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="18" Margin="75,10,10,0"
+            <ListView Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="12" Margin="75,10,10,0"
             BorderThickness="0" Width="810" Grid.Column="0" Grid.ColumnSpan="4"
             ItemsSource="{Binding TasksDone}">
                 <ListView.ItemContainerStyle>
@@ -349,7 +360,7 @@
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
                         <GridViewColumn Width="400">
-                            <GridViewColumnHeader Content="Zadanie"/>
+                            <GridViewColumnHeader FontSize="16" Content="Zadanie"/>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Padding="0 0 50 0" Text="{Binding Task}"/>
@@ -357,7 +368,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Width="150">
-                            <GridViewColumnHeader Content="Start"/>
+                            <GridViewColumnHeader FontSize="16" Content="Start"/>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Padding="0 0 50 0" Text="{Binding DateStart}"/>
@@ -365,7 +376,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Width="150">
-                            <GridViewColumnHeader Content="Koniec"/>
+                            <GridViewColumnHeader FontSize="16" Content="Koniec"/>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Padding="0 0 50 0" Text="{Binding DateEnd}"/>
@@ -373,7 +384,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Width="80">
-                            <GridViewColumnHeader Content="Czas"/>
+                            <GridViewColumnHeader FontSize="16" Content="Czas"/>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Padding="0 0 50 0" Text="{Binding Time}"/>

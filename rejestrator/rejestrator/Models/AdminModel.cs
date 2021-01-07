@@ -1,7 +1,9 @@
 ﻿namespace rejestrator.Models
 {
+    using LiveCharts.Defaults;
     using MySql.Data.MySqlClient;
     using rejestrator.Database;
+    using System;
     using System.Collections.Generic;
 
     public class AdminModel
@@ -161,7 +163,7 @@
                 {
                     while(result.Read())
                     {
-                        names.Add(result.GetString(0) + " " + result.GetString(1));
+                        names.Add($"{result.GetString(0)} {result.GetString(1)}");
                     }
                 }
                 Database.CloseConnection();
@@ -170,8 +172,6 @@
 
         public void GetEmployeesFullNames(List<string> names)
         {
-            string employeeSurnname = string.Empty;
-
             string query = @"SELECT name,surname FROM `employees`";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
@@ -182,7 +182,7 @@
                 {
                     while (result.Read())
                     {
-                        names.Add(result.GetString(0) + " " + result.GetString(1));
+                        names.Add($"{result.GetString(0)} {result.GetString(1)}");
                     }
                 }
                 Database.CloseConnection();
@@ -201,7 +201,7 @@
                 {
                     while (result.Read())
                     {
-                        names.Add(result.GetString(0) + " " + result.GetString(1) + " " + result.GetString(2));
+                        names.Add($"{result.GetString(0)} {result.GetString(1)} {result.GetString(2)}");
                     }
                 }
                 Database.CloseConnection();
@@ -258,6 +258,173 @@
                 myCommand.ExecuteNonQuery();
                 Database.CloseConnection();
             }
+        }
+
+        public int GetEmployeeLogsCount(string id)
+        {
+            int count = 0;
+
+            string query = @"SELECT COUNT(`employeeID`) FROM `logs` WHERE `employeeID`=@id GROUP BY `employeeID`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    count = result.GetInt32(0);
+                }
+                Database.CloseConnection();
+            }
+            return count;
+        }
+
+        public int GetEmployeeLogsCountToday(string id)
+        {
+            int count = 0;
+
+            string query = @"SELECT COUNT(`employeeID`) FROM `logs` WHERE `employeeID`=@id AND date LIKE @pattern GROUP BY `employeeID`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.Parameters.AddWithValue("@pattern", $"{DateTime.Now.ToString("dd/MM/yyyy")}{"%"}");        
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    count = result.GetInt32(0);
+                }
+                Database.CloseConnection();
+            }
+            return count;
+        }
+
+        public int GetEmployeeTasksDoneCountToday(string id)
+        {
+            int count = 0;
+
+            string query = @"SELECT COUNT(`employeeID`) FROM `tasksdone` WHERE `employeeID`=@id AND enddate LIKE @pattern GROUP BY `employeeID`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.Parameters.AddWithValue("@pattern", $"{DateTime.Now.ToString("dd/MM/yyyy")}{"%"}");
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    count = result.GetInt32(0);
+                }
+                Database.CloseConnection();
+            }
+            return count;
+        }
+
+        public int GetEmployeeCount()
+        {
+            int count = 0;
+
+            string query = @"SELECT COUNT(`employeeID`) FROM `employees`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    count = result.GetInt32(0);
+                }
+                Database.CloseConnection();
+            }
+            return count;
+        }
+
+        public void GetEmployeesIDs(List<string> ids)
+        {
+            string query = @"SELECT employeeID, name, surname FROM `employees`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        ids.Add($"{result.GetString(0)} {result.GetString(1)} {result.GetString(2)}");
+                    }
+                }
+                Database.CloseConnection();
+            }
+        }
+
+        public int GetEmployeeTasksCount(string id)
+        {
+            int count = 0;
+
+            string query = @"SELECT COUNT(`employeeID`) FROM `tasks` WHERE `employeeID`=@id GROUP BY `employeeID`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    count = result.GetInt32(0);
+                }
+                Database.CloseConnection();
+            }
+            return count;
+        }
+
+        public int GetEmployeeTasksInProgressCount(string id)
+        {
+            int count = 0;
+
+            string query = @"SELECT COUNT(`employeeID`) FROM `tasksinprogress` WHERE `employeeID`=@id GROUP BY `employeeID`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    count = result.GetInt32(0);
+                }
+                Database.CloseConnection();
+            }
+            return count;
+        }
+
+        public int GetEmployeeTasksDoneCount(string id)
+        {
+            int count = 0;
+
+            string query = @"SELECT COUNT(`employeeID`) FROM `tasksdone` WHERE `employeeID`=@id GROUP BY `employeeID`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    count = result.GetInt32(0);
+                }
+                Database.CloseConnection();
+            }
+            return count;
         }
     }
 }

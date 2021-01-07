@@ -19,52 +19,62 @@
 
         public static ObservableCollection<string> ListOfEmployees { get; set; } = new ObservableCollection<string>();
 
-        private ObservableCollection<string> _dates = new ObservableCollection<string>();
-        public ObservableCollection<string> Dates
+        private static ObservableCollection<string> _dates = new ObservableCollection<string>();
+        public static ObservableCollection<string> Dates
         {
             get { return _dates; }
             set
             {
                 _dates = value;
-                OnPropertyChanged("Dates");
+                OnPropertyChanged1("Dates");
             }
         }
 
-        private ObservableCollection<string> _tasks = new ObservableCollection<string>();
-        public ObservableCollection<string> Tasks
+        private static ObservableCollection<string> _tasks = new ObservableCollection<string>();
+        public static ObservableCollection<string> Tasks
         {
             get { return _tasks; }
             set
             {
                 _tasks = value;
-                OnPropertyChanged("Tasks");
+                OnPropertyChanged1("Tasks");
             }
         }
 
-        private ObservableCollection<TaskInProgressModel> _tasksInProgress = new ObservableCollection<TaskInProgressModel>();
-        public ObservableCollection<TaskInProgressModel> TasksInProgress
+        private static ObservableCollection<TaskInProgressModel> _tasksInProgress = new ObservableCollection<TaskInProgressModel>();
+        public static ObservableCollection<TaskInProgressModel> TasksInProgress
         {
             get { return _tasksInProgress; }
             set
             {
                 _tasksInProgress = value;
-                OnPropertyChanged("TasksInProgress");
+                OnPropertyChanged1("TasksInProgress");
             }
         }
 
-        private ObservableCollection<TaskDoneModel> _tasksDone = new ObservableCollection<TaskDoneModel>();
-        public ObservableCollection<TaskDoneModel> TasksDone
+        private static ObservableCollection<TaskDoneModel> _tasksDone = new ObservableCollection<TaskDoneModel>();
+        public static ObservableCollection<TaskDoneModel> TasksDone
         {
             get { return _tasksDone; }
             set
             {
                 _tasksDone = value;
-                OnPropertyChanged("TasksDone");
+                OnPropertyChanged1("TasksDone");
             }
         }
 
-        private string _selectedEmployee;
-        public string SelectedEmployee
+        public static event PropertyChangedEventHandler PropertyChanged1;
+
+        public static void OnPropertyChanged1(string propertyName)
+        {
+            if (PropertyChanged1 != null)
+            {
+                PropertyChanged1(Instance, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private static string _selectedEmployee;
+        public static string SelectedEmployee
         {
             get { return _selectedEmployee; }
             set
@@ -74,7 +84,7 @@
             }
         }
 
-        private void PopulateLists()
+        public static void PopulateLists()
         {
             Dates.Clear();
             Tasks.Clear();
@@ -90,10 +100,10 @@
                 List<TaskInProgressModel> taskInProgressToAdd = new List<TaskInProgressModel>();
                 List<TaskDoneModel> tasksDoneToAdd = new List<TaskDoneModel>();
 
-                adminModel.GetLogsDatesForEmployee(datesToAdd, words[0]);
-                adminModel.GetLogsTasksForEmployee(tasksToAdd, words[0]);
-                adminModel.GetLogsTasksInProgressForEmployee(taskInProgressToAdd, words[0]);
-                adminModel.GetLogsTasksDoneForEmployee(tasksDoneToAdd, words[0]);
+                Instance.adminModel.GetLogsDatesForEmployee(datesToAdd, words[0]);
+                Instance.adminModel.GetLogsTasksForEmployee(tasksToAdd, words[0]);
+                Instance.adminModel.GetLogsTasksInProgressForEmployee(taskInProgressToAdd, words[0]);
+                Instance.adminModel.GetLogsTasksDoneForEmployee(tasksDoneToAdd, words[0]);
 
                 foreach (var date in datesToAdd)
                     Dates.Add(date);
@@ -106,7 +116,7 @@
             }
         }
 
-        private void PopulateTaskLists()
+        public static void PopulateTaskLists()
         {
             Tasks.Clear();
 
@@ -116,7 +126,7 @@
 
                 List<string> tasksToAdd = new List<string>();
 
-                adminModel.GetLogsTasksForEmployee(tasksToAdd, words[0]);
+                Instance.adminModel.GetLogsTasksForEmployee(tasksToAdd, words[0]);
 
                 foreach (var task in tasksToAdd)
                     Tasks.Add(task);
@@ -140,10 +150,9 @@
                     foreach (var employee in employeeList)
                         AdminDashboardViewModel.employeesList.Add(employee);
 
-                    Employee.Queries = new CollectionView(AdminDashboardViewModel.employeesList);
-                    Employee.Queries.CurrentChanged += new EventHandler(AdminDashboardViewModel.queries_CurrentChanged);
+                    Employee.Queries = new ObservableCollection<string>(AdminDashboardViewModel.employeesList);
 
-                    Employee.TwoWays = new CollectionView(AdminDashboardViewModel.workItems);
+                    Employee.TwoWays = new ObservableCollection<string>(AdminDashboardViewModel.workItems);
 
                     OnAdd();
                 }));
@@ -158,7 +167,21 @@
             {
                 return _reload ?? (_reload = new RelayCommand(x =>
                 {
+                    
+                    List<string> employeeList = new List<string>();
+
+                    adminModel.GetEmployeesFullNamesandID(employeeList);
+
+                    foreach (var employee in employeeList)
+                    {
+                        if(!ListOfEmployees.Contains(employee))
+                        {
+                            ListOfEmployees.Add(employee);
+                        }
+                    }
+
                     PopulateLists();
+
                 }));
             }
         }
@@ -172,6 +195,7 @@
 
             _myCommand = new MyCommand(FuncToCall, FuncToEvaluate);
             _myCommand2 = new MyCommand(FuncToCall2, FuncToEvaluate);
+
         }
         #endregion
 
@@ -243,7 +267,7 @@
                         {
                             string shift = getCurrentItemEmployee();
                             adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);
-                            ListOfEmployees.Add(item.ID + " " + item.Name + " " + item.Surname);
+                            ListOfEmployees.Add($"{item.ID} {item.Name} {item.Surname}");
                         }
                         else
                         {
@@ -269,25 +293,15 @@
             }
         }
 
-        public static void queries_CurrentChanged(object sender, EventArgs e)
-        {
-            var currentQuery = (string)Employee.Queries.CurrentItem;
-        }
-
-        public static void twoWays_CurrentChanged(object sender, EventArgs e)
-        {
-            var currentQuery = (string)Employee.TwoWays.CurrentItem;
-        }
-
         public string getCurrentListItem()
         {
-            var currentQuery = (string)Employee.Queries.CurrentItem;
+            var currentQuery = (string)Employee.SelectedEmployee;
             return currentQuery;
         }
 
         public string getCurrentItemEmployee()
         {
-            var currentQuery = (string)Employee.TwoWays.CurrentItem;
+            var currentQuery = (string)Employee.SelectedShift;
             return currentQuery;
         }
 

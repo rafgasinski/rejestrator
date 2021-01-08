@@ -246,6 +246,23 @@
             }
         }
 
+        public void InsertAdmin(string id, string username, string passwoord, string name, string surname, string shift)
+        {
+            string query = @"INSERT INTO `administrators`(`administratorID`, `username`, `password`, `name`, `surname`) VALUES(@id,@username,@passwoord,@name,@surname)";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.Parameters.AddWithValue("@username", username);
+                myCommand.Parameters.AddWithValue("@passwoord", passwoord);
+                myCommand.Parameters.AddWithValue("@name", name);
+                myCommand.Parameters.AddWithValue("@surname", surname);
+                myCommand.CommandText = query;
+                myCommand.ExecuteNonQuery();
+                Database.CloseConnection();
+            }
+        }
+
         public void InsertTask(string id, string task)
         {
             string query = @"INSERT INTO `tasks`(`employeeID`, `task`) VALUES(@id,@task)";

@@ -120,6 +120,7 @@
     <Compile Include="Models\EmployeeChartModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\TaskAvailableModel.cs" />
     <Compile Include="Models\TaskDoneModel.cs" />
     <Compile Include="Models\TaskInProgressModel.cs" />
     <Compile Include="Properties\ResourcesDashboard.Designer.cs">

@@ -123,10 +123,16 @@
   <data name="Done" xml:space="preserve">
     <value>ZAKOŃCZONE</value>
   </data>
+  <data name="EndTask" xml:space="preserve">
+    <value>ZAKOŃCZ</value>
+  </data>
   <data name="InProgress" xml:space="preserve">
     <value>W TRAKCIE</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Wyloguj</value>
+  </data>
+  <data name="StartTask" xml:space="preserve">
+    <value>START</value>
   </data>
 </root>

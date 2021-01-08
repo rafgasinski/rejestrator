@@ -18,6 +18,17 @@
             }
         }
 
+        private int _id;
+        public int ID
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(ID));
+            }
+        }
+
         private string _task;
         public string Task
         {
@@ -46,8 +57,9 @@
             }
         }
 
-        public TaskInProgressModel(string task, string date)
+        public TaskInProgressModel(int id, string task, string date)
         {
+            ID = id;
             Task = task;
             Date = date;
         }

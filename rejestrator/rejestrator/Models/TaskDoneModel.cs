@@ -24,6 +24,17 @@ namespace rejestrator.Models
             }
         }
 
+        private int _id;
+        public int ID
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(ID));
+            }
+        }
+
         private string _task;
         public string Task
         {
@@ -80,8 +91,9 @@ namespace rejestrator.Models
             }
         }
 
-        public TaskDoneModel(string task, string datestart, string dateend, string time)
+        public TaskDoneModel(int id, string task, string datestart, string dateend, string time)
         {
+            ID = id;
             Task = task;
             DateStart = datestart;
             DateEnd = dateend;

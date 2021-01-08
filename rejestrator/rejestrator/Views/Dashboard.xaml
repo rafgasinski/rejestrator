@@ -10,10 +10,51 @@
              d:DesignHeight="500" d:DesignWidth="900">
     <UserControl.Resources>
         <Style x:Key="TaskList" TargetType="ListView">
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="15"/>
             <Setter Property="Background" Value="Black"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        </Style>
+
+        <Style x:Key="Header" TargetType="GridViewColumnHeader">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="TW Cen MT"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="TextElement.Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ItemStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
+                            <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0" Content="{TemplateBinding Content}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TaskContent" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="TW Cen MT"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <Style x:Key="TaskButton" TargetType="Button">
+            <Setter Property="Margin" Value="0, 0, 20, 0"/>
+            <Setter Property="FontFamily" Value="TW Cen MT"/>
+            <Setter Property="FontSize" Value="16"/>
         </Style>
     </UserControl.Resources>
 
@@ -39,14 +80,58 @@
             <Button Grid.Column="2" Margin="15" Command="{Binding GoToLogin}" Content="{Binding Source={x:Static resx:ResourcesDashboard.Logout}}" Style="{StaticResource RoundButtonTemplate}"/>
         </Grid>
 
-        <ListView Grid.Row="1" Grid.Column="0" Style="{StaticResource TaskList}">
+        <ListView x:Name="AvailableTasksList" Grid.Row="1" Grid.Column="0" Style="{StaticResource TaskList}" ItemsSource="{Binding Path=TasksAvailable, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource ItemStyle}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn>
-                        <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.Available}}"/>
+                    <GridViewColumn Width="{Binding ElementName=AvailableTasksList, Path=ActualWidth}">
+                        <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.Available}}" Style="{StaticResource Header}"/>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text=""/>
+                                <Grid Width="{Binding ElementName=AvailableTasksList, Path=ActualWidth}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="0.4*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Task}" Style="{StaticResource TaskContent}"/>
+                                    <Button Grid.Column="1" Command="{Binding ElementName=AvailableTasksList, Path=DataContext.StartTask}" CommandParameter="{Binding}" Content="{Binding Source={x:Static resx:ResourcesDashboard.StartTask}}" Style="{StaticResource TaskButton}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView x:Name="InProgressTasksList" Grid.Row="1" Grid.Column="1" Style="{StaticResource TaskList}" ItemsSource="{Binding TasksInProgress, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource ItemStyle}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="{Binding ElementName=InProgressTasksList, Path=ActualWidth}">
+                        <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.InProgress}}" Style="{StaticResource Header}"/>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=InProgressTasksList, Path=ActualWidth}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="0.5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Task}" Style="{StaticResource TaskContent}"/>
+                                    <Button Grid.Column="1" Command="{Binding ElementName=AvailableTasksList, Path=DataContext.EndTask}" CommandParameter="{Binding}" Content="{Binding Source={x:Static resx:ResourcesDashboard.EndTask}}" Style="{StaticResource TaskButton}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView x:Name="DoneTasksList" Grid.Row="1" Grid.Column="2" Style="{StaticResource TaskList}" ItemsSource="{Binding TasksDone, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource ItemStyle}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="{Binding ElementName=DoneTasksList, Path=ActualWidth}">
+                        <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.Done}}" Style="{StaticResource Header}"/>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Task}" Style="{StaticResource TaskContent}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

@@ -231,7 +231,10 @@
                             if (loginModel.LoginEmployee(ID, Pin))
                             {
                                 string emploeeName = loginModel.GetEmployeeFullName(ID);
+                                DashboardViewModel.ID = ID;
                                 DashboardViewModel.Name = emploeeName;
+
+                                DashboardViewModel.FillLists();
 
                                 loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
 

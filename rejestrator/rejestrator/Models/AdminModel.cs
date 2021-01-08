@@ -109,7 +109,7 @@
         public void GetLogsTasksInProgressForEmployee(List<TaskInProgressModel> tasks, string id)
         {
 
-            string query = @"SELECT task, date FROM `tasksinprogress` WHERE `employeeID`=@id ORDER BY date DESC ";
+            string query = @"SELECT id, task, date FROM `tasksinprogress` WHERE `employeeID`=@id ORDER BY date DESC ";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
@@ -120,7 +120,7 @@
                 {
                     while (result.Read())
                     {
-                        var temp = new TaskInProgressModel(result.GetString(0), result.GetString(1));
+                        var temp = new TaskInProgressModel(result.GetInt32(0), result.GetString(1), result.GetString(2));
                         tasks.Add(temp);
                     }
                 }
@@ -131,7 +131,7 @@
         public void GetLogsTasksDoneForEmployee(List<TaskDoneModel> tasks, string id)
         {
 
-            string query = @"SELECT task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id ORDER BY enddate DESC ";
+            string query = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id ORDER BY enddate DESC ";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
@@ -142,7 +142,7 @@
                 {
                     while (result.Read())
                     {
-                        var temp = new TaskDoneModel(result.GetString(0), result.GetString(1), result.GetString(2), result.GetString(3));
+                        var temp = new TaskDoneModel(result.GetInt32(0), result.GetString(1), result.GetString(2), result.GetString(3), result.GetString(4));
                         tasks.Add(temp);
                     }
                 }

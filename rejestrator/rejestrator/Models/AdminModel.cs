@@ -44,6 +44,28 @@
             }
         }
 
+        public string GetEmployeePin(string id)
+        {
+            string pin = string.Empty;
+
+            string query = @"SELECT pin FROM `employees` WHERE `employeeID`=@id ";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    pin = result.GetString(0);
+                }
+                Database.CloseConnection();
+            }
+
+            return pin;
+        }
+
         public void GetLogsDates(List<string> dates)
         {
 
@@ -246,7 +268,50 @@
             }
         }
 
-        public void InsertAdmin(string id, string username, string passwoord, string name, string surname, string shift)
+        public void EditEmployeeUpdate(string oldId, string id, string pin, string name, string surname, string shift)
+        {
+            string query = @"UPDATE `logs` SET `employeeID`=@id, `name`=@name, `surname`=@surname WHERE `employeeID`=@oldId; 
+                            UPDATE `employees` SET `employeeID`=@id, `pin`=@pin, `name`=@name, `surname`=@surname, `shift`=@shift  WHERE `employeeID`=@oldId;
+                            UPDATE `tasks` SET `employeeID`=@id WHERE `employeeID`=@oldId; 
+                            UPDATE `tasksinprogress` SET `employeeID`=@id WHERE `employeeID`=@oldId; 
+                            UPDATE `tasksdone` SET `employeeID`=@id WHERE `employeeID`=@oldId;";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@oldId", oldId);
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.Parameters.AddWithValue("@pin", pin);
+                myCommand.Parameters.AddWithValue("@name", name);
+                myCommand.Parameters.AddWithValue("@surname", surname);
+                myCommand.Parameters.AddWithValue("@shift", shift);
+                myCommand.CommandText = query;
+                myCommand.ExecuteNonQuery();
+                Database.CloseConnection();
+            }
+        }
+
+        public bool AdminIDUsed(string id)
+        {
+            bool employeeId = false;
+
+            string query = @"SELECT COUNT(`id`) FROM `administrators` WHERE `administratorID`=@id GROUP BY `id`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    employeeId = true;
+                }
+                Database.CloseConnection();
+            }
+            return employeeId;
+        }
+
+        public void InsertAdmin(string id, string username, string password, string name, string surname)
         {
             string query = @"INSERT INTO `administrators`(`administratorID`, `username`, `password`, `name`, `surname`) VALUES(@id,@username,@passwoord,@name,@surname)";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
@@ -254,7 +319,7 @@
                 Database.OpenConnection();
                 myCommand.Parameters.AddWithValue("@id", id);
                 myCommand.Parameters.AddWithValue("@username", username);
-                myCommand.Parameters.AddWithValue("@passwoord", passwoord);
+                myCommand.Parameters.AddWithValue("@passwoord", password);
                 myCommand.Parameters.AddWithValue("@name", name);
                 myCommand.Parameters.AddWithValue("@surname", surname);
                 myCommand.CommandText = query;

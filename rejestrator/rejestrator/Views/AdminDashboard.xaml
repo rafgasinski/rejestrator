@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:customcontrols="clr-namespace:rejestrator.CustomControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:utils="clr-namespace:rejestrator.Utils"
              xmlns:local="clr-namespace:rejestrator.Views" xmlns:viewmodels="clr-namespace:rejestrator.Viewmodels"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
@@ -30,8 +31,8 @@
             <DataTemplate DataType="{x:Type viewmodels:Employee}">
                 <StackPanel Margin="30">
 
-                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id" MaxLength="4"/>
-                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin" MaxLength="4"/>
+                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4"/>
+                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin (4 cyfry)" MaxLength="4"/>
                     <TextBox x:Name="NameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
                     <TextBox x:Name="SurnameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
                     <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
@@ -39,6 +40,13 @@
                     <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="80" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True"/>
                     <TextBox x:Name="TaskBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Task}" FontSize="16" materialDesign:HintAssist.Hint="Zadanie" />
 
+                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDAdminBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding IDadmin}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4"/>
+                    <TextBox x:Name="UsernameBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding AdminUsername}" FontSize="16" materialDesign:HintAssist.Hint="Nazwa użytkownika"/>
+                    <PasswordBox x:Name="AdminPasswrodBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Path=AdminPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16" materialDesign:HintAssist.Hint="Hasło"/>
+                    <TextBox x:Name="AdminNameBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding AdminName}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
+                    <TextBox x:Name="AdminSurnameBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding AdminSurname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
+          
+                    
                     <Grid Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -121,6 +129,20 @@
                                 CommandParameter="{Binding}"/>
                             <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                IsCancel="True"
+                                Width="80"
+                                Margin="10,0,0,0"
+                                Grid.Column="1"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                            <Button Content="_Dodaj" 
+                                Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                IsDefault="False"
+                                Width="80"
+                                Grid.Column="0"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                CommandParameter="{Binding}"/>
+                            <Button Content="_Anuluj" 
+                                Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"

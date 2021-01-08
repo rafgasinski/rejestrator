@@ -459,18 +459,33 @@
         {
             if (await DialogHost.Show(new Employee()) is Employee item)
             {
-                if (item.Task == null)
+                if (item.Task == string.Empty)
                 {
-                    if (item.ID != null && item.Pin != null && item.Name != null && item.Surname != null)
+                    if (item.ID != string.Empty && item.Pin != string.Empty && item.Name != string.Empty && item.Surname != string.Empty)
                     {
-
-                        if (item.ID.Length != 4)
+                        if (!item.ID.All(char.IsDigit) && !item.Pin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id i pin nie składają się tylko z cyfr!");
+                        }
+                        else if (!item.ID.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id nie składa się tylko z cyfr!");
+                        }
+                        else if (!item.Pin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Pin nie składa się tylko z cyfr!");
+                        }
+                        else if (item.Pin.Length != 4 && item.ID.Length != 4)
+                        {
+                            MessageBox.Show("Id oraz pin są za krótkie!");
+                        }
+                        else if (item.ID.Length != 4)
                         {
                             MessageBox.Show("Id jest za krótkie!");
                         }
                         else if (item.Pin.Length != 4)
                         {
-                            MessageBox.Show("Pin jest za krótki");
+                            MessageBox.Show("Pin jest za krótki!");
                         }
                         else if (!adminModel.EmployeeIDUsed(item.ID))
                         {
@@ -488,7 +503,26 @@
                                 EmployeeTasksInProgressCounts.Add(0);
                                 EmployeeTasksDoneCounts.Add(0);
                             }
-                        }                            
+                        }
+                        else
+                        {
+                            MessageBox.Show("To id zostało już przypisane!");
+                        }
+                    }
+                    else if (item.IDadmin != string.Empty && item.AdminUsername != string.Empty && item.AdminPassword != string.Empty && item.AdminName != string.Empty && item.AdminSurname != string.Empty)
+                    {
+                        if (!item.IDadmin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id nie składa się tylko z cyfr!");
+                        }
+                        else if (item.IDadmin.Length != 4)
+                        {
+                            MessageBox.Show("Id jest za krótkie!");
+                        }
+                        else if (!adminModel.AdminIDUsed(item.IDadmin))
+                        {
+                            adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
+                        }
                         else
                         {
                             MessageBox.Show("To id zostało już przypisane!");
@@ -498,26 +532,23 @@
                     {
                         MessageBox.Show("Pozostawiono puste pola.");
                     }
-                }
+                }               
                 else
                 {
-                    if (item.ID == null && item.Pin == null && item.Name == null && item.Surname == null)
+                    string temp = getCurrentListItem();
+                    string[] words = temp.Split(' ');
+
+                    adminModel.InsertTask(words[0], item.Task);
+                    AdminEmployeesViewModel.PopulateTaskLists();
+
+                    if (EmployeeNames.Contains(temp))
                     {
-                        string temp = getCurrentListItem();
-                        string[] words = temp.Split(' ');
-
-                        adminModel.InsertTask(words[0], item.Task);
-                        AdminEmployeesViewModel.PopulateTaskLists();
-
-                        if(EmployeeNames.Contains(temp))
+                        for (int i = 0; i < EmployeeNames.Count; i++)
                         {
-                            for(int i = 0; i<EmployeeNames.Count; i++)
+                            if (EmployeeNames[i] == temp)
                             {
-                                if (EmployeeNames[i] == temp)
-                                {
-                                    EmployeeTaskCounts[i]++;
-                                }
-                            }                            
+                                EmployeeTaskCounts[i]++;
+                            }
                         }
                     }
                 }

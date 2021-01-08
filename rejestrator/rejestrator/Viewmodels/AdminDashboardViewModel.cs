@@ -13,6 +13,7 @@
     using System.Windows.Controls;
     using System.ComponentModel;
     using System.Text.RegularExpressions;
+    using System.Linq;
 
     public class AdminDashboardViewModel : ViewModelBase, IPageViewModel
     {
@@ -144,23 +145,58 @@
         {
             if (await DialogHost.Show(new Employee()) is Employee item)
             {
-                if(item.Task == null)
+                if(item.Task == string.Empty)
                 {
-                    if(item.ID != null && item.Pin != null && item.Name != null && item.Surname != null)
-                    {                  
-                        if(item.ID.Length != 4)
+                    if(item.ID != string.Empty && item.Pin != string.Empty && item.Name != string.Empty && item.Surname != string.Empty)
+                    {
+                        if (!item.ID.All(char.IsDigit) && !item.Pin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id i pin nie składają się tylko z cyfr!");
+                        }
+                        else if (!item.ID.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id nie składa się tylko z cyfr!");
+                        }
+                        else if (!item.Pin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Pin nie składa się tylko z cyfr!");
+                        }
+                        else if (item.Pin.Length != 4 && item.ID.Length != 4)
+                        {
+                            MessageBox.Show("Id oraz pin są za krótkie!");
+                        }
+                        else if (item.ID.Length != 4)
                         {
                             MessageBox.Show("Id jest za krótkie!");
                         }
                         else if (item.Pin.Length != 4)
                         {
-                            MessageBox.Show("Pin jest za krótki");
-                        }
+                            MessageBox.Show("Pin jest za krótki!");
+                        }                       
                         else if (!adminModel.EmployeeIDUsed(item.ID))
                         {
                             string shift = getCurrentItemEmployee();
                             adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);
                             AdminEmployeesViewModel.ListOfEmployees.Add($"{item.ID} {item.Name} {item.Surname}");
+                        }
+                        else
+                        {
+                            MessageBox.Show("To id zostało już przypisane!");
+                        }
+                    }
+                    else if(item.IDadmin != string.Empty && item.AdminUsername != string.Empty && item.AdminPassword != string.Empty && item.AdminName != string.Empty && item.AdminSurname != string.Empty)
+                    {
+                        if (!item.IDadmin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id nie składa się tylko z cyfr!");
+                        }
+                        else if (item.IDadmin.Length != 4)
+                        {
+                            MessageBox.Show("Id jest za krótkie!");
+                        }
+                        else if (!adminModel.AdminIDUsed(item.IDadmin))
+                        {
+                            adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
                         }
                         else
                         {
@@ -174,14 +210,11 @@
                 }
                 else
                 {
-                    if (item.ID == null && item.Pin == null && item.Name == null && item.Surname == null)
-                    {
-                        string temp = getCurrentListItem();
-                        string[] words = temp.Split(' ');
+                    string temp = getCurrentListItem();
+                    string[] words = temp.Split(' ');
 
-                        adminModel.InsertTask(words[0], item.Task);
-                        AdminEmployeesViewModel.PopulateTaskLists();
-                    }
+                    adminModel.InsertTask(words[0], item.Task);
+                    AdminEmployeesViewModel.PopulateTaskLists();
                 }    
             }
         }
@@ -202,11 +235,18 @@
 
     public class Employee : INotifyPropertyChanged
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string ID { get; set; }
-        public string Pin { get; set; }
-        public string Task { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Surname { get; set; } = string.Empty;
+        public string ID { get; set; } = string.Empty;
+        public string Pin { get; set; } = string.Empty;
+
+        public string AdminName { get; set; } = string.Empty;
+        public string AdminSurname { get; set; } = string.Empty;
+        public string IDadmin { get; set; } = string.Empty;
+        public string AdminUsername { get; set; } = string.Empty;
+        public string AdminPassword { get; set; } = string.Empty;
+
+        public string Task { get; set; } = string.Empty;
         public static ObservableCollection<string> Queries { get; set; }
         public static ObservableCollection<string> TwoWays { get; set; }
 
@@ -214,6 +254,11 @@
         {
             _myCommand = new MyCommand(FuncToCall, FuncToEvaluate);
             _myCommand2 = new MyCommand(FuncToCall2, FuncToEvaluate);
+            _myCommand3 = new MyCommand(FuncToCall3, FuncToEvaluate);
+            _closeDialogAdd = new MyCommand(CloseDialogHostAdd, FuncToEvaluate);
+            _closeDialogEdit = new MyCommand(CloseDialogHostEdit, FuncToEvaluate);
+            _closeDialogAddAndAddToDatabase = new MyCommand(CloseDialogAddAndAdd, FuncToEvaluate);
+            _closeDialogEditAndEditDatabase = new MyCommand(CloseDialogEditAndEdit, FuncToEvaluate);
         }
 
         private static string _selectedEmployee;
@@ -236,6 +281,62 @@
             }
         }
 
+        private ICommand _closeDialogAdd;
+
+        public ICommand CloseDialogAdd
+        {
+            get { return _closeDialogAdd; }
+            set { _closeDialogAdd = value; }
+        }
+
+        private ICommand _closeDialogEdit;
+
+        public ICommand CloseDialogEdit
+        {
+            get { return _closeDialogEdit; }
+            set { _closeDialogEdit = value; }
+        }
+
+        private ICommand _closeDialogAddAndAddToDatabase;
+
+        public ICommand CloseDialogAddAndAddToDatabase
+        {
+            get { return _closeDialogAddAndAddToDatabase; }
+            set { _closeDialogAddAndAddToDatabase = value; }
+        }
+
+        private ICommand _closeDialogEditAndEditDatabase;
+
+        public ICommand CloseDialogEditAndEditDatabase
+        {
+            get { return _closeDialogEditAndEditDatabase; }
+            set { _closeDialogEditAndEditDatabase = value; }
+        }
+
+        private void CloseDialogHostAdd(object context)
+        {          
+            DialogHost.Close("AddDialogHost");
+            AdminEmployeesViewModel.IsDialogAddOpen = false;
+        }
+
+        private void CloseDialogHostEdit(object context)
+        {          
+            DialogHost.Close("EditDialogHost");
+            AdminEmployeesViewModel.IsDialogEditOpen = false;
+        }
+
+        private void CloseDialogAddAndAdd(object context)
+        {
+            DialogHost.Close("AddDialogHost");
+            AdminEmployeesViewModel.IsDialogAddOpen = true;
+        }
+
+        private void CloseDialogEditAndEdit(object context)
+        {
+            DialogHost.Close("EditDialogHost");
+            AdminEmployeesViewModel.IsDialogEditOpen = true;
+        }
+
         private ICommand _myCommand;
 
         public ICommand EmployeeAddViewCommand
@@ -244,12 +345,21 @@
             set { _myCommand = value; }
         }
 
+
         private ICommand _myCommand2;
 
         public ICommand TaskAddViewCommand
         {
             get { return _myCommand2; }
             set { _myCommand2 = value; }
+        }
+
+        private ICommand _myCommand3;
+
+        public ICommand AddAdmindCommand
+        {
+            get { return _myCommand3; }
+            set { _myCommand3 = value; }
         }
 
         private void FuncToCall(object context)
@@ -280,6 +390,20 @@
             }
         }
 
+        private void FuncToCall3(object context)
+        {
+            if (this.ChangeControlVisibility4 == Visibility.Collapsed && this.ChangeControlVisibility2 == Visibility.Visible)
+            {
+                this.ChangeControlVisibility4 = Visibility.Visible;
+                this.ChangeControlVisibility2 = Visibility.Collapsed;
+            }
+            else
+            {
+                this.ChangeControlVisibility4 = Visibility.Collapsed;
+                this.ChangeControlVisibility2 = Visibility.Visible;
+            }
+        }
+
         private bool FuncToEvaluate(object context)
         {
             return true;
@@ -293,7 +417,7 @@
             set
             {
                 _visibility = value;
-                this.OnPropertyChanged("ChangeControlVisibility");
+                this.OnPropertyChanged(nameof(ChangeControlVisibility));
             }
         }
 
@@ -305,7 +429,7 @@
             set
             {
                 _visibility2 = value;
-                this.OnPropertyChanged("ChangeControlVisibility2");
+                this.OnPropertyChanged(nameof(ChangeControlVisibility2));
             }
         }
 
@@ -317,7 +441,31 @@
             set
             {
                 _visibility3 = value;
-                this.OnPropertyChanged("ChangeControlVisibility3");
+                this.OnPropertyChanged(nameof(ChangeControlVisibility3));
+            }
+        }
+
+        private Visibility _visibility4 = Visibility.Collapsed;
+
+        public Visibility ChangeControlVisibility4
+        {
+            get { return _visibility4; }
+            set
+            {
+                _visibility4 = value;
+                this.OnPropertyChanged(nameof(ChangeControlVisibility4));
+            }
+        }
+
+        private Visibility _visibility5 = Visibility.Collapsed;
+
+        public Visibility ChangeControlVisibility5
+        {
+            get { return _visibility5; }
+            set
+            {
+                _visibility5 = value;
+                this.OnPropertyChanged(nameof(ChangeControlVisibility5));
             }
         }
 

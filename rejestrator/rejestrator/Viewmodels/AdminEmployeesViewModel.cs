@@ -8,6 +8,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Data;
     using System.Windows.Input;
@@ -18,6 +19,7 @@
         public static AdminEmployeesViewModel Instance { get { return _instance; } }
 
         public static ObservableCollection<string> ListOfEmployees { get; set; } = new ObservableCollection<string>();
+        
 
         private static ObservableCollection<string> _dates = new ObservableCollection<string>();
         public static ObservableCollection<string> Dates
@@ -130,6 +132,19 @@
 
                 foreach (var task in tasksToAdd)
                     Tasks.Add(task);
+            }
+        }
+
+        private ICommand _editEmployee;
+
+        public ICommand EditEmployee
+        {
+            get
+            {
+                return _editEmployee ?? (_editEmployee = new RelayCommand(x =>
+                {
+                    OnEdition();
+                }));
             }
         }
 
@@ -257,26 +272,63 @@
 
         private async void OnAdd()
         {
-            if (await DialogHost.Show(new Employee()) is Employee item)
+            var item = new Employee();
+            await DialogHost.Show(item, "AddDialogHost");
+            if (IsDialogAddOpen == true)
             {
-                if (item.Task == null)
+                if (item.Task == string.Empty)
                 {
-                    if (item.ID != null && item.Pin != null && item.Name != null && item.Surname != null)
+                    if (item.ID != string.Empty && item.Pin != string.Empty && item.Name != string.Empty && item.Surname != string.Empty)
                     {
-                        if (item.ID.Length != 4)
+                        if (!item.ID.All(char.IsDigit) && !item.Pin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id i pin nie składają się tylko z cyfr!");
+                        }
+                        else if (!item.ID.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id nie składa się tylko z cyfr!");
+                        }
+                        else if (!item.Pin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Pin nie składa się tylko z cyfr!");
+                        }
+                        else if (item.Pin.Length != 4 && item.ID.Length != 4)
+                        {
+                            MessageBox.Show("Id oraz pin są za krótkie!");
+                        }
+                        else if (item.ID.Length != 4)
                         {
                             MessageBox.Show("Id jest za krótkie!");
                         }
                         else if (item.Pin.Length != 4)
                         {
-                            MessageBox.Show("Pin jest za krótki");
+                            MessageBox.Show("Pin jest za krótki!");
                         }
                         else if (!adminModel.EmployeeIDUsed(item.ID))
                         {
                             string shift = getCurrentItemEmployee();
                             adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);
                             ListOfEmployees.Add($"{item.ID} {item.Name} {item.Surname}");
-                        }                           
+                        }
+                        else
+                        {
+                            MessageBox.Show("To id zostało już przypisane!");
+                        }
+                    }
+                    else if (item.IDadmin != string.Empty && item.AdminUsername != string.Empty && item.AdminPassword != string.Empty && item.AdminName != string.Empty && item.AdminSurname != string.Empty)
+                    {
+                        if (!item.IDadmin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id nie składa się tylko z cyfr!");
+                        }
+                        else if (item.IDadmin.Length != 4)
+                        {
+                            MessageBox.Show("Id jest za krótkie!");
+                        }
+                        else if (!adminModel.AdminIDUsed(item.IDadmin))
+                        {
+                            adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
+                        }
                         else
                         {
                             MessageBox.Show("To id zostało już przypisane!");
@@ -289,17 +341,107 @@
                 }
                 else
                 {
-                    if (item.ID == null && item.Pin == null && item.Name == null && item.Surname == null)
-                    {
-                        string temp = getCurrentListItem();
-                        string[] words = temp.Split(' ');
+                    string temp = getCurrentListItem();
+                    string[] words = temp.Split(' ');
 
-                        adminModel.InsertTask(words[0], item.Task);
-                        PopulateTaskLists();
-                    }
+                    adminModel.InsertTask(words[0], item.Task);
+                    PopulateTaskLists();
                 }
             }
+            IsDialogAddOpen = false;
+
         }
+
+        private async void OnEdition()
+        {
+            var item = new Employee();
+            var tempEmployee = SelectedEmployee.Split(' ');
+
+            item.ID = tempEmployee[0];
+            item.Pin = adminModel.GetEmployeePin(item.ID);
+            item.Name = tempEmployee[1];
+            item.Surname = tempEmployee[2];
+            Employee.TwoWays = new ObservableCollection<string> { "Dzienny", "Nocny" };
+
+            await DialogHost.Show(item, "EditDialogHost");
+            if (IsDialogEditOpen == true)
+            {
+                if (item.ID != string.Empty && item.Pin != string.Empty && item.Name != string.Empty && item.Surname != string.Empty)
+                {
+                    if (!item.ID.All(char.IsDigit) && !item.Pin.All(char.IsDigit))
+                    {
+                        MessageBox.Show("Id i pin nie składają się tylko z cyfr!");
+                    }
+                    else if (!item.ID.All(char.IsDigit))
+                    {
+                        MessageBox.Show("Id nie składa się tylko z cyfr!");
+                    }
+                    else if (!item.Pin.All(char.IsDigit))
+                    {
+                        MessageBox.Show("Pin nie składa się tylko z cyfr!");
+                    }
+                    else if (item.Pin.Length != 4 && item.ID.Length != 4)
+                    {
+                        MessageBox.Show("Id oraz pin są za krótkie!");
+                    }
+                    else if (item.ID.Length != 4)
+                    {
+                        MessageBox.Show("Id jest za krótkie!");
+                    }
+                    else if (item.Pin.Length != 4)
+                    {
+                        MessageBox.Show("Pin jest za krótki!");
+                    }
+                    else if (!adminModel.EmployeeIDUsed(item.ID) || item.ID == tempEmployee[0])
+                    {
+                        adminModel.EditEmployeeUpdate(tempEmployee[0], item.ID, item.Pin, item.Name, item.Surname, getCurrentItemEmployee());
+
+                        for (int i = 0; i < ListOfEmployees.Count; i++)
+                        {
+                            if(ListOfEmployees[i] == SelectedEmployee)
+                            {
+                                ListOfEmployees[i] = $"{item.ID} {item.Name} {item.Surname}";
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("To id zostało już przypisane!");
+                    }                  
+                }
+                else
+                {
+                    MessageBox.Show("Pozostawiono puste pola.");
+                }
+            }           
+
+            IsDialogEditOpen = false;
+        }
+
+        private static bool _IsDialogEditOpen;
+        public static bool IsDialogEditOpen
+        {
+            get { return _IsDialogEditOpen; }
+            set
+            {
+                _IsDialogEditOpen = value;
+                OnPropertyChanged1(nameof(IsDialogEditOpen));
+            }
+        }
+
+        private static bool _IsDialogAddOpen;
+        public static bool IsDialogAddOpen
+        {
+            get { return _IsDialogAddOpen; }
+            set
+            {
+                _IsDialogAddOpen = value;
+                OnPropertyChanged1(nameof(IsDialogAddOpen));
+            }
+        }
+
+        public ICommand ShowDialogCommand { get; }
 
         public string getCurrentListItem()
         {
@@ -383,7 +525,7 @@
             set
             {
                 _visibility = value;
-                this.OnPropertyChanged("ChangeControlVisibility");
+                this.OnPropertyChanged(nameof(ChangeControlVisibility));
             }
         }
 
@@ -395,7 +537,7 @@
             set
             {
                 _visibility2 = value;
-                this.OnPropertyChanged("ChangeControlVisibility2");
+                this.OnPropertyChanged(nameof(ChangeControlVisibility2));
             }
         }
 
@@ -407,7 +549,7 @@
             set
             {
                 _visibility3 = value;
-                this.OnPropertyChanged("ChangeControlVisibility3");
+                this.OnPropertyChanged(nameof(ChangeControlVisibility3));
             }
         }
     }

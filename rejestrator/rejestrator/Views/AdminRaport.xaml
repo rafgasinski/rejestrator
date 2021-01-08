@@ -153,7 +153,9 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Canvas.ZIndex="2"/>
+            <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Canvas.ZIndex="2">
+                
+            </customcontrols:Menu>
 
             <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Width="150" Height="35" Margin="30,0,0,0" HorizontalAlignment="Center">
                 <CheckBox Foreground="Black" FontFamily="TW Cen MT" FontSize="18" Content="Dane z dzisiaj" IsChecked="{Binding CheckedBool, Mode=OneWay}" Style="{Binding NoStyle}" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -194,7 +196,17 @@
                                        Margin="0,0,0,0"/>
             </Button>
 
-            <customcontrols:Chart Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4"  Margin="75,0,10,0" DataContext="{Binding Instance}"/>
+            <customcontrols:Chart Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4"  Margin="75,0,10,0" DataContext="{Binding Instance}">
+                <customcontrols:Chart.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <Trigger Property="customcontrols:Chart.IsMouseOver" Value="True">
+                                <Setter Property="Canvas.ZIndex" Value="3" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </customcontrols:Chart.Style>
+            </customcontrols:Chart>
         </Grid>
 
     </materialDesign:DialogHost>

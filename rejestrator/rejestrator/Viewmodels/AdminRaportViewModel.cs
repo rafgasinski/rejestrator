@@ -51,7 +51,7 @@
             EmployeeTasksInProgressCounts.Clear();
             EmployeeTasksDoneCounts.Clear();
 
-            for (int i = k; i < 4; i++)
+            for (int i = k; i < 3; i++)
             {
                 if (i < employees.Count())
                 {
@@ -108,7 +108,7 @@
                     EmployeeTasksInProgressCounts.Clear();
                     EmployeeTasksDoneCounts.Clear();
 
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         if (i < employees.Count())
                         {
@@ -151,6 +151,17 @@
                 {
                     if ((k < adminModel.GetEmployeeCount()))
                     {
+                        List<string> ids = new List<string>();
+                        employees.Clear();
+
+                        adminModel.GetEmployeesIDs(ids);
+
+                        for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
+                        {
+                            var temp = ids[i].Split(' ');
+                            employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCount(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeTasksDoneCount(temp[0])));
+                        }
+
                         Page++;
                         EmployeeNames.Clear();
                         EmployeeLogsCounts.Clear();
@@ -158,7 +169,7 @@
                         EmployeeTasksInProgressCounts.Clear();
                         EmployeeTasksDoneCounts.Clear();
 
-                        for (int i = l + 4; i < k + 4; i++)
+                        for (int i = l + 3; i < k + 3; i++)
                         {
                             if (i < employees.Count())
                             {
@@ -169,8 +180,8 @@
                                 EmployeeNames.Add(employees[i].Name);
                             }
                         }
-                        l += 4;
-                        k += 4;
+                        l += 3;
+                        k += 3;
 
                     }
                 }));
@@ -187,6 +198,17 @@
                 {
                     if (l != 0)
                     {
+                        List<string> ids = new List<string>();
+                        employees.Clear();
+
+                        adminModel.GetEmployeesIDs(ids);
+
+                        for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
+                        {
+                            var temp = ids[i].Split(' ');
+                            employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCount(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeTasksDoneCount(temp[0])));
+                        }
+
                         Page--;
                         EmployeeNames.Clear();
                         EmployeeLogsCounts.Clear();
@@ -194,7 +216,7 @@
                         EmployeeTasksInProgressCounts.Clear();
                         EmployeeTasksDoneCounts.Clear();
 
-                        for (int i = l - 4; i < k - 4; i++)
+                        for (int i = l - 3; i < k - 3; i++)
                         {
                             if (i < employees.Count())
                             {
@@ -205,8 +227,8 @@
                                 EmployeeNames.Add(employees[i].Name);
                             }
                         }
-                        l -= 4;
-                        k -= 4;
+                        l -= 3;
+                        k -= 3;
                     }
                 }));
             }
@@ -351,7 +373,7 @@
                     EmployeeTasksInProgressCounts.Clear();
                     EmployeeTasksDoneCounts.Clear();
 
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         if (i < employees.Count())
                         {
@@ -447,6 +469,16 @@
                             adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);
                             employees.Add(new EmployeeChartModel($"{item.ID} {item.Name} {item.Surname}", adminModel.GetEmployeeLogsCount(item.ID), adminModel.GetEmployeeTasksCount(item.ID), adminModel.GetEmployeeTasksInProgressCount(item.ID), adminModel.GetEmployeeTasksDoneCount(item.ID)));
                             AdminEmployeesViewModel.ListOfEmployees.Add($"{item.ID} {item.Name} {item.Surname}");
+
+                            if (EmployeeNames.Count != 3)
+                            {
+                                var tempInt = EmployeeNames.Count;
+                                EmployeeNames.Add($"{item.ID} {item.Name} {item.Surname}");
+                                EmployeeLogsCounts.Add(0);
+                                EmployeeTaskCounts.Add(0);
+                                EmployeeTasksInProgressCounts.Add(0);
+                                EmployeeTasksDoneCounts.Add(0);
+                            }
                         }
                         else
                         {
@@ -467,6 +499,17 @@
 
                         adminModel.InsertTask(words[0], item.Task);
                         AdminEmployeesViewModel.PopulateTaskLists();
+
+                        if(EmployeeNames.Contains(temp))
+                        {
+                            for(int i = 0; i<EmployeeNames.Count; i++)
+                            {
+                                if (EmployeeNames[i] == temp)
+                                {
+                                    EmployeeTaskCounts[i]++;
+                                }
+                            }                            
+                        }
                     }
                 }
             }

@@ -12,6 +12,7 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.ComponentModel;
+    using System.Text.RegularExpressions;
 
     public class AdminDashboardViewModel : ViewModelBase, IPageViewModel
     {
@@ -146,8 +147,16 @@
                 if(item.Task == null)
                 {
                     if(item.ID != null && item.Pin != null && item.Name != null && item.Surname != null)
-                    {
-                        if(!adminModel.EmployeeIDUsed(item.ID))
+                    {                  
+                        if(item.ID.Length != 4)
+                        {
+                            MessageBox.Show("Id jest za krótkie!");
+                        }
+                        else if (item.Pin.Length != 4)
+                        {
+                            MessageBox.Show("Pin jest za krótki");
+                        }
+                        else if (!adminModel.EmployeeIDUsed(item.ID))
                         {
                             string shift = getCurrentItemEmployee();
                             adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);

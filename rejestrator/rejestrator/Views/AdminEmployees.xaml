@@ -67,8 +67,8 @@
             <DataTemplate DataType="{x:Type viewmodels:Employee}">
                 <StackPanel Margin="30">
 
-                    <TextBox x:Name="IDBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id" />
-                    <TextBox x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin" />
+                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id" MaxLength="4" />
+                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin" MaxLength="4"/>
                     <TextBox x:Name="NameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
                     <TextBox x:Name="SurnameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
                     <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
@@ -95,13 +95,13 @@
                         <Button
                                 IsDefault="False"
                                 Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                Width="100"
-                                Height="80"
+                                Width="90"
+                                Height="65"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
                                 ToolTip="Dodaj zadanie"
                                 Command="{Binding TaskAddViewCommand}">
-                            <Image Source="/rejestrator;component/Assets/daily-tasks.png"
+                            <Image Source="/rejestrator;component/Assets/clipboard.png"
                                        Stretch="Fill" />
                         </Button>
                         <Button

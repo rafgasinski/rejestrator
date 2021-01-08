@@ -263,12 +263,20 @@
                 {
                     if (item.ID != null && item.Pin != null && item.Name != null && item.Surname != null)
                     {
-                        if (!adminModel.EmployeeIDUsed(item.ID))
+                        if (item.ID.Length != 4)
+                        {
+                            MessageBox.Show("Id jest za krótkie!");
+                        }
+                        else if (item.Pin.Length != 4)
+                        {
+                            MessageBox.Show("Pin jest za krótki");
+                        }
+                        else if (!adminModel.EmployeeIDUsed(item.ID))
                         {
                             string shift = getCurrentItemEmployee();
                             adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);
                             ListOfEmployees.Add($"{item.ID} {item.Name} {item.Surname}");
-                        }
+                        }                           
                         else
                         {
                             MessageBox.Show("To id zostało już przypisane!");

@@ -23,6 +23,13 @@
         }
         #endregion
 
+        #region Properties
+
+        public string ID { get; set; }
+        public string Name { get; set; }
+
+        #endregion
+
         #region Methods
 
         public void GetTasksAvailable(ref List<TaskAvailableModel> tasksAvailable, string id)

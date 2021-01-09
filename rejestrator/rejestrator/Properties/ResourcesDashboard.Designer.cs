@@ -106,6 +106,24 @@ namespace rejestrator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to s.
+        /// </summary>
+        public static string SessionEnd {
+            get {
+                return ResourceManager.GetString("SessionEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pozostały czas do końca sesji:.
+        /// </summary>
+        public static string SessionStart {
+            get {
+                return ResourceManager.GetString("SessionStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to START.
         /// </summary>
         public static string StartTask {

@@ -132,6 +132,12 @@
   <data name="Logout" xml:space="preserve">
     <value>Wyloguj</value>
   </data>
+  <data name="SessionEnd" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="SessionStart" xml:space="preserve">
+    <value>Pozostały czas do końca sesji:</value>
+  </data>
   <data name="StartTask" xml:space="preserve">
     <value>START</value>
   </data>

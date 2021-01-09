@@ -7,6 +7,7 @@
     using System.Windows.Input;
     using System.Collections.Generic;
     using System;
+    using System.Windows.Threading;
 
     public class DashboardViewModel : ViewModelBase, IPageViewModel
     {
@@ -16,21 +17,52 @@
         public DashboardViewModel()
         {
             emploeeModel = EmployeeModel.Instance;
-            FillLists();
+            Mediator.Subscribe(Token.GO_TO_DASHBOARD, ViewChanged);
         }
 
         #endregion
 
         #region Properties
-        public static string ID { get; set; }
+        private string _id = null;
+        public string ID 
+        { 
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(ID));
+            }
+        }
 
-        public static string Name { get; set; }
+        private string _name = null;
+        public string Name 
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
 
-        public static ObservableCollection<TaskAvailableModel> TasksAvailable { get; set; } = new ObservableCollection<TaskAvailableModel>();
+        private int _time;
+        public int Time
+        {
+            get => _time;
+            set
+            {
+                _time = value;
+                OnPropertyChanged(nameof(Time));
+            }
+        }
 
-        public static ObservableCollection<TaskInProgressModel> TasksInProgress { get; set; } = new ObservableCollection<TaskInProgressModel>();
+        public ObservableCollection<TaskAvailableModel> TasksAvailable { get; set; } = new ObservableCollection<TaskAvailableModel>();
 
-        public static ObservableCollection<TaskDoneModel> TasksDone { get; set; } = new ObservableCollection<TaskDoneModel>();
+        public ObservableCollection<TaskInProgressModel> TasksInProgress { get; set; } = new ObservableCollection<TaskInProgressModel>();
+
+        public ObservableCollection<TaskDoneModel> TasksDone { get; set; } = new ObservableCollection<TaskDoneModel>();
+
+        private DispatcherTimer timer = null;
 
         #endregion
 
@@ -43,6 +75,7 @@
             {
                 return _goToLogin ?? (_goToLogin = new RelayCommand(x =>
                 {
+                    StopTimer();
                     Mediator.Notify(Token.GO_TO_LOGIN);
                 }));
             }
@@ -82,14 +115,52 @@
 
         #region Methods
 
-        public static void FillLists()
+        private void ViewChanged(object obj)
+        {
+            ID = emploeeModel.ID;
+            Name = emploeeModel.Name;
+            StartTimer();
+            FillLists();
+        }
+
+        private void StartTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Tick += new EventHandler(TimerTick);
+            Time = 60;
+
+            timer.Start();
+        }
+
+        private void StopTimer()
+        {
+            if (timer != null)
+            {
+                timer.Stop();
+                timer = null;
+            }
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            Time--;
+
+            if (Time <= 0)
+            {
+                StopTimer();
+                GoToLogin.Execute(null);
+            }
+        }
+
+        private void FillLists()
         {
             FillAvailable();
             FillInProgress();
             FillDone();
         }
 
-        private static void FillAvailable()
+        private void FillAvailable()
         {
             TasksAvailable.Clear();
 
@@ -100,7 +171,7 @@
                 TasksAvailable.Add(taskAvailable);
         }
 
-        private static void FillInProgress()
+        private void FillInProgress()
         {
             TasksInProgress.Clear();
 
@@ -111,7 +182,7 @@
                 TasksInProgress.Add(taskInProgress);
         }
 
-        private static void FillDone()
+        private void FillDone()
         {
             TasksDone.Clear();
 

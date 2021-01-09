@@ -75,7 +75,17 @@
                 <ColumnDefinition Width="0.2*"/>
             </Grid.ColumnDefinitions>
 
-            <customcontrols:FullNameLabel Grid.Column="0" Margin="15"/>
+            <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="0" Margin="15"/>
+
+            <TextBlock Grid.Row="0" Grid.Column="1"  FontFamily="Tw Cen MT" FontSize="20" TextAlignment="Center" Padding="15" Foreground="White">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} {1} {2}">
+                        <Binding Source="{x:Static resx:ResourcesDashboard.SessionStart}"/>
+                        <Binding Path="Time"/>
+                        <Binding Source="{x:Static resx:ResourcesDashboard.SessionEnd}"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
 
             <Button Grid.Column="2" Margin="15" Command="{Binding GoToLogin}" Content="{Binding Source={x:Static resx:ResourcesDashboard.Logout}}" Style="{StaticResource RoundButtonTemplate}"/>
         </Grid>

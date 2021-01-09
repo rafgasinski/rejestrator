@@ -230,18 +230,14 @@
                         {
                             if (loginModel.LoginEmployee(ID, Pin))
                             {
-                                string emploeeName = loginModel.GetEmployeeFullName(ID);
-                                DashboardViewModel.ID = ID;
-                                DashboardViewModel.Name = emploeeName;
-
-                                DashboardViewModel.FillLists();
+                                EmployeeModel.Instance.ID = ID;
+                                EmployeeModel.Instance.Name = loginModel.GetEmployeeFullName(ID);
+                                GoToDashboard.Execute(null);
 
                                 loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
 
                                 ClearFields();
                                 ResetLoginMethod();
-
-                                GoToDashboard.Execute(null);
                             }
                             else
                             {

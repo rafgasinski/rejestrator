@@ -75,7 +75,7 @@
             }
         }
 
-        private static string _selectedEmployee;
+        private static string _selectedEmployee = string.Empty;
         public static string SelectedEmployee
         {
             get { return _selectedEmployee; }
@@ -83,6 +83,16 @@
             {
                 _selectedEmployee = value;
                 PopulateLists();
+            }
+        }
+
+        private Int32 _zindex;
+        public Int32  Zindex
+        {
+            get { return _zindex; }
+            set
+            {
+                _zindex = value;
             }
         }
 
@@ -143,9 +153,38 @@
             {
                 return _editEmployee ?? (_editEmployee = new RelayCommand(x =>
                 {
+                    Zindex = 5;
                     OnEdition();
                 }));
             }
+        }
+
+        private ICommand _deleteEmployee;
+
+        public ICommand DeleteEmployee
+        {
+            get
+            {
+                return _deleteEmployee ?? (_deleteEmployee = new RelayCommand(x =>
+                {                
+                    Delete();
+                    ClearPassword();
+                }));
+            }
+        }
+
+        private ICommand _deletePanel;
+
+        public ICommand ShowDeletePanel
+        {
+            get { return _deletePanel; }
+            set { _deletePanel = value; }
+        }
+
+        public ICommand HideDeletePanel
+        {
+            get { return _deletePanel; }
+            set { _deletePanel = value; }
         }
 
         private ICommand _addCommand;
@@ -182,7 +221,7 @@
             {
                 return _reload ?? (_reload = new RelayCommand(x =>
                 {
-                    
+
                     List<string> employeeList = new List<string>();
 
                     adminModel.GetEmployeesFullNamesandID(employeeList);
@@ -197,6 +236,15 @@
 
                     PopulateLists();
 
+                    /*<string> employeeList = new List<string>();
+
+                    ListOfEmployees.Clear();
+
+                    adminModel.GetEmployeesFullNamesandID(employeeList);
+
+                    foreach (var employee in employeeList)
+                        ListOfEmployees.Add(employee);*/
+
                 }));
             }
         }
@@ -210,12 +258,14 @@
 
             _myCommand = new MyCommand(FuncToCall, FuncToEvaluate);
             _myCommand2 = new MyCommand(FuncToCall2, FuncToEvaluate);
+            _deletePanel = new MyCommand(FuncToCall3, FuncToEvaluate);
 
         }
         #endregion
 
         #region Properties
         public static string Name { get; set; }
+        public static string Username { get; set; }
         #endregion
 
         private ICommand _goToLogin;
@@ -325,13 +375,21 @@
                         {
                             MessageBox.Show("Id jest za krótkie!");
                         }
-                        else if (!adminModel.AdminIDUsed(item.IDadmin))
+                        else if (adminModel.AdminIDUsed(item.IDadmin) && adminModel.AdminUsernameUsed(item.AdminUsername))
                         {
-                            adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
+                            MessageBox.Show("Id oraz nazwa użytkoniwka została już przypisana!");
+                        }
+                        else if (adminModel.AdminIDUsed(item.IDadmin))
+                        {
+                            MessageBox.Show("To id zostało już przypisane!");
+                        }
+                        else if (adminModel.AdminUsernameUsed(item.AdminUsername))
+                        {
+                            MessageBox.Show("Nazwa użytkownka została już użyta!");
                         }
                         else
                         {
-                            MessageBox.Show("To id zostało już przypisane!");
+                            adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
                         }
                     }
                     else
@@ -354,69 +412,113 @@
 
         private async void OnEdition()
         {
-            var item = new Employee();
-            var tempEmployee = SelectedEmployee.Split(' ');
+            var item = new Employee();           
 
-            item.ID = tempEmployee[0];
-            item.Pin = adminModel.GetEmployeePin(item.ID);
-            item.Name = tempEmployee[1];
-            item.Surname = tempEmployee[2];
-            Employee.TwoWays = new ObservableCollection<string> { "Dzienny", "Nocny" };
-
-            await DialogHost.Show(item, "EditDialogHost");
-            if (IsDialogEditOpen == true)
+            if(SelectedEmployee != string.Empty)
             {
-                if (item.ID != string.Empty && item.Pin != string.Empty && item.Name != string.Empty && item.Surname != string.Empty)
-                {
-                    if (!item.ID.All(char.IsDigit) && !item.Pin.All(char.IsDigit))
-                    {
-                        MessageBox.Show("Id i pin nie składają się tylko z cyfr!");
-                    }
-                    else if (!item.ID.All(char.IsDigit))
-                    {
-                        MessageBox.Show("Id nie składa się tylko z cyfr!");
-                    }
-                    else if (!item.Pin.All(char.IsDigit))
-                    {
-                        MessageBox.Show("Pin nie składa się tylko z cyfr!");
-                    }
-                    else if (item.Pin.Length != 4 && item.ID.Length != 4)
-                    {
-                        MessageBox.Show("Id oraz pin są za krótkie!");
-                    }
-                    else if (item.ID.Length != 4)
-                    {
-                        MessageBox.Show("Id jest za krótkie!");
-                    }
-                    else if (item.Pin.Length != 4)
-                    {
-                        MessageBox.Show("Pin jest za krótki!");
-                    }
-                    else if (!adminModel.EmployeeIDUsed(item.ID) || item.ID == tempEmployee[0])
-                    {
-                        adminModel.EditEmployeeUpdate(tempEmployee[0], item.ID, item.Pin, item.Name, item.Surname, getCurrentItemEmployee());
+                var tempEmployee = SelectedEmployee.Split(' ');
 
-                        for (int i = 0; i < ListOfEmployees.Count; i++)
+                item.ID = tempEmployee[0];
+                item.Pin = adminModel.GetEmployeePin(item.ID);
+                item.Name = tempEmployee[1];
+                item.Surname = tempEmployee[2];
+                Employee.TwoWays = new ObservableCollection<string> { "Dzienny", "Nocny" };
+
+                await DialogHost.Show(item, "EditDialogHost");
+                if (IsDialogEditOpen == true)
+                {
+                    if (item.ID != string.Empty && item.Pin != string.Empty && item.Name != string.Empty && item.Surname != string.Empty)
+                    {
+                        if (!item.ID.All(char.IsDigit) && !item.Pin.All(char.IsDigit))
                         {
-                            if(ListOfEmployees[i] == SelectedEmployee)
+                            MessageBox.Show("Id i pin nie składają się tylko z cyfr!");
+                        }
+                        else if (!item.ID.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Id nie składa się tylko z cyfr!");
+                        }
+                        else if (!item.Pin.All(char.IsDigit))
+                        {
+                            MessageBox.Show("Pin nie składa się tylko z cyfr!");
+                        }
+                        else if (item.Pin.Length != 4 && item.ID.Length != 4)
+                        {
+                            MessageBox.Show("Id oraz pin są za krótkie!");
+                        }
+                        else if (item.ID.Length != 4)
+                        {
+                            MessageBox.Show("Id jest za krótkie!");
+                        }
+                        else if (item.Pin.Length != 4)
+                        {
+                            MessageBox.Show("Pin jest za krótki!");
+                        }
+                        else if (!adminModel.EmployeeIDUsed(item.ID) || item.ID == tempEmployee[0])
+                        {
+                            adminModel.EditEmployeeUpdate(tempEmployee[0], item.ID, item.Pin, item.Name, item.Surname, getCurrentItemEmployee());
+
+                            for (int i = 0; i < ListOfEmployees.Count; i++)
                             {
-                                ListOfEmployees[i] = $"{item.ID} {item.Name} {item.Surname}";
-                                break;
+                                if (ListOfEmployees[i] == SelectedEmployee)
+                                {
+                                    ListOfEmployees[i] = $"{item.ID} {item.Name} {item.Surname}";
+                                    break;
+                                }
                             }
+                        }
+                        else
+                        {
+                            MessageBox.Show("To id zostało już przypisane!");
                         }
                     }
                     else
                     {
-                        MessageBox.Show("To id zostało już przypisane!");
-                    }                  
+                        MessageBox.Show("Pozostawiono puste pola.");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Pozostawiono puste pola.");
-                }
-            }           
+            }        
 
+            Zindex = -1;
             IsDialogEditOpen = false;
+        }
+
+        private void Delete()
+        {
+            if (PasswordConfirm == adminModel.CanAdminDeleteemployee(Username) && PasswordConfirm != string.Empty)
+            {
+                var tempEmployee = SelectedEmployee.Split(' ');
+                adminModel.DeleteEmployee(tempEmployee[0]);
+                ListOfEmployees.Remove(SelectedEmployee);
+                this.ChangeControlVisibility4 = Visibility.Collapsed;
+            }
+            else
+            {
+                this.ChangeControlVisibility4 = Visibility.Collapsed;
+
+                MessageBox.Show("Niepoprawne hasło, nie usunięto pracownika.");
+            }
+        }
+
+        private string _passwordConfirm = string.Empty;
+        public string PasswordConfirm
+        {
+            get { return _passwordConfirm; }
+            set
+            {
+                _passwordConfirm = value;
+                OnPropertyChanged1(nameof(PasswordConfirm));
+            }
+        }
+
+        private string _passwordHint = "Hasło";
+        public string PasswordHint
+        {
+            get { return _passwordHint; }
+            set
+            {
+                _passwordHint = value;
+                OnPropertyChanged1(nameof(PasswordHint));
+            }
         }
 
         private static bool _IsDialogEditOpen;
@@ -512,6 +614,28 @@
             }
         }
 
+        private void FuncToCall3(object context)
+        {
+            if (SelectedEmployee != null && SelectedEmployee != string.Empty)
+            {
+                ClearPassword();
+
+                if (this.ChangeControlVisibility4 == Visibility.Collapsed)
+                {
+                    this.ChangeControlVisibility4 = Visibility.Visible;
+                }
+                else
+                {
+                    this.ChangeControlVisibility4 = Visibility.Collapsed;
+                }
+            }
+        }
+
+        private void ClearPassword()
+        {
+            PasswordConfirm = string.Empty;
+        }
+
         private bool FuncToEvaluate(object context)
         {
             return true;
@@ -550,6 +674,18 @@
             {
                 _visibility3 = value;
                 this.OnPropertyChanged(nameof(ChangeControlVisibility3));
+            }
+        }
+
+        private Visibility _visibility4 = Visibility.Collapsed;
+
+        public Visibility ChangeControlVisibility4
+        {
+            get { return _visibility4; }
+            set
+            {
+                _visibility4 = value;
+                this.OnPropertyChanged(nameof(ChangeControlVisibility4));
             }
         }
     }

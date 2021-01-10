@@ -188,6 +188,7 @@
 
                         AdminDashboardViewModel.Name = adminName;
                         AdminEmployeesViewModel.Name = adminName;
+                        AdminEmployeesViewModel.Username = Username;
                         AdminRaportViewModel.Name = adminName;
 
                         AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();

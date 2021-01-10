@@ -105,6 +105,9 @@
     <Compile Include="CustomControls\Chart.xaml.cs">
       <DependentUpon>Chart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\DeleteButton.xaml.cs">
+      <DependentUpon>DeleteButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,10 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Page Include="CustomControls\Chart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\DeleteButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -311,8 +318,13 @@
     <Resource Include="Assets\settings.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\delete.png" />
     <Resource Include="Assets\pages.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\padlock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

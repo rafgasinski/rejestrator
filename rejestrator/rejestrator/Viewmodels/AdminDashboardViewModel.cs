@@ -184,7 +184,7 @@
                             MessageBox.Show("To id zostało już przypisane!");
                         }
                     }
-                    else if(item.IDadmin != string.Empty && item.AdminUsername != string.Empty && item.AdminPassword != string.Empty && item.AdminName != string.Empty && item.AdminSurname != string.Empty)
+                    else if (item.IDadmin != string.Empty && item.AdminUsername != string.Empty && item.AdminPassword != string.Empty && item.AdminName != string.Empty && item.AdminSurname != string.Empty)
                     {
                         if (!item.IDadmin.All(char.IsDigit))
                         {
@@ -194,13 +194,21 @@
                         {
                             MessageBox.Show("Id jest za krótkie!");
                         }
-                        else if (!adminModel.AdminIDUsed(item.IDadmin))
+                        else if (adminModel.AdminIDUsed(item.IDadmin) && adminModel.AdminUsernameUsed(item.AdminUsername))
                         {
-                            adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
+                            MessageBox.Show("Id oraz nazwa użytkoniwka została już przypisana!");
+                        }
+                        else if (adminModel.AdminIDUsed(item.IDadmin))
+                        {
+                            MessageBox.Show("To id zostało już przypisane!");
+                        }
+                        else if (adminModel.AdminUsernameUsed(item.AdminUsername))
+                        {
+                            MessageBox.Show("Nazwa użytkownka została już użyta!");
                         }
                         else
                         {
-                            MessageBox.Show("To id zostało już przypisane!");
+                            adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
                         }
                     }
                     else

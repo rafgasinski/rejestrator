@@ -289,10 +289,26 @@
                 Database.CloseConnection();
             }
         }
+        public void DeleteEmployee(string oldId)
+        {
+            string query = @"DELETE FROM `logs` WHERE `employeeID`=@oldId; 
+                            DELETE FROM `employees` WHERE `employeeID`=@oldId;
+                            DELETE FROM `tasks` WHERE `employeeID`=@oldId; 
+                            DELETE FROM `tasksinprogress` WHERE `employeeID`=@oldId; 
+                            DELETE FROM `tasksdone` WHERE `employeeID`=@oldId;";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@oldId", oldId);
+                myCommand.CommandText = query;
+                myCommand.ExecuteNonQuery();
+                Database.CloseConnection();
+            }
+        }
 
         public bool AdminIDUsed(string id)
         {
-            bool employeeId = false;
+            bool adminID = false;
 
             string query = @"SELECT COUNT(`id`) FROM `administrators` WHERE `administratorID`=@id GROUP BY `id`";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
@@ -304,11 +320,53 @@
                 if (result.HasRows)
                 {
                     result.Read();
-                    employeeId = true;
+                    adminID = true;
                 }
                 Database.CloseConnection();
             }
-            return employeeId;
+            return adminID;
+        }
+
+        public bool AdminUsernameUsed(string username)
+        {
+            bool adminUsername = false;
+
+            string query = @"SELECT COUNT(`username`) FROM `administrators` WHERE `username`=@username GROUP BY `username`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@username", username);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    adminUsername = true;
+                }
+                Database.CloseConnection();
+            }
+            return adminUsername;
+        }
+
+        public string CanAdminDeleteemployee(string username)
+        {
+            string canDeleteEmployee = string.Empty;
+
+            string query = @"SELECT password FROM `administrators` WHERE `username`=@username";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@username", username);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    canDeleteEmployee = result.GetString(0);
+                }
+                Database.CloseConnection();
+            }
+            return canDeleteEmployee;
         }
 
         public void InsertAdmin(string id, string username, string password, string name, string surname)

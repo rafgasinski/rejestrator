@@ -39,13 +39,13 @@
                                 IsDefault="True"
                                 Width="80"
                                 Grid.Column="0"
-                                Command = "{Binding CloseDialogEditAndEditDatabase}"/>
+                                Command ="{Binding CloseDialogEditAndEditDatabase}"/>
                         <Button Content="_Anuluj" 
-                            IsCancel="True"
-                            Width="80"
-                            Margin="10,0,0,0"
-                            Grid.Column="1"
-                            Command="{Binding CloseDialogEdit}"/>
+                                IsCancel="True"
+                                Width="80"
+                                Margin="10,0,0,0"
+                                Grid.Column="1"
+                                Command="{Binding CloseDialogEdit}"/>
 
                         </Grid>
                 </StackPanel>

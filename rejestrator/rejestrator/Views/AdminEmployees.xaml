@@ -443,7 +443,7 @@
                 </ListView.View>
             </ListView>
 
-                        <ListView Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="1" Margin="75,10,0,15"
+                        <ListView Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="14" Margin="75,10,0,15"
             BorderThickness="0" Width="830" Grid.Column="0" Grid.ColumnSpan="4" ScrollViewer.VerticalScrollBarVisibility="Hidden"
             ItemsSource="{Binding TasksInProgress}">
                 <ListView.ItemContainerStyle>

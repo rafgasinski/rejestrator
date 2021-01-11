@@ -21,7 +21,6 @@
         public static AdminRaportViewModel Instance { get { return _instance; } }
         List<EmployeeChartModel> employees = new List<EmployeeChartModel>();
         public int leftEmployeeNumber, rightEmployeeNumber;
-        public int realleftEmployeeNumber, realrightEmployeeNumber;
 
         #region Singleton
         private AdminModel adminModel = null;
@@ -283,6 +282,9 @@
 
                     adminModel.GetEmployeesIDs(ids);
 
+                    leftEmployeeNumber = 0;
+                    rightEmployeeNumber = 0;
+
                     for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
                     {
                         var temp = ids[i].Split(' ');
@@ -295,65 +297,30 @@
                     EmployeeTasksInProgressCounts.Clear();
                     EmployeeTasksDoneCounts.Clear();
 
-                    if (leftEmployeeNumber == 0 && (rightEmployeeNumber == 0 || rightEmployeeNumber == 4))
-                    {                      
-                        for (int i = 0; i < 4; i++)
-                        {
-                            if (i < employees.Count())
-                            {
-                                EmployeeLogsCounts.Add(employees[i].NumberofLogins);
-                                EmployeeTaskCounts.Add(employees[i].NumberofTasks);
-                                EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
-                                EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
-                                EmployeeNames.Add(employees[i].Name);
-
-                                if (rightEmployeeNumber < 4)
-                                {
-                                    rightEmployeeNumber++;
-                                    realrightEmployeeNumber++;
-                                }
-                            }
-                        }
-
-                        Page = 1;
-                        CheckedBool = false;
-
-                        PrevOnEnabled = false;
-                        NextOnEnabled = false;
-
-                        if (employees.Count > rightEmployeeNumber)
-                            NextOnEnabled = true;
-
-                        Page = 1;
-                    }
-                    else
+                    for (int i = 0; i < 4; i++)
                     {
-                        if ((realrightEmployeeNumber < adminModel.GetEmployeeCount()))
-                        {                      
-                            for (int i = leftEmployeeNumber; i < rightEmployeeNumber; i++)
-                            {
-                                if (i < employees.Count())
-                                {
-                                    EmployeeLogsCounts.Add(employees[i].NumberofLogins);
-                                    EmployeeTaskCounts.Add(employees[i].NumberofTasks);
-                                    EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
-                                    EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
-                                    EmployeeNames.Add(employees[i].Name);
-                                }
-                            }
-                            leftEmployeeNumber += 4;
-                            rightEmployeeNumber += 4;
+                        if (i < employees.Count())
+                        {
+                            EmployeeLogsCounts.Add(employees[i].NumberofLogins);
+                            EmployeeTaskCounts.Add(employees[i].NumberofTasks);
+                            EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
+                            EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
+                            EmployeeNames.Add(employees[i].Name);
 
-                            CheckedBool = false;
-
-                            PrevOnEnabled = true;
-                            NextOnEnabled = false;
-
-                            if (employees.Count > rightEmployeeNumber)
-                                NextOnEnabled = true;
-
+                            if (rightEmployeeNumber < 4)
+                                rightEmployeeNumber++;
                         }
                     }
+
+                    CheckedBool = false;
+
+                    PrevOnEnabled = false;
+                    NextOnEnabled = false;
+
+                    if (employees.Count > rightEmployeeNumber)
+                        NextOnEnabled = true;
+
+                    Page = 1;
 
                 }));
             }
@@ -368,10 +335,8 @@
                 return _nextOnClick ?? (_nextOnClick = new RelayCommand(x =>
                 {
                     if(rightEmployeeNumber == 0)
-                    {
                         rightEmployeeNumber = EmployeeNames.Count();
-                        realrightEmployeeNumber = EmployeeNames.Count();
-                    }
+
                     if ((rightEmployeeNumber < adminModel.GetEmployeeCount()))
                     {
                         List<string> ids = new List<string>();
@@ -401,11 +366,8 @@
                                 EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
                                 EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
                                 EmployeeNames.Add(employees[i].Name);
-
-                                realrightEmployeeNumber++;
                             }
                         }
-                        realleftEmployeeNumber += 4;
                         leftEmployeeNumber += 4;
                         rightEmployeeNumber += 4;
 
@@ -459,8 +421,6 @@
                                 EmployeeNames.Add(employees[i].Name);                               
                             }
                         }
-                        realleftEmployeeNumber -= 4;
-                        realrightEmployeeNumber -= 4;
 
                         leftEmployeeNumber -= 4;
                         rightEmployeeNumber -= 4;
@@ -484,6 +444,7 @@
             {
                 return _goToLogin ?? (_goToLogin = new RelayCommand(x =>
                 {
+                    Reload.Execute(null);
                     Mediator.Notify(Token.GO_TO_LOGIN);
                 }));
             }
@@ -497,6 +458,7 @@
             {
                 return _goToAdminDashboard ?? (_goToAdminDashboard = new RelayCommand(x =>
                 {
+                    Reload.Execute(null);
                     Mediator.Notify(Token.GO_TO_ADMIN_DASHBOARD);
                 }));
             }
@@ -510,6 +472,7 @@
             {
                 return _goToAdminEmployees ?? (_goToAdminEmployees = new RelayCommand(x =>
                 {
+                    Reload.Execute(null);
                     Mediator.Notify(Token.GO_TO_ADMIN_EMPLOYEES);
                 }));
             }

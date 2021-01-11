@@ -250,7 +250,7 @@
                                        Margin="0,0,0,0"/>
                 </Button>
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Width="24" Height="21" Text="{Binding Page}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="TW Cen MT" FontSize="20" Margin="266,25,35,24"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Width="41" Height="21" Text="{Binding Page}" TextAlignment="Center" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="TW Cen MT" FontSize="20" Margin="255,25,29,24"/>
 
                 <Button ToolTip="Generuj raport.pdf" Command="{Binding GenerateRaport}" Grid.Row="0" Grid.Column="4" Width="65" Height="40" Background="Transparent" HorizontalAlignment="Center" BorderThickness="0" Grid.ColumnSpan="4">
                     <Image Source="/rejestrator;component/Assets/file.png"

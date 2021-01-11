@@ -271,11 +271,11 @@
                 }
                 else if (item.PinConfirm == string.Empty)
                 {
-                    MessageBox.Show("Nie wpisano hasła.");
+                    MessageBox.Show("Nie wpisano pinu.");
                 }
                 else
                 {
-                    MessageBox.Show("Niepoprawne hasło.");
+                    MessageBox.Show("Niepoprawny pin.");
                 }
             }
         }

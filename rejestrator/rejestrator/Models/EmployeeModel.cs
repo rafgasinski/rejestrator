@@ -155,25 +155,39 @@
                 Database.CloseConnection();
             }
 
-            string query2 = @"INSERT INTO `tasksdone`(`employeeID`, `task`, `startdate`, `enddate`, `time`) VALUES (@employeeID, @task, @startDate, @endDate, @time)";
-            using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
+            if (Shift == "Dzienny")
             {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@employeeID", employeeID);
-                myCommand.Parameters.AddWithValue("@task", task.Task);
-                myCommand.Parameters.AddWithValue("@startDate", task.Date);
-                myCommand.Parameters.AddWithValue("@endDate", DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
-
-                if(Shift == "Dzienny")
+                string query2 = @"INSERT INTO `tasksdone`(`employeeID`, `task`, `startdate`, `enddate`, `time`) VALUES (@employeeID, @task, @startDate, @endDate, @time)";
+                using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
+                {
+                    Database.OpenConnection();
+                    myCommand.Parameters.AddWithValue("@employeeID", employeeID);
+                    myCommand.Parameters.AddWithValue("@task", task.Task);
+                    myCommand.Parameters.AddWithValue("@startDate", task.Date);
+                    myCommand.Parameters.AddWithValue("@endDate", DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
                     myCommand.Parameters.AddWithValue("@time", Calc(DateStart, DateTime.Now, 8, 0, 18, 0));
-                else
+                    myCommand.CommandText = query2;
+                    MySqlDataReader result = myCommand.ExecuteReader();
+                    Database.CloseConnection();
+                }
+            }
+            else if(Shift == "Nocny")
+            {
+                string query2 = @"INSERT INTO `tasksdone`(`employeeID`, `task`, `startdate`, `enddate`, `time`) VALUES (@employeeID, @task, @startDate, @endDate, @time)";
+                using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
+                {
+                    Database.OpenConnection();
+                    myCommand.Parameters.AddWithValue("@employeeID", employeeID);
+                    myCommand.Parameters.AddWithValue("@task", task.Task);
+                    myCommand.Parameters.AddWithValue("@startDate", task.Date);
+                    myCommand.Parameters.AddWithValue("@endDate", DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
                     myCommand.Parameters.AddWithValue("@time", Calc(DateStart, DateTime.Now, 18, 0, 4, 0));
-                myCommand.CommandText = query2;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                Database.CloseConnection();
+                    myCommand.CommandText = query2;
+                    MySqlDataReader result = myCommand.ExecuteReader();
+                    Database.CloseConnection();
+                }
             }
 
-            var lol = Calc(DateStart, DateTime.Now, 18, 0, 4, 0);
         }
 
         public string CanEmployeeStartEndTask(string id)

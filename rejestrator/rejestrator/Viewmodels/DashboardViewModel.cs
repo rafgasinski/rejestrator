@@ -3,20 +3,23 @@
     using rejestrator.Models;
     using rejestrator.Viewmodels.BaseViewModel;
     using rejestrator.Viewmodels.Navigator;
+    using rejestrator.Utils;
     using System.Collections.ObjectModel;
     using System.Windows.Input;
     using System.Collections.Generic;
     using System;
     using System.Windows.Threading;
+    using MaterialDesignThemes.Wpf;
+    using System.Windows;
 
     public class DashboardViewModel : ViewModelBase, IPageViewModel
     {
         #region Singleton
 
-        private static EmployeeModel emploeeModel = null;
+        private static EmployeeModel employeeModel = null;
         public DashboardViewModel()
         {
-            emploeeModel = EmployeeModel.Instance;
+            employeeModel = EmployeeModel.Instance;
             Mediator.Subscribe(Token.GO_TO_DASHBOARD, ViewChanged);
         }
 
@@ -45,6 +48,17 @@
             }
         }
 
+        private string _shift = null;
+        public string Shift
+        {
+            get => _shift;
+            set
+            {
+                _shift = value;
+                OnPropertyChanged(nameof(Shift));
+            }
+        }
+
         private int _time;
         public int Time
         {
@@ -53,6 +67,28 @@
             {
                 _time = value;
                 OnPropertyChanged(nameof(Time));
+            }
+        }
+
+        private string _passwordConfirm = string.Empty;
+        public string PinConfirm
+        {
+            get { return _passwordConfirm; }
+            set
+            {
+                _passwordConfirm = value;
+                OnPropertyChanged(nameof(PinConfirm));
+            }
+        }
+
+        private bool _okButtonEnabled = false;
+        public bool OkButtonEnabled
+        {
+            get { return _okButtonEnabled; }
+            set
+            {
+                _okButtonEnabled = value;
+                OnPropertyChanged(nameof(OkButtonEnabled));
             }
         }
 
@@ -89,9 +125,7 @@
                 return _startTask ?? (_startTask = new RelayCommand(x =>
                 {
                     TaskAvailableModel task = x as TaskAvailableModel;
-                    emploeeModel.StartTask(task, ID);
-                    FillAvailable();
-                    FillInProgress();
+                    StartTaskDialog(task);
                 }));
             }
         }
@@ -104,9 +138,40 @@
                 return _endTask ?? (_endTask = new RelayCommand(x =>
                 {
                     TaskInProgressModel task = x as TaskInProgressModel;
-                    emploeeModel.EndTask(task, ID);
-                    FillInProgress();
-                    FillDone();
+                    EndTaskDialog(task);
+                }));
+            }
+        }
+
+        private ICommand _addDigit;
+
+        public ICommand AddDigit
+        {
+            get
+            {
+                return _addDigit ?? (_addDigit = new RelayCommand(x =>
+                {
+                    if (PinConfirm.Length < ProgramInfo.PIN_LENGTH)
+                        PinConfirm = $"{PinConfirm}{x}";
+                    if (PinConfirm.Length == ProgramInfo.PIN_LENGTH)
+                        OkButtonEnabled = true;
+
+                }));
+            }
+        }
+
+        private ICommand _eraseDigit;
+
+        public ICommand EraseDigit
+        {
+            get
+            {
+                return _eraseDigit ?? (_eraseDigit = new RelayCommand(x =>
+                {
+                    if (Utils.Between(PinConfirm.Length, 0, ProgramInfo.PIN_LENGTH))
+                        PinConfirm = PinConfirm.Substring(0, PinConfirm.Length - 1);
+
+                    OkButtonEnabled = false;
                 }));
             }
         }
@@ -117,8 +182,9 @@
 
         private void ViewChanged(object obj)
         {
-            ID = emploeeModel.ID;
-            Name = emploeeModel.Name;
+            ID = employeeModel.ID;
+            Name = employeeModel.Name;
+            Shift = employeeModel.Shift;
             StartTimer();
             FillLists();
         }
@@ -165,7 +231,7 @@
             TasksAvailable.Clear();
 
             List<TaskAvailableModel> tasksAvailable = new List<TaskAvailableModel>();
-            emploeeModel.GetTasksAvailable(ref tasksAvailable, ID);
+            employeeModel.GetTasksAvailable(ref tasksAvailable, ID);
 
             foreach (var taskAvailable in tasksAvailable)
                 TasksAvailable.Add(taskAvailable);
@@ -176,7 +242,7 @@
             TasksInProgress.Clear();
 
             List<TaskInProgressModel> tasksInProgress = new List<TaskInProgressModel>();
-            emploeeModel.GetTasksInProgress(ref tasksInProgress, ID);
+            employeeModel.GetTasksInProgress(ref tasksInProgress, ID);
 
             foreach (var taskInProgress in tasksInProgress)
                 TasksInProgress.Add(taskInProgress);
@@ -187,10 +253,52 @@
             TasksDone.Clear();
 
             List<TaskDoneModel> tasksDone = new List<TaskDoneModel>();
-            emploeeModel.GetTasksDone(ref tasksDone, ID);
+            employeeModel.GetTasksDone(ref tasksDone, ID, DateTime.Now.ToString("dd/MM/yyyy"), DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy"));
 
             foreach (var taskDone in tasksDone)
                 TasksDone.Add(taskDone);
+        }
+
+        private async void StartTaskDialog(TaskAvailableModel task)
+        {
+            if (await DialogHost.Show(new DashboardViewModel()) is DashboardViewModel item)
+            {
+                if (item.PinConfirm == employeeModel.CanEmployeeStartEndTask(ID) && item.PinConfirm != string.Empty)
+                {                
+                    employeeModel.StartTask(task, ID);
+                    FillAvailable();
+                    FillInProgress();
+                }
+                else if (item.PinConfirm == string.Empty)
+                {
+                    MessageBox.Show("Nie wpisano hasła.");
+                }
+                else
+                {
+                    MessageBox.Show("Niepoprawne hasło.");
+                }
+            }
+        }
+
+        private async void EndTaskDialog(TaskInProgressModel task)
+        {
+            if (await DialogHost.Show(new DashboardViewModel()) is DashboardViewModel item)
+            {
+                if (item.PinConfirm == employeeModel.CanEmployeeStartEndTask(ID) && item.PinConfirm != string.Empty)
+                {
+                    employeeModel.EndTask(task, ID);
+                    FillInProgress();
+                    FillDone();
+                }
+                else if (item.PinConfirm == string.Empty)
+                {
+                    MessageBox.Show("Nie wpisano pinu.");
+                }
+                else
+                {
+                    MessageBox.Show("Niepoprawny pin.");
+                }
+            }
         }
 
         #endregion

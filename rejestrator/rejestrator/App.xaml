@@ -9,7 +9,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="20" Background="{TemplateBinding Background}" BorderThickness ="1">
+                        <Border CornerRadius="20" Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness ="1">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="Hand"/>
                         </Border>
                     </ControlTemplate>

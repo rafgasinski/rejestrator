@@ -26,18 +26,18 @@
 
     </UserControl.Resources>
 
-    <materialDesign:DialogHost>
+    <materialDesign:DialogHost Identifier="AddDialogHost" IsOpen="{Binding IsDialogAddOpen}">
         <materialDesign:DialogHost.DialogContentTemplate>
             <DataTemplate DataType="{x:Type viewmodels:Employee}">
                 <StackPanel Margin="30">
 
-                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4"/>
+                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4" />
                     <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin (4 cyfry)" MaxLength="4"/>
                     <TextBox x:Name="NameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
                     <TextBox x:Name="SurnameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
-                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
+                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
 
-                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="80" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True"/>
+                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="80" FontSize="16" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True"/>
                     <TextBox x:Name="TaskBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Task}" FontSize="16" materialDesign:HintAssist.Hint="Zadanie" />
 
                     <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDAdminBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding IDadmin}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4"/>
@@ -45,8 +45,7 @@
                     <PasswordBox x:Name="AdminPasswrodBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Path=AdminPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16" materialDesign:HintAssist.Hint="Hasło"/>
                     <TextBox x:Name="AdminNameBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding AdminName}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
                     <TextBox x:Name="AdminSurnameBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding AdminSurname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
-          
-                    
+
                     <Grid Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -95,12 +94,12 @@
                                 Height="65"
                                 Margin="10,0,0,0"
                                 Grid.Column="3"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                Command="{Binding CloseDialogAdd}">
                             <Image Source="/rejestrator;component/Assets/cancel1.png"
                                        Stretch="Fill" />
                         </Button>
 
-                        <Grid Margin="0,0,0,0" Grid.Column="1">
+                        <Grid Margin="0,0,0,0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
@@ -111,50 +110,78 @@
                                 IsDefault="False"
                                 Width="80"
                                 Grid.Column="0"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                CommandParameter="{Binding}"/>
+                                Command="{Binding CloseDialogAddAndAddToDatabase}"/>
                             <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                Command="{Binding CloseDialogAdd}"/>
                             <Button Content="_Dodaj" 
                                 Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsDefault="False"
                                 Width="80"
                                 Grid.Column="0"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                CommandParameter="{Binding}"/>
+                                Command="{Binding CloseDialogAddAndAddToDatabase}"/>
                             <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                Command="{Binding CloseDialogAdd}"/>
                             <Button Content="_Dodaj" 
                                 Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsDefault="False"
                                 Width="80"
                                 Grid.Column="0"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                CommandParameter="{Binding}"/>
+                                Command="{Binding CloseDialogAddAndAddToDatabase}"/>
                             <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                Command="{Binding CloseDialogAdd}"/>
+
                         </Grid>
                     </Grid>
                 </StackPanel>
             </DataTemplate>
         </materialDesign:DialogHost.DialogContentTemplate>
+        <materialDesign:DialogHost Identifier="AddAdminDialogHost" IsOpen="{Binding IsDialogAdminOpen}">
+            <materialDesign:DialogHost.DialogContentTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:Employee}">
+                    <StackPanel Margin="30">
 
-        <Grid Background="Black">
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Image Source="/rejestrator;component/Assets/padlock.png" Width="32" Height="32" Grid.RowSpan="2" Margin="20,0" />
+
+                            <Label FontFamily="TW Cen MT" FontSize="15" Grid.Column="1" Margin="0,0,10,0" Content="Aby dodać administratora wpisz hasło:"/>
+                            <PasswordBox utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Path=PasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="14" materialDesign:HintAssist.Hint="Hasło" Grid.Column="1" Grid.Row="1" Margin="3,0,10,0"/>
+
+                            <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+                                <Button FontFamily="TW Cen MT" IsDefault="True" MinWidth="60" Margin="0,0,10,0" Content="Dodaj" Command ="{Binding CloseDialogAddAdminAndAdd}" Background="Gainsboro"/>
+                                <Button FontFamily="TW Cen MT" IsCancel="True" MinWidth="50" Margin="0,0,10,0" Content="Anuluj" Command="{Binding CloseDialogAddAdmin}" Background="Gainsboro"/>
+                            </WrapPanel>
+                        </Grid>
+
+                    </StackPanel>
+                </DataTemplate>
+            </materialDesign:DialogHost.DialogContentTemplate>
+
+            <Grid Background="Black">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
@@ -174,7 +201,7 @@
                    FontSize="26"
                    Text="Logowania:" />
 
-            <customcontrols:ListingControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="70,10,0,0" Canvas.ZIndex="1"
+            <customcontrols:ListingControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="70,10,0,11" Canvas.ZIndex="1"
             DataContext="{Binding EmployeeListingViewModel}"
             FontSize="14" >
                 <customcontrols:ListingControl.Style>
@@ -189,7 +216,7 @@
             </customcontrols:ListingControl>
 
         </Grid>
-
+        </materialDesign:DialogHost>
     </materialDesign:DialogHost>
 
 </UserControl>

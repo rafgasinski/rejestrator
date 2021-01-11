@@ -47,18 +47,18 @@
 
     </UserControl.Resources>
 
-    <materialDesign:DialogHost>
+    <materialDesign:DialogHost Identifier="AddDialogHost" IsOpen="{Binding IsDialogAddOpen}">
         <materialDesign:DialogHost.DialogContentTemplate>
             <DataTemplate DataType="{x:Type viewmodels:Employee}">
                 <StackPanel Margin="30">
 
                     <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4" />
-                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin (4 cyfry)" MaxLength="4" />
+                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="PinBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin (4 cyfry)" MaxLength="4"/>
                     <TextBox x:Name="NameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
                     <TextBox x:Name="SurnameBox" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
-                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
+                    <ComboBox x:Name="ComboBoxEmployeeWorktime" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="30" FontSize="16" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
 
-                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="80" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Hidden" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True"/>
+                    <ComboBox x:Name="ComboBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="80" FontSize="16" materialDesign:HintAssist.Hint="Pracownik" ItemsSource="{Binding Path=Queries}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True"/>
                     <TextBox x:Name="TaskBox" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Task}" FontSize="16" materialDesign:HintAssist.Hint="Zadanie" />
 
                     <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDAdminBox" Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding IDadmin}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4"/>
@@ -115,7 +115,7 @@
                                 Height="65"
                                 Margin="10,0,0,0"
                                 Grid.Column="3"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                Command="{Binding CloseDialogAdd}">
                             <Image Source="/rejestrator;component/Assets/cancel1.png"
                                        Stretch="Fill" />
                         </Button>
@@ -131,117 +131,146 @@
                                 IsDefault="False"
                                 Width="80"
                                 Grid.Column="0"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                CommandParameter="{Binding}"/>
+                                Command="{Binding CloseDialogAddAndAddToDatabase}"/>
                             <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                Command="{Binding CloseDialogAdd}"/>
                             <Button Content="_Dodaj" 
                                 Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsDefault="False"
                                 Width="80"
                                 Grid.Column="0"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                CommandParameter="{Binding}"/>
+                                Command="{Binding CloseDialogAddAndAddToDatabase}"/>
                             <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                Command="{Binding CloseDialogAdd}"/>
                             <Button Content="_Dodaj" 
                                 Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsDefault="False"
                                 Width="80"
                                 Grid.Column="0"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                CommandParameter="{Binding}"/>
+                                Command="{Binding CloseDialogAddAndAddToDatabase}"/>
                             <Button Content="_Anuluj" 
                                 Visibility="{Binding ChangeControlVisibility4,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                                Command="{Binding CloseDialogAdd}"/>
+
                         </Grid>
                     </Grid>
                 </StackPanel>
             </DataTemplate>
         </materialDesign:DialogHost.DialogContentTemplate>
+        <materialDesign:DialogHost Identifier="AddAdminDialogHost" IsOpen="{Binding IsDialogAdminOpen}">
+            <materialDesign:DialogHost.DialogContentTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:Employee}">
+                    <StackPanel Margin="30">
 
-        <Grid Background="Black">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="50"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-            <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Canvas.ZIndex="2">
-                
-            </customcontrols:Menu>
+                            <Image Source="/rejestrator;component/Assets/padlock.png" Width="32" Height="32" Grid.RowSpan="2" Margin="20,0" />
 
-            <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Width="150" Height="35" Margin="30,0,0,0" HorizontalAlignment="Center">
-                <CheckBox Foreground="Black" FontFamily="TW Cen MT" FontSize="18" Content="Dane z dzisiaj" IsChecked="{Binding CheckedBool, Mode=OneWay}" Style="{Binding NoStyle}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Checked">
-                            <i:InvokeCommandAction Command="{Binding Checked}"/>
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="Unchecked">
-                            <i:InvokeCommandAction Command="{Binding Unchecked}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <CheckBox.ToolTip>
-                        <ToolTip>
-                            <StackPanel>
-                                <TextBlock>Pobierz dzisiejsze dane logowania</TextBlock>
-                                <TextBlock>oraz wykonanych dziś zadań.</TextBlock>
-                            </StackPanel>
-                        </ToolTip>
-                    </CheckBox.ToolTip>
-                </CheckBox>
-            </Border>
-            <Button Command="{Binding PrevOnClick}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Width="70" Height="40" Background="Transparent" BorderThickness="0" Margin="180,10,65,10">
-                <Image Source="/rejestrator;component/Assets/left-arrow.png"
+                            <Label FontFamily="TW Cen MT" FontSize="15" Grid.Column="1" Margin="0,0,10,0" Content="Aby dodać administratora wpisz hasło:"/>
+                            <PasswordBox utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Path=PasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="14" materialDesign:HintAssist.Hint="Hasło" Grid.Column="1" Grid.Row="1" Margin="3,0,10,0"/>
+
+                            <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+                                <Button FontFamily="TW Cen MT" IsDefault="True" MinWidth="60" Margin="0,0,10,0" Content="Dodaj" Command ="{Binding CloseDialogAddAdminAndAdd}" Background="Gainsboro"/>
+                                <Button FontFamily="TW Cen MT" IsCancel="True" MinWidth="50" Margin="0,0,10,0" Content="Anuluj" Command="{Binding CloseDialogAddAdmin}" Background="Gainsboro"/>
+                            </WrapPanel>
+                        </Grid>
+
+                    </StackPanel>
+                </DataTemplate>
+            </materialDesign:DialogHost.DialogContentTemplate>
+
+            <Grid Background="Black">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Canvas.ZIndex="2">
+
+                </customcontrols:Menu>
+
+                <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Width="150" Height="35" Margin="30,0,0,0" HorizontalAlignment="Center">
+                    <CheckBox Foreground="Black" FontFamily="TW Cen MT" FontSize="18" Content="Dane z dzisiaj" IsChecked="{Binding CheckedBool, Mode=OneWay}" Style="{Binding NoStyle}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding Checked}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="Unchecked">
+                                <i:InvokeCommandAction Command="{Binding Unchecked}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <CheckBox.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock>Pobierz dzisiejsze dane logowania</TextBlock>
+                                    <TextBlock>oraz wykonanych dziś zadań.</TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+                </Border>
+                <Button Command="{Binding PrevOnClick}" IsEnabled="{Binding PrevOnEnabled}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Width="70" Height="40" Background="Transparent" BorderThickness="0" Margin="180,10,65,10">
+                    <Image Source="/rejestrator;component/Assets/left-arrow.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
-            </Button>
-            <Button Command="{Binding NextOnClick}" Grid.Row="0" Grid.Column="1" Width="70" Height="40" Background="Transparent" HorizontalAlignment="Center" BorderThickness="0" Margin="265,10,305,10" Grid.ColumnSpan="2">
-                <Image Source="/rejestrator;component/Assets/right-arrow.png"
+                </Button>
+                <Button Command="{Binding NextOnClick}" IsEnabled="{Binding NextOnEnabled}" Grid.Row="0" Grid.Column="1" Width="70" Height="40" Background="Transparent" HorizontalAlignment="Center" BorderThickness="0" Margin="296,15,284,15" Grid.ColumnSpan="2">
+                    <Image Source="/rejestrator;component/Assets/right-arrow.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
-            </Button>
+                </Button>
 
-            <TextBlock Grid.Row="0" Grid.Column="1" Width="14" Height="21" Text="{Binding Page}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="TW Cen MT" FontSize="20" Margin="254,25,51,24"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Width="24" Height="21" Text="{Binding Page}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="TW Cen MT" FontSize="20" Margin="266,25,35,24"/>
 
-            <Button ToolTip="Generuj raport.pdf" Command="{Binding GenerateRaport}" Grid.Row="0" Grid.Column="4" Width="65" Height="40" Background="Transparent" HorizontalAlignment="Center" BorderThickness="0" Grid.ColumnSpan="4">
-                <Image Source="/rejestrator;component/Assets/file.png"
+                <Button ToolTip="Generuj raport.pdf" Command="{Binding GenerateRaport}" Grid.Row="0" Grid.Column="4" Width="65" Height="40" Background="Transparent" HorizontalAlignment="Center" BorderThickness="0" Grid.ColumnSpan="4">
+                    <Image Source="/rejestrator;component/Assets/file.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
-            </Button>
+                </Button>
 
-            <customcontrols:Chart Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4"  Margin="75,0,10,0" DataContext="{Binding Instance}">
-                <customcontrols:Chart.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <Trigger Property="customcontrols:Chart.IsMouseOver" Value="True">
-                                <Setter Property="Canvas.ZIndex" Value="3" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </customcontrols:Chart.Style>
-            </customcontrols:Chart>
-        </Grid>
+                <customcontrols:Chart Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4"  Margin="75,0,10,0" DataContext="{Binding Instance}">
+                    <customcontrols:Chart.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <Trigger Property="customcontrols:Chart.IsMouseOver" Value="True">
+                                    <Setter Property="Canvas.ZIndex" Value="3" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </customcontrols:Chart.Style>
+                </customcontrols:Chart>
+            </Grid>
 
+        </materialDesign:DialogHost>
     </materialDesign:DialogHost>
 </UserControl>

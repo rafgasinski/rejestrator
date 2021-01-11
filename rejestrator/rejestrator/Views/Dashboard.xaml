@@ -6,20 +6,18 @@
              xmlns:local="clr-namespace:rejestrator.Views"
              xmlns:resx="clr-namespace:rejestrator.Properties"
              xmlns:customcontrols="clr-namespace:rejestrator.CustomControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:utils="clr-namespace:rejestrator.Utils"
+             xmlns:viewmodels="clr-namespace:rejestrator.Viewmodels"   
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
     <UserControl.Resources>
-        <Style x:Key="TaskList" TargetType="ListView">
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Margin" Value="15"/>
-            <Setter Property="Background" Value="Black"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="BorderBrush" Value="White"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <Style x:Key="Header" TargetType="GridViewColumnHeader">
+            <Style x:Key="Header" TargetType="GridViewColumnHeader">
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="Background" Value="Black"/>
@@ -56,97 +54,163 @@
             <Setter Property="FontFamily" Value="TW Cen MT"/>
             <Setter Property="FontSize" Value="16"/>
         </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
+    
+    <materialDesign:DialogHost>
+        <materialDesign:DialogHost.DialogContentTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
+                <StackPanel Margin="30">
 
-    <Grid Background="Black">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.15*"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid Grid.ColumnSpan="3" Grid.Row="0">
+                    <Grid Margin="0" Width="250">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Image Source="/rejestrator;component/Assets/padlock.png" Width="32" Height="32" Grid.RowSpan="2" Margin="10,0" />
+
+                        <Label FontFamily="TW Cen MT" FontSize="15" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,10,0" Content="Aby potwierdzić wpisz pin:" />
+                        <PasswordBox Focusable="False" utils:PasswordBoxAssistant.BindPassword="True" utils:PasswordBoxAssistant.BoundPassword="{Binding Path=PinConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="14" materialDesign:HintAssist.Hint="Pin" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="3,0,33,0"/>
+
+                        <WrapPanel Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,10,0,0">
+                            <Button FontFamily="TW Cen MT" IsDefault="True" MinWidth="60" Margin="0,0,10,0" Content="Ok" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" IsEnabled="{Binding OkButtonEnabled}" CommandParameter="{Binding}" Background="Gainsboro"/>
+                            <Button FontFamily="TW Cen MT" IsCancel="True" MinWidth="50" Margin="0,0,10,0" Content="Anuluj" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Background="Gainsboro"/>
+                        </WrapPanel>
+
+                        <Grid Margin="0,15,0,0" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Button x:Name="btn1" Style="{StaticResource RoundButtonTemplate}" Margin="0,0,5,5" Cursor="Hand" Grid.Row="0" Grid.Column="0" Content="1" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn1, Path=Content}"/>
+                            <Button x:Name="btn2" Style="{StaticResource RoundButtonTemplate}" Margin="5,0,5,5" Cursor="Hand" Grid.Row="0" Grid.Column="1" Content="2" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn2, Path=Content}"/>
+                            <Button x:Name="btn3" Style="{StaticResource RoundButtonTemplate}" Margin="5,0,5,5" Cursor="Hand" Grid.Row="0" Grid.Column="2" Content="3" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn3, Path=Content}"/>
+
+                            <Button x:Name="btn4" Style="{StaticResource RoundButtonTemplate}" Margin="0,0,5,5" Cursor="Hand" Grid.Row="1" Grid.Column="0" Content="4" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn4, Path=Content}"/>
+                            <Button x:Name="btn5" Style="{StaticResource RoundButtonTemplate}" Margin="5,0,5,5" Cursor="Hand" Grid.Row="1" Grid.Column="1" Content="5" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn5, Path=Content}"/>
+                            <Button x:Name="btn6" Style="{StaticResource RoundButtonTemplate}" Margin="5,0,5,5" Cursor="Hand" Grid.Row="1" Grid.Column="2" Content="6" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn6, Path=Content}"/>
+
+                            <Button x:Name="btn7" Style="{StaticResource RoundButtonTemplate}" Margin="0,0,5,5" Cursor="Hand" Grid.Row="2" Grid.Column="0" Content="7" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn7, Path=Content}"/>
+                            <Button x:Name="btn8" Style="{StaticResource RoundButtonTemplate}" Margin="5,0,5,5" Cursor="Hand" Grid.Row="2" Grid.Column="1" Content="8" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn8, Path=Content}"/>
+                            <Button x:Name="btn9" Style="{StaticResource RoundButtonTemplate}" Margin="5,0,5,5" Cursor="Hand" Grid.Row="2" Grid.Column="2" Content="9" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn9, Path=Content}"/>
+
+                            <Button x:Name="btn0" Style="{StaticResource RoundButtonTemplate}" Margin="5,0,5,5" Cursor="Hand" Grid.Row="3" Grid.Column="1" Content="0" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontFamily="Tw Cen MT" FontSize="16" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=btn0, Path=Content}"/>
+
+                            <Button x:Name="btnEraseDigit" Command="{Binding EraseDigit}" Margin="5,0,5,5" Style="{StaticResource RoundButtonTemplate}" Cursor="Hand" Grid.Row="3" Grid.Column="3" Content="🡐" Height="30" VerticalAlignment="Center" Width="30" HorizontalAlignment="Center" Background="White" FontSize="16" FontFamily="Tw Cen MT"/>
+
+                        </Grid>
+                    </Grid>
+
+                </StackPanel>
+            </DataTemplate>
+        </materialDesign:DialogHost.DialogContentTemplate>
+
+        <Grid Background="Black">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.15*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.ColumnSpan="3" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="0.2*"/>
+                </Grid.ColumnDefinitions>
 
-            <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="0" Margin="15"/>
+                <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="0" Margin="5,10,10,10" VerticalAlignment="Center"/>
 
-            <TextBlock Grid.Row="0" Grid.Column="1"  FontFamily="Tw Cen MT" FontSize="20" TextAlignment="Center" Padding="15" Foreground="White">
-                <TextBlock.Text>
-                    <MultiBinding StringFormat="{}{0} {1} {2}">
-                        <Binding Source="{x:Static resx:ResourcesDashboard.SessionStart}"/>
-                        <Binding Path="Time"/>
-                        <Binding Source="{x:Static resx:ResourcesDashboard.SessionEnd}"/>
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="1"  FontFamily="Tw Cen MT" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" Width="300" HorizontalAlignment="Right" Margin="0,0,0,0">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} {1} {2}">
+                            <Binding Source="{x:Static resx:ResourcesDashboard.SessionStart}"/>
+                            <Binding Path="Time"/>
+                            <Binding Source="{x:Static resx:ResourcesDashboard.SessionEnd}"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
 
-            <Button Grid.Column="2" Margin="15" Command="{Binding GoToLogin}" Content="{Binding Source={x:Static resx:ResourcesDashboard.Logout}}" Style="{StaticResource RoundButtonTemplate}"/>
+                <Button Grid.Column="2" Height="45" VerticalAlignment="Center" Margin="15,0,15,0" FontFamily="Tw Cen MT" FontSize="20" Background="White" Command="{Binding GoToLogin}" Content="{Binding Source={x:Static resx:ResourcesDashboard.Logout}}" Style="{StaticResource RoundButtonTemplate}"/>
+
+            </Grid>
+
+            <ListView x:Name="AvailableTasksList" Padding="0" Margin="5" BorderBrush="White" BorderThickness="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" FontFamily="TW Cen MT" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=TasksAvailable, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource ItemStyle}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="{Binding ElementName=AvailableTasksList, Path=ActualWidth}">
+                            <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.Available}}" Style="{StaticResource Header}"/>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Width="300" Margin="0,5,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="0.3*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Task}" Style="{StaticResource TaskContent}" FontSize="12"/>
+                                        <Button Grid.Column="1" Background="White" FontSize="12" Command="{Binding ElementName=AvailableTasksList, Path=DataContext.StartTask}" CommandParameter="{Binding}" Content="{Binding Source={x:Static resx:ResourcesDashboard.StartTask}}" Style="{StaticResource TaskButton}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <ListView x:Name="InProgressTasksList" Padding="0" Margin="5" BorderBrush="White" BorderThickness="2" ScrollViewer.VerticalScrollBarVisibility="Hidden" FontFamily="TW Cen MT" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding TasksInProgress, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource ItemStyle}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="{Binding ElementName=InProgressTasksList, Path=ActualWidth}">
+                            <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.InProgress}}" Style="{StaticResource Header}"/>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Width="300" Margin="0,5,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="0.32*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Task}" Style="{StaticResource TaskContent}" FontSize="12"/>
+                                        <Button Background="White" FontSize="12" Grid.Column="1" Command="{Binding ElementName=AvailableTasksList, Path=DataContext.EndTask}" CommandParameter="{Binding}" Content="{Binding Source={x:Static resx:ResourcesDashboard.EndTask}}" Style="{StaticResource TaskButton}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <ListView x:Name="DoneTasksList" Padding="0" Margin="5" BorderBrush="White" BorderThickness="2" ScrollViewer.VerticalScrollBarVisibility="Hidden" FontFamily="TW Cen MT" Grid.Row="1" Grid.Column="2" ItemsSource="{Binding TasksDone, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource ItemStyle}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="300">
+                            <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.Done}}" Style="{StaticResource Header}"/>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Task}" Style="{StaticResource TaskContent}" Margin="0,5,0,0" FontSize="12"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
-
-        <ListView x:Name="AvailableTasksList" Grid.Row="1" Grid.Column="0" Style="{StaticResource TaskList}" ItemsSource="{Binding Path=TasksAvailable, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource ItemStyle}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="{Binding ElementName=AvailableTasksList, Path=ActualWidth}">
-                        <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.Available}}" Style="{StaticResource Header}"/>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid Width="{Binding ElementName=AvailableTasksList, Path=ActualWidth}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="0.4*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding Task}" Style="{StaticResource TaskContent}"/>
-                                    <Button Grid.Column="1" Command="{Binding ElementName=AvailableTasksList, Path=DataContext.StartTask}" CommandParameter="{Binding}" Content="{Binding Source={x:Static resx:ResourcesDashboard.StartTask}}" Style="{StaticResource TaskButton}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
-
-        <ListView x:Name="InProgressTasksList" Grid.Row="1" Grid.Column="1" Style="{StaticResource TaskList}" ItemsSource="{Binding TasksInProgress, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource ItemStyle}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="{Binding ElementName=InProgressTasksList, Path=ActualWidth}">
-                        <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.InProgress}}" Style="{StaticResource Header}"/>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid Width="{Binding ElementName=InProgressTasksList, Path=ActualWidth}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="0.5*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding Task}" Style="{StaticResource TaskContent}"/>
-                                    <Button Grid.Column="1" Command="{Binding ElementName=AvailableTasksList, Path=DataContext.EndTask}" CommandParameter="{Binding}" Content="{Binding Source={x:Static resx:ResourcesDashboard.EndTask}}" Style="{StaticResource TaskButton}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
-
-        <ListView x:Name="DoneTasksList" Grid.Row="1" Grid.Column="2" Style="{StaticResource TaskList}" ItemsSource="{Binding TasksDone, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource ItemStyle}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="{Binding ElementName=DoneTasksList, Path=ActualWidth}">
-                        <GridViewColumnHeader Content="{Binding Source={x:Static resx:ResourcesDashboard.Done}}" Style="{StaticResource Header}"/>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Task}" Style="{StaticResource TaskContent}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </Grid>
+    </materialDesign:DialogHost>
 </UserControl>

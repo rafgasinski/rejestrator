@@ -93,8 +93,9 @@
             set
             {
                 _zindex = value;
+                OnPropertyChanged(nameof(Zindex));
             }
-        }
+        }  
 
         public static void PopulateLists()
         {
@@ -104,6 +105,40 @@
             TasksDone.Clear();
 
             if(_selectedEmployee != null)
+            {
+                string[] words = _selectedEmployee.Split(' ');
+
+                List<string> datesToAdd = new List<string>();
+                List<string> tasksToAdd = new List<string>();
+                List<TaskInProgressModel> taskInProgressToAdd = new List<TaskInProgressModel>();
+                List<TaskDoneModel> tasksDoneToAdd = new List<TaskDoneModel>();
+
+                Instance.adminModel.GetLogsDatesForEmployee(datesToAdd, words[0]);
+                Instance.adminModel.GetLogsTasksForEmployee(tasksToAdd, words[0]);
+                Instance.adminModel.GetLogsTasksInProgressForEmployee(taskInProgressToAdd, words[0]);
+                Instance.adminModel.GetLogsTasksDoneForEmployee(tasksDoneToAdd, words[0]);
+
+                foreach (var date in datesToAdd)
+                    Dates.Add(date);
+                foreach (var task in tasksToAdd)
+                    Tasks.Add(task);
+                foreach (var task in taskInProgressToAdd)
+                    TasksInProgress.Add(task);
+                foreach (var task in tasksDoneToAdd)
+                    TasksDone.Add(task);
+            }
+        }
+
+        public void PopulateListsOnViewChanged(object obj)
+        {
+            Reload.Execute(null);
+
+            Dates.Clear();
+            Tasks.Clear();
+            TasksInProgress.Clear();
+            TasksDone.Clear();
+
+            if (_selectedEmployee != null)
             {
                 string[] words = _selectedEmployee.Split(' ');
 
@@ -168,23 +203,8 @@
                 return _deleteEmployee ?? (_deleteEmployee = new RelayCommand(x =>
                 {                
                     Delete();
-                    ClearPassword();
                 }));
             }
-        }
-
-        private ICommand _deletePanel;
-
-        public ICommand ShowDeletePanel
-        {
-            get { return _deletePanel; }
-            set { _deletePanel = value; }
-        }
-
-        public ICommand HideDeletePanel
-        {
-            get { return _deletePanel; }
-            set { _deletePanel = value; }
         }
 
         private ICommand _addCommand;
@@ -233,18 +253,15 @@
                             ListOfEmployees.Add(employee);
                         }
                     }
+                    foreach (var employee in ListOfEmployees)
+                    {
+                        if (!employeeList.Contains(employee))
+                        {
+                            ListOfEmployees.Remove(employee);
+                        }
+                    }
 
                     PopulateLists();
-
-                    /*<string> employeeList = new List<string>();
-
-                    ListOfEmployees.Clear();
-
-                    adminModel.GetEmployeesFullNamesandID(employeeList);
-
-                    foreach (var employee in employeeList)
-                        ListOfEmployees.Add(employee);*/
-
                 }));
             }
         }
@@ -258,8 +275,8 @@
 
             _myCommand = new MyCommand(FuncToCall, FuncToEvaluate);
             _myCommand2 = new MyCommand(FuncToCall2, FuncToEvaluate);
-            _deletePanel = new MyCommand(FuncToCall3, FuncToEvaluate);
 
+            Mediator.Subscribe(Token.GO_TO_ADMIN_EMPLOYEES, PopulateListsOnViewChanged);
         }
         #endregion
 
@@ -288,7 +305,6 @@
             {
                 return _goToAdminDashboard ?? (_goToAdminDashboard = new RelayCommand(x =>
                 {
-                    AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
                     Mediator.Notify(Token.GO_TO_ADMIN_DASHBOARD);
                 }));
             }
@@ -389,7 +405,27 @@
                         }
                         else
                         {
-                            adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
+                            IsDialogAddOpen = false;
+                            await DialogHost.Show(item, "AddAdminDialogHost");
+                            if (IsDialogAdminOpen == true)
+                            {
+                                if (item.PasswordConfirm == adminModel.CanAdminDeleteemployee(Username) && item.PasswordConfirm != string.Empty)
+                                {
+                                    adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
+                                }
+                                else if (item.PasswordConfirm == string.Empty)
+                                {
+                                    MessageBox.Show("Nie wpisano hasła.");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Niepoprawne hasło, nie dodano administratora.");
+                                }                          
+                            }
+
+                            IsDialogAdminOpen = false;
+                            AdminRaportViewModel.IsDialogAdminOpen = false;
+                            AdminDashboardViewModel.IsDialogAdminOpen = false;
                         }
                     }
                     else
@@ -407,6 +443,8 @@
                 }
             }
             IsDialogAddOpen = false;
+            AdminRaportViewModel.IsDialogAddOpen = false;
+            AdminDashboardViewModel.IsDialogAddOpen = false;
 
         }
 
@@ -482,33 +520,34 @@
             IsDialogEditOpen = false;
         }
 
-        private void Delete()
+        private async void Delete()
         {
-            if (PasswordConfirm == adminModel.CanAdminDeleteemployee(Username) && PasswordConfirm != string.Empty)
-            {
-                var tempEmployee = SelectedEmployee.Split(' ');
-                adminModel.DeleteEmployee(tempEmployee[0]);
-                ListOfEmployees.Remove(SelectedEmployee);
-                this.ChangeControlVisibility4 = Visibility.Collapsed;
-            }
-            else
-            {
-                this.ChangeControlVisibility4 = Visibility.Collapsed;
+            var item = new Employee();
 
-                MessageBox.Show("Niepoprawne hasło, nie usunięto pracownika.");
-            }
-        }
-
-        private string _passwordConfirm = string.Empty;
-        public string PasswordConfirm
-        {
-            get { return _passwordConfirm; }
-            set
+            if (SelectedEmployee != string.Empty)
             {
-                _passwordConfirm = value;
-                OnPropertyChanged1(nameof(PasswordConfirm));
+                await DialogHost.Show(item, "DeleteDialogHost");
+                if (IsDialogDeleteOpen == true)
+                {
+                    if (item.PasswordConfirm == adminModel.CanAdminDeleteemployee(Username) && item.PasswordConfirm != string.Empty)
+                    {
+                        var tempEmployee = SelectedEmployee.Split(' ');
+                        adminModel.DeleteEmployee(tempEmployee[0]);
+                        ListOfEmployees.Remove(SelectedEmployee);
+                    }
+                    else if(item.PasswordConfirm == string.Empty)
+                    {
+                        MessageBox.Show("Nie wpisano hasła.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Niepoprawne hasło, nie usunięto pracownika.");
+                    }
+                }
             }
-        }
+
+            IsDialogDeleteOpen = false;
+        }     
 
         private string _passwordHint = "Hasło";
         public string PasswordHint
@@ -529,6 +568,28 @@
             {
                 _IsDialogEditOpen = value;
                 OnPropertyChanged1(nameof(IsDialogEditOpen));
+            }
+        }
+
+        private static bool _IsDialogDeleteOpen;
+        public static bool IsDialogDeleteOpen
+        {
+            get { return _IsDialogDeleteOpen; }
+            set
+            {
+                _IsDialogDeleteOpen = value;
+                OnPropertyChanged1(nameof(IsDialogDeleteOpen));
+            }
+        }
+
+        private static bool _IsDialogAdminOpen;
+        public static bool IsDialogAdminOpen
+        {
+            get { return _IsDialogAdminOpen; }
+            set
+            {
+                _IsDialogAdminOpen = value;
+                OnPropertyChanged1(nameof(IsDialogAdminOpen));
             }
         }
 
@@ -614,28 +675,6 @@
             }
         }
 
-        private void FuncToCall3(object context)
-        {
-            if (SelectedEmployee != null && SelectedEmployee != string.Empty)
-            {
-                ClearPassword();
-
-                if (this.ChangeControlVisibility4 == Visibility.Collapsed)
-                {
-                    this.ChangeControlVisibility4 = Visibility.Visible;
-                }
-                else
-                {
-                    this.ChangeControlVisibility4 = Visibility.Collapsed;
-                }
-            }
-        }
-
-        private void ClearPassword()
-        {
-            PasswordConfirm = string.Empty;
-        }
-
         private bool FuncToEvaluate(object context)
         {
             return true;
@@ -674,18 +713,6 @@
             {
                 _visibility3 = value;
                 this.OnPropertyChanged(nameof(ChangeControlVisibility3));
-            }
-        }
-
-        private Visibility _visibility4 = Visibility.Collapsed;
-
-        public Visibility ChangeControlVisibility4
-        {
-            get { return _visibility4; }
-            set
-            {
-                _visibility4 = value;
-                this.OnPropertyChanged(nameof(ChangeControlVisibility4));
             }
         }
     }

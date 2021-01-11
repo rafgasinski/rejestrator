@@ -3,65 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:viewmodels="clr-namespace:rejestrator.Viewmodels"
              xmlns:local="clr-namespace:rejestrator.CustomControls"
-             mc:Ignorable="d"
-             Height="500" Width="900">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
-    <materialDesign:DialogHost Identifier="EditDialogHost" IsOpen="{Binding IsDialogEditOpen}">
-        <materialDesign:DialogHost.DialogContentTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:Employee}">
-                <StackPanel Margin="30">
-
-                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDBox" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4" />
-                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="PinBox" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin (4 cyfry)" MaxLength="4"/>
-                    <TextBox x:Name="NameBox" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
-                    <TextBox x:Name="SurnameBox" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
-                    <ComboBox x:Name="ComboBoxEmployeeWorktime" MaxDropDownHeight="30" FontSize="16" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
-                    
-                    <Grid Margin="0,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
-                        <Button Content="_Edytuj" 
-                                IsDefault="True"
-                                Width="80"
-                                Grid.Column="0"
-                                Command ="{Binding CloseDialogEditAndEditDatabase}"/>
-                        <Button Content="_Anuluj" 
-                                IsCancel="True"
-                                Width="80"
-                                Margin="10,0,0,0"
-                                Grid.Column="1"
-                                Command="{Binding CloseDialogEdit}"/>
-
-                        </Grid>
-                </StackPanel>
-            </DataTemplate>
-        </materialDesign:DialogHost.DialogContentTemplate>
-
-        <Grid Background="Transparent">
-
-            <Button Command="{Binding EditEmployee}" Background="Transparent" Cursor="Hand" BorderThickness="0" ToolTip="Edytuj" Width="60" Margin="370,23,470,445">
-                <StackPanel Orientation="Horizontal">
-
-                    <Image Source="/rejestrator;component/Assets/pages.png"
-                                       Stretch="Fill"
-                                       Margin="0,0,0,0"/>
-                </StackPanel>
-            </Button>
-        </Grid>
-    </materialDesign:DialogHost>
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+            
+    </Grid>
 </UserControl>

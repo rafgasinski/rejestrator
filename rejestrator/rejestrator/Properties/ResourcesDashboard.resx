@@ -124,7 +124,7 @@
     <value>ZAKOŃCZONE</value>
   </data>
   <data name="EndTask" xml:space="preserve">
-    <value>ZAKOŃCZ</value>
+    <value>KONIEC</value>
   </data>
   <data name="InProgress" xml:space="preserve">
     <value>W TRAKCIE</value>

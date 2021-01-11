@@ -187,11 +187,11 @@
                         string adminName = loginModel.GetAdminFullName(Username);
 
                         AdminDashboardViewModel.Name = adminName;
+                        AdminDashboardViewModel.Username = Username;
                         AdminEmployeesViewModel.Name = adminName;
                         AdminEmployeesViewModel.Username = Username;
                         AdminRaportViewModel.Name = adminName;
-
-                        AdminDashboardViewModel.EmployeeListingViewModel = new EmployeeListingViewModel();
+                        AdminRaportViewModel.Username = Username;
 
                         LeftAvailable ^= true;
                         RightAvailable ^= true;
@@ -233,6 +233,7 @@
                             {
                                 EmployeeModel.Instance.ID = ID;
                                 EmployeeModel.Instance.Name = loginModel.GetEmployeeFullName(ID);
+                                EmployeeModel.Instance.Shift = loginModel.GetEmployeeShift(ID);
                                 GoToDashboard.Execute(null);
 
                                 loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/MM/yyyy HH:mm"));

@@ -27,6 +27,7 @@
 
         public string ID { get; set; }
         public string Name { get; set; }
+        public string Shift { get; set; }
 
         #endregion
 
@@ -73,15 +74,16 @@
             }
         }
 
-        public void GetTasksDone(ref List<TaskDoneModel> tasksDone, string id)
+        public void GetTasksDone(ref List<TaskDoneModel> tasksDone, string id, string date, string date2)
         {
-
-            string query = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id ORDER BY enddate DESC ";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+       
+            string query1 = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id AND `enddate` LIKE @pattern ORDER BY enddate DESC ";
+            using (MySqlCommand myCommand = new MySqlCommand(query1, Database.DBConnection()))
             {
                 Database.OpenConnection();
                 myCommand.Parameters.AddWithValue("@id", id);
-                myCommand.CommandText = query;
+                myCommand.Parameters.AddWithValue("@pattern", $"{date2}{'%'}");
+                myCommand.CommandText = query1;
                 MySqlDataReader result = myCommand.ExecuteReader();
                 if (result.HasRows)
                 {
@@ -91,6 +93,26 @@
                     }
                 }
                 Database.CloseConnection();
+
+            }
+
+            string query2 = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id AND `enddate` LIKE @pattern ORDER BY enddate DESC ";
+            using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.Parameters.AddWithValue("@pattern", $"{date}{'%'}");
+                myCommand.CommandText = query2;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        tasksDone.Add(new TaskDoneModel(result.GetInt32(0), result.GetString(1), result.GetString(2), result.GetString(3), result.GetString(4)));
+                    }
+                }
+                Database.CloseConnection();
+
             }
         }
 
@@ -121,6 +143,8 @@
 
         public void EndTask(TaskInProgressModel task, string employeeID)
         {
+            DateTime DateStart = DateTime.Parse(task.Date);
+
             string query1 = @"DELETE FROM `tasksinprogress` WHERE `id`=@id";
             using (MySqlCommand myCommand = new MySqlCommand(query1, Database.DBConnection()))
             {
@@ -140,11 +164,218 @@
                 myCommand.Parameters.AddWithValue("@startDate", task.Date);
                 myCommand.Parameters.AddWithValue("@endDate", DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
 
-                //TIME NEEDS TO BE CHANGED HERE
-                myCommand.Parameters.AddWithValue("@time", "0");
+                if(Shift == "Dzienny")
+                    myCommand.Parameters.AddWithValue("@time", Calc(DateStart, DateTime.Now, 8, 0, 18, 0));
+                else
+                    myCommand.Parameters.AddWithValue("@time", Calc(DateStart, DateTime.Now, 18, 0, 4, 0));
                 myCommand.CommandText = query2;
                 MySqlDataReader result = myCommand.ExecuteReader();
                 Database.CloseConnection();
+            }
+
+            var lol = Calc(DateStart, DateTime.Now, 18, 0, 4, 0);
+        }
+
+        public string CanEmployeeStartEndTask(string id)
+        {
+            string canEmployeeStartEndTask = string.Empty;
+
+            string query = @"SELECT pin FROM `employees` WHERE `employeeID`=@id";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    canEmployeeStartEndTask = result.GetString(0);
+                }
+                Database.CloseConnection();
+            }
+            return canEmployeeStartEndTask;
+        }
+
+        public bool CheckIfLoggedOnThisDay(string date, string employeeID)
+        {
+            bool loggenIn = false;
+
+            string query = @"SELECT date FROM `logs` WHERE `employeeID`=@id AND date LIKE @pattern ORDER BY date ASC LIMIT 1";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", employeeID);
+                myCommand.Parameters.AddWithValue("@pattern", $"{date}{'%'}");
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    loggenIn = true;
+                }
+                Database.CloseConnection();
+            }
+
+            return loggenIn;
+        }
+
+        public string Calc(DateTime start, DateTime end, int startHour, int startMin, int endHour, int endMin)
+        {
+            if (start > end)
+                throw new Exception();
+
+            TimeSpan shfitStart = new TimeSpan(startHour, startMin, 0);
+            TimeSpan shiftEnd = new TimeSpan(endHour, endMin, 0);
+
+
+            if (start.Date == end.Date && start.TimeOfDay >= shiftEnd && end.TimeOfDay <= shfitStart)
+            {
+                return "0";
+            }
+
+            if (start.Date == end.Date)
+            {
+                if (start.TimeOfDay > shfitStart || end.TimeOfDay < shiftEnd)
+                {
+                    var totalMin = (end - start).TotalMinutes;
+
+                    var hours1 = 0;
+                    for (double i = totalMin; i >= 60; i -= 60)
+                    {
+                        hours1++;
+                        totalMin -= 60;
+                    }
+
+                    if (hours1 != 0 && Math.Round(totalMin, 0) != 0)
+                    {
+                        return $"{hours1}{"h"} {Math.Round(totalMin, 0)}{"min."}";
+                    }
+                    else if (hours1 != 0 && Math.Round(totalMin, 0) == 0)
+                    {
+                        return $"{hours1}{"h"}";
+                    }
+                    else if (Math.Round(totalMin, 0) != 0)
+                    {
+                        return $"{Math.Round(totalMin, 0)}{"min."}";
+                    }
+                    else
+                    {
+                        return $"{Math.Round(totalMin * 60, 0)} {"sek."}";
+                    }
+                }
+
+                double total = 0;
+                if (start.TimeOfDay < shiftEnd)
+                {
+                    total += (shiftEnd - start.TimeOfDay).TotalMinutes;
+                }
+                if (end.TimeOfDay > shfitStart)
+                {
+                    total += (end.TimeOfDay - shfitStart).TotalMinutes;
+                }
+
+                var hours = 0;
+                for (double i = total; i >= 60; i -= 60)
+                {
+                    hours++;
+                    total -= 60;
+                }
+
+                if (hours != 0 && Math.Round(total, 0) != 0)
+                {
+                    return $"{hours}{"h"} {Math.Round(total, 0)}{"min."}";
+                }
+                else if (hours != 0 && Math.Round(total, 0) == 0)
+                {
+                    return $"{hours}{"h"}";
+                }
+                else if (Math.Round(total, 0) != 0)
+                {
+                    return $"{Math.Round(total, 0)}{"min."}";
+                }
+                else
+                {
+                    return $"{Math.Round(total * 60, 0)} {"sek."}";
+                }
+            }
+            else
+            {
+                double total = 0;
+
+                if (CheckIfLoggedOnThisDay(start.ToString("dd/MM/yyyy"), ID))
+                {
+                    if (start.TimeOfDay < shiftEnd)
+                    {
+                        total += (shiftEnd - start.TimeOfDay).TotalMinutes;
+                    }
+                    if (start.TimeOfDay < shfitStart)
+                    {
+                        total += ((new TimeSpan(24, 0, 0)) - shfitStart).TotalMinutes;
+                    }
+                    else
+                    {
+                        total += ((new TimeSpan(24, 0, 0)) - start.TimeOfDay).TotalMinutes;
+                    }
+                }
+
+                if (CheckIfLoggedOnThisDay(end.ToString("dd/MM/yyyy"), ID))
+                {
+                    if (end.TimeOfDay > shfitStart)
+                    {
+                        total += (end.TimeOfDay - shfitStart).TotalMinutes;
+                    }
+                    if (end.TimeOfDay > shiftEnd)
+                    {
+                        total += shiftEnd.TotalMinutes;
+                    }
+                    else
+                    {
+                        total += end.TimeOfDay.TotalMinutes;
+                    }
+                }
+                   
+                int numberOfFullDays = (end - start).Days;
+                if (end.TimeOfDay > start.TimeOfDay)
+                {
+                    numberOfFullDays--;
+                }
+                if (numberOfFullDays > 0)
+                {
+                    for(int i = 1; i <= numberOfFullDays; i++)
+                    {
+                        double hoursInFullDay = ((new TimeSpan(24, 0, 0)) - shfitStart).TotalMinutes + shiftEnd.TotalMinutes;
+
+                        var nextDay = start.AddDays(i);
+                        if (CheckIfLoggedOnThisDay(nextDay.ToString("dd/MM/yyyy"), ID))
+                        {
+                            total += hoursInFullDay;
+                        }
+                    }                
+                }
+
+                var hours = 0;
+                for (double i = total; i >= 60; i -= 60)
+                {
+                    hours++;
+                    total -= 60;
+                }
+
+                if (hours != 0 && Math.Round(total, 0) != 0)
+                {
+                    return $"{hours}{"h"} {Math.Round(total, 0)}{"min."}";
+                }
+                else if(hours != 0 && Math.Round(total, 0) == 0)
+                {
+                    return $"{hours}{"h"}";
+                }
+                else if(Math.Round(total, 0) != 0)
+                {
+                    return $"{Math.Round(total, 0)}{"min."}";
+                }
+                else
+                {
+                    return $"{Math.Round(total*60, 0)} {"sek."}";
+                }
             }
         }
 

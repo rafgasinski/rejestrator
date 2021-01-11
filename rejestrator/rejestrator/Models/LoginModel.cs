@@ -149,6 +149,28 @@
             return employeeFullName;
         }
 
+        public string GetEmployeeShift(string employeeID)
+        {
+            string shift = string.Empty;
+
+            string query = @"SELECT shift FROM `employees` WHERE `employeeID`=@id";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", employeeID);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    shift = result.GetString(0);
+                }
+                Database.CloseConnection();
+            }
+
+            return shift;
+        }
+
         public string GetEmployeeName(string id)
         {
             string employeeName = string.Empty;

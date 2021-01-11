@@ -55,11 +55,17 @@
         public AdminDashboardViewModel()
         {
             adminModel = AdminModel.Instance;
+            Mediator.Subscribe(Token.GO_TO_ADMIN_DASHBOARD, FillListOnViewchanged);
         }
         #endregion
 
+        private void FillListOnViewchanged(object obj)
+        {
+            EmployeeListingViewModel = new EmployeeListingViewModel();
+        }
         #region Properties
         public static string Name { get; set; }
+        public static string Username { get; set; }
         #endregion
 
         private ICommand _goToLogin;
@@ -95,17 +101,6 @@
             {
                 return _goToAdminEmployees ?? (_goToAdminEmployees = new RelayCommand(x =>
                 {
-                    List<string> employeeList = new List<string>();
-
-                    AdminEmployeesViewModel.ListOfEmployees.Clear();
-
-                    adminModel.GetEmployeesFullNamesandID(employeeList);
-
-                    foreach (var employee in employeeList)
-                        AdminEmployeesViewModel.ListOfEmployees.Add(employee);
-
-                    AdminEmployeesViewModel.PopulateLists();
-
                     Mediator.Notify(Token.GO_TO_ADMIN_EMPLOYEES);
                 }));
             }
@@ -143,11 +138,13 @@
 
         private async void OnAdd()
         {
-            if (await DialogHost.Show(new Employee()) is Employee item)
+            var item = new Employee();
+            await DialogHost.Show(item, "AddDialogHost");
+            if (IsDialogAddOpen == true)
             {
-                if(item.Task == string.Empty)
+                if (item.Task == string.Empty)
                 {
-                    if(item.ID != string.Empty && item.Pin != string.Empty && item.Name != string.Empty && item.Surname != string.Empty)
+                    if (item.ID != string.Empty && item.Pin != string.Empty && item.Name != string.Empty && item.Surname != string.Empty)
                     {
                         if (!item.ID.All(char.IsDigit) && !item.Pin.All(char.IsDigit))
                         {
@@ -172,12 +169,11 @@
                         else if (item.Pin.Length != 4)
                         {
                             MessageBox.Show("Pin jest za krótki!");
-                        }                       
+                        }
                         else if (!adminModel.EmployeeIDUsed(item.ID))
                         {
                             string shift = getCurrentItemEmployee();
                             adminModel.InsertEmployee(item.ID, item.Pin, item.Name, item.Surname, shift);
-                            AdminEmployeesViewModel.ListOfEmployees.Add($"{item.ID} {item.Name} {item.Surname}");
                         }
                         else
                         {
@@ -208,7 +204,27 @@
                         }
                         else
                         {
-                            adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
+                            IsDialogAddOpen = false;
+                            await DialogHost.Show(item, "AddAdminDialogHost");
+                            if (IsDialogAdminOpen == true)
+                            {
+                                if (item.PasswordConfirm == adminModel.CanAdminDeleteemployee(Username) && item.PasswordConfirm != string.Empty)
+                                {
+                                    adminModel.InsertAdmin(item.IDadmin, item.AdminUsername, item.AdminPassword, item.AdminName, item.AdminSurname);
+                                }
+                                else if (item.PasswordConfirm == string.Empty)
+                                {
+                                    MessageBox.Show("Nie wpisano hasła.");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Niepoprawne hasło, nie dodano administratora.");
+                                }
+                            }
+
+                            IsDialogAdminOpen = false;
+                            AdminRaportViewModel.IsDialogAdminOpen = false;
+                            AdminEmployeesViewModel.IsDialogAdminOpen = false;
                         }
                     }
                     else
@@ -222,9 +238,11 @@
                     string[] words = temp.Split(' ');
 
                     adminModel.InsertTask(words[0], item.Task);
-                    AdminEmployeesViewModel.PopulateTaskLists();
-                }    
+                }
             }
+            IsDialogAddOpen = false;
+            AdminRaportViewModel.IsDialogAddOpen = false;
+            AdminEmployeesViewModel.IsDialogAddOpen = false;
         }
 
         public string getCurrentListItem()
@@ -237,6 +255,38 @@
         {
             var currentQuery = (string)Employee.SelectedShift;
             return currentQuery;
+        }
+
+        private static bool _IsDialogAdminOpen;
+        public static bool IsDialogAdminOpen
+        {
+            get { return _IsDialogAdminOpen; }
+            set
+            {
+                _IsDialogAdminOpen = value;
+                OnPropertyChanged1(nameof(IsDialogAdminOpen));
+            }
+        }
+
+        private static bool _IsDialogAddOpen;
+        public static bool IsDialogAddOpen
+        {
+            get { return _IsDialogAddOpen; }
+            set
+            {
+                _IsDialogAddOpen = value;
+                OnPropertyChanged1(nameof(IsDialogAddOpen));
+            }
+        }
+
+        public static event PropertyChangedEventHandler PropertyChanged1;
+
+        public static void OnPropertyChanged1(string propertyName)
+        {
+            if (PropertyChanged1 != null)
+            {
+                PropertyChanged1(Instance, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
     }
@@ -265,8 +315,12 @@
             _myCommand3 = new MyCommand(FuncToCall3, FuncToEvaluate);
             _closeDialogAdd = new MyCommand(CloseDialogHostAdd, FuncToEvaluate);
             _closeDialogEdit = new MyCommand(CloseDialogHostEdit, FuncToEvaluate);
+            _closeDialogDelete = new MyCommand(CloseDialogHostDelete, FuncToEvaluate);
+            _closeDialogAddAdmin = new MyCommand(CloseDialogHostAddAdmin, FuncToEvaluate);
             _closeDialogAddAndAddToDatabase = new MyCommand(CloseDialogAddAndAdd, FuncToEvaluate);
             _closeDialogEditAndEditDatabase = new MyCommand(CloseDialogEditAndEdit, FuncToEvaluate);
+            _closeDialogDeleteAndDeleteFromDatabase = new MyCommand(CloseDialogDeleteAndDelete, FuncToEvaluate);         
+            _closeDialogAddAdminAndAdd = new MyCommand(CloseDialogAdminAndAdd, FuncToEvaluate);
         }
 
         private static string _selectedEmployee;
@@ -289,6 +343,16 @@
             }
         }
 
+        private string _passwordConfirm = string.Empty;
+        public string PasswordConfirm
+        {
+            get { return _passwordConfirm; }
+            set
+            {
+                _passwordConfirm = value;
+            }
+        }
+
         private ICommand _closeDialogAdd;
 
         public ICommand CloseDialogAdd
@@ -303,6 +367,30 @@
         {
             get { return _closeDialogEdit; }
             set { _closeDialogEdit = value; }
+        }
+
+        private ICommand _closeDialogDelete;
+
+        public ICommand CloseDialogDelete
+        {
+            get { return _closeDialogDelete; }
+            set { _closeDialogDelete = value; }
+        }
+
+        private ICommand _closeDialogAddAdmin;
+
+        public ICommand CloseDialogAddAdmin
+        {
+            get { return _closeDialogAddAdmin; }
+            set { _closeDialogAddAdmin = value; }
+        }
+
+        private ICommand _closeDialogAddAdminAndAdd;
+
+        public ICommand CloseDialogAddAdminAndAdd
+        {
+            get { return _closeDialogAddAdminAndAdd; }
+            set { _closeDialogAddAdminAndAdd = value; }
         }
 
         private ICommand _closeDialogAddAndAddToDatabase;
@@ -321,10 +409,28 @@
             set { _closeDialogEditAndEditDatabase = value; }
         }
 
+        private ICommand _closeDialogDeleteAndDeleteFromDatabase;
+
+        public ICommand CloseDialogDeleteAndDeleteFromDatabase
+        {
+            get { return _closeDialogDeleteAndDeleteFromDatabase; }
+            set { _closeDialogDeleteAndDeleteFromDatabase = value; }
+        }
+
         private void CloseDialogHostAdd(object context)
         {          
             DialogHost.Close("AddDialogHost");
             AdminEmployeesViewModel.IsDialogAddOpen = false;
+            AdminDashboardViewModel.IsDialogAddOpen = false;
+            AdminRaportViewModel.IsDialogAddOpen = false;
+        }
+
+        private void CloseDialogHostAddAdmin(object context)
+        {
+            DialogHost.Close("AddAdminDialogHost");
+            AdminEmployeesViewModel.IsDialogAdminOpen = false;
+            AdminDashboardViewModel.IsDialogAdminOpen = false;
+            AdminRaportViewModel.IsDialogAdminOpen = false;
         }
 
         private void CloseDialogHostEdit(object context)
@@ -333,16 +439,38 @@
             AdminEmployeesViewModel.IsDialogEditOpen = false;
         }
 
+        private void CloseDialogHostDelete(object context)
+        {
+            DialogHost.Close("DeleteDialogHost");
+            AdminEmployeesViewModel.IsDialogDeleteOpen = false;
+        }
+
         private void CloseDialogAddAndAdd(object context)
         {
             DialogHost.Close("AddDialogHost");
             AdminEmployeesViewModel.IsDialogAddOpen = true;
+            AdminDashboardViewModel.IsDialogAddOpen = true;
+            AdminRaportViewModel.IsDialogAddOpen = true;
         }
 
         private void CloseDialogEditAndEdit(object context)
         {
             DialogHost.Close("EditDialogHost");
             AdminEmployeesViewModel.IsDialogEditOpen = true;
+        }
+
+        private void CloseDialogDeleteAndDelete(object context)
+        {
+            DialogHost.Close("DeleteDialogHost");
+            AdminEmployeesViewModel.IsDialogDeleteOpen = true;
+        }
+
+        private void CloseDialogAdminAndAdd(object context)
+        {
+            DialogHost.Close("AddAdminDialogHost");
+            AdminEmployeesViewModel.IsDialogAdminOpen = true;
+            AdminDashboardViewModel.IsDialogAdminOpen = true;
+            AdminRaportViewModel.IsDialogAdminOpen = true;
         }
 
         private ICommand _myCommand;

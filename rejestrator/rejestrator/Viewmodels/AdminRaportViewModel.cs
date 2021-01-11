@@ -105,7 +105,7 @@
             }
         }
 
-        private bool _nextOnEnabled = true;
+        private bool _nextOnEnabled = false;
         public bool NextOnEnabled
         {
             get => _nextOnEnabled;

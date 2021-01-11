@@ -26,7 +26,7 @@
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Wartości">
                     <lvc:Axis.Separator>
-                        <lvc:Separator IsEnabled="True" Step="10">
+                        <lvc:Separator IsEnabled="True">
                         </lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>

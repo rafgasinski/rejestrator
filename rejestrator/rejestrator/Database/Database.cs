@@ -26,7 +26,6 @@
         public static MySqlConnection DBConnection()
         {
             string ConnectString = "datasource = localhost; username = root; password=; database = rejestrator";
-            //ConnectString = "datasource = sql7.freemysqlhosting.net; username = sql7386276; password = Fa8xS3LndM; database = sql7386276";
             DBConnect = new MySqlConnection(ConnectString);
 
             return DBConnect;

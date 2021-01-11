@@ -18,45 +18,45 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="Header" TargetType="GridViewColumnHeader">
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="Background" Value="Black"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontFamily" Value="TW Cen MT"/>
-            <Setter Property="FontSize" Value="28"/>
-            <Setter Property="IsEnabled" Value="False"/>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="TextElement.Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="ItemStyle" TargetType="{x:Type ListViewItem}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListViewItem}">
-                        <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
-                            <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0" Content="{TemplateBinding Content}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="TaskContent" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontFamily" Value="TW Cen MT"/>
-            <Setter Property="FontSize" Value="16"/>
-        </Style>
-        <Style x:Key="TaskButton" TargetType="Button">
-            <Setter Property="Margin" Value="0, 0, 20, 0"/>
-            <Setter Property="FontFamily" Value="TW Cen MT"/>
-            <Setter Property="FontSize" Value="16"/>
-        </Style>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontFamily" Value="TW Cen MT"/>
+                <Setter Property="FontSize" Value="28"/>
+                <Setter Property="IsEnabled" Value="False"/>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="TextElement.Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="ItemStyle" TargetType="{x:Type ListViewItem}">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                            <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
+                                <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0" Content="{TemplateBinding Content}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TaskContent" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontFamily" Value="TW Cen MT"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+            <Style x:Key="TaskButton" TargetType="Button">
+                <Setter Property="Margin" Value="0, 0, 20, 0"/>
+                <Setter Property="FontFamily" Value="TW Cen MT"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <materialDesign:DialogHost>
         <materialDesign:DialogHost.DialogContentTemplate>
             <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
@@ -139,7 +139,13 @@
 
                 <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="0" Margin="5,10,10,10" VerticalAlignment="Center"/>
 
-                <TextBlock Grid.Row="0" Grid.Column="1"  FontFamily="Tw Cen MT" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" Width="300" HorizontalAlignment="Right" Margin="0,0,0,0">
+                <Button Command="{Binding ResetTimer}" Grid.Row="0" Grid.Column="1" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="80" Height="50" Background="Transparent" BorderThickness="0" Margin="0,10,25,15">
+                    <Image Source="/rejestrator;component/Assets/uptime.png"
+                                       Stretch="Fill"
+                                       Margin="0,0,0,0"/>
+                </Button>
+
+                <TextBlock Grid.Row="0" Grid.Column="1"  FontFamily="Tw Cen MT" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" Foreground="{Binding Path=ForegroundColor}" Width="300" HorizontalAlignment="Right" Margin="10,20,0,15" Height="24">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} {1} {2}">
                             <Binding Source="{x:Static resx:ResourcesDashboard.SessionStart}"/>
@@ -149,7 +155,7 @@
                     </TextBlock.Text>
                 </TextBlock>
 
-                <Button Grid.Column="2" Height="45" VerticalAlignment="Center" Margin="15,0,15,0" FontFamily="Tw Cen MT" FontSize="20" Background="White" Command="{Binding GoToLogin}" Content="{Binding Source={x:Static resx:ResourcesDashboard.Logout}}" Style="{StaticResource RoundButtonTemplate}"/>
+                <Button Grid.Column="2" Height="45" VerticalAlignment="Center" Margin="15,0,5,0" FontFamily="Tw Cen MT" FontSize="20" Background="White" Command="{Binding GoToLogin}" Content="{Binding Source={x:Static resx:ResourcesDashboard.Logout}}" Style="{StaticResource RoundButtonTemplate}"/>
 
             </Grid>
 
@@ -163,10 +169,10 @@
                                     <Grid Width="300" Margin="0,5,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
-                                            <ColumnDefinition Width="0.3*"/>
+                                            <ColumnDefinition Width="0.25*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{Binding Task}" Style="{StaticResource TaskContent}" FontSize="12"/>
-                                        <Button Grid.Column="1" Background="White" FontSize="12" Command="{Binding ElementName=AvailableTasksList, Path=DataContext.StartTask}" CommandParameter="{Binding}" Content="{Binding Source={x:Static resx:ResourcesDashboard.StartTask}}" Style="{StaticResource TaskButton}"/>
+                                        <Button Background="White" FontSize="12" Grid.Column="1" Command="{Binding ElementName=AvailableTasksList, Path=DataContext.StartTask}" CommandParameter="{Binding}" Content="{Binding Source={x:Static resx:ResourcesDashboard.StartTask}}" Style="{StaticResource TaskButton}"/>
                                     </Grid>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>

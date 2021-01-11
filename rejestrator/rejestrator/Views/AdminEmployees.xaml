@@ -306,7 +306,7 @@
                 </ComboBox>
             </Border>
 
-            <Button Command="{Binding EditEmployee}" Background="Transparent" Cursor="Hand" BorderThickness="0" ToolTip="Usuń" Grid.Row="0" Grid.Column="1" Height="40" Width="65" VerticalAlignment="Center" Margin="178,22,87,12">
+            <Button Command="{Binding EditEmployee}" Background="Transparent" Cursor="Hand" BorderThickness="0" ToolTip="Edytuj" Grid.Row="0" Grid.Column="1" Height="40" Width="65" VerticalAlignment="Center" Margin="178,22,87,12">
                 <StackPanel Orientation="Horizontal">
 
                     <Image Source="/rejestrator;component/Assets/pages.png"

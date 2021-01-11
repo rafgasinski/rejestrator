@@ -262,7 +262,7 @@ xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
                                 <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                    <Image Source="/rejestrator;component/Assets/home1.png"
+                                    <Image Source="/rejestrator;component/Assets/home.png"
                                        Stretch="Fill"
                                        Margin="3,0,0,0"/>
 

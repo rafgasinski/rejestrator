@@ -133,7 +133,7 @@
                                 Margin="10,0,0,0"
                                 Grid.Column="3"
                                 Command="{Binding CloseDialogAdd}">
-                            <Image Source="/rejestrator;component/Assets/cancel1.png"
+                            <Image Source="/rejestrator;component/Assets/cancel.png"
                                        Stretch="Fill" />
                         </Button>
 

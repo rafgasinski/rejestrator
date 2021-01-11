@@ -105,12 +105,6 @@
     <Compile Include="CustomControls\Chart.xaml.cs">
       <DependentUpon>Chart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\DeleteButton.xaml.cs">
-      <DependentUpon>DeleteButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\EditButton.xaml.cs">
-      <DependentUpon>EditButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CustomControls\FullNameLabel.xaml.cs">
       <DependentUpon>FullNameLabel.xaml</DependentUpon>
     </Compile>
@@ -172,14 +166,6 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Page Include="CustomControls\Chart.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\DeleteButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\EditButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -282,24 +268,20 @@
     <Resource Include="Assets\logout.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\home.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\user.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\home1.png" />
+    <Resource Include="Assets\home.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\plus.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\cancel.png" />
     <Resource Include="Assets\daily-tasks.png" />
     <Resource Include="Assets\profile-user.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\cancel1.png" />
+    <Resource Include="Assets\cancel.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\reload.png" />

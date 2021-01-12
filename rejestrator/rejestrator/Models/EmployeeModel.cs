@@ -96,33 +96,40 @@
 
             }
 
+            TimeSpan start = new TimeSpan(0, 0, 0);
+            TimeSpan end = new TimeSpan(4, 0, 0);
+            TimeSpan now = DateTime.Now.TimeOfDay;
+
             if(date2 != date)
             {
-                string query2 = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id AND (`enddate` LIKE @pattern OR `enddate` LIKE @pattern1 OR `enddate` LIKE @pattern2 OR `enddate` LIKE @pattern3 OR `enddate` LIKE @pattern4 OR `enddate` LIKE @pattern5)
-                                    ORDER BY enddate DESC ";
-                using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
+                if ((now > start) && (now < end))
                 {
-                    Database.OpenConnection();
-                    myCommand.Parameters.AddWithValue("@id", id);
-                    myCommand.Parameters.AddWithValue("@pattern", $"{date2} {"18%"}");
-                    myCommand.Parameters.AddWithValue("@pattern1", $"{date2} {"19%"}");
-                    myCommand.Parameters.AddWithValue("@pattern2", $"{date2} {"20%"}");
-                    myCommand.Parameters.AddWithValue("@pattern3", $"{date2} {"21%"}");
-                    myCommand.Parameters.AddWithValue("@pattern4", $"{date2} {"22%"}");
-                    myCommand.Parameters.AddWithValue("@pattern5", $"{date2} {"23%"}");
-                    myCommand.CommandText = query2;
-                    MySqlDataReader result = myCommand.ExecuteReader();
-                    if (result.HasRows)
+                    string query2 = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id AND (`enddate` LIKE @pattern OR `enddate` LIKE @pattern1 OR `enddate` LIKE @pattern2 OR `enddate` LIKE @pattern3 OR `enddate` LIKE @pattern4 OR `enddate` LIKE @pattern5)
+                                        ORDER BY enddate DESC ";
+                    using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
                     {
-                        while (result.Read())
+                        Database.OpenConnection();
+                        myCommand.Parameters.AddWithValue("@id", id);
+                        myCommand.Parameters.AddWithValue("@pattern", $"{date2} {"18%"}");
+                        myCommand.Parameters.AddWithValue("@pattern1", $"{date2} {"19%"}");
+                        myCommand.Parameters.AddWithValue("@pattern2", $"{date2} {"20%"}");
+                        myCommand.Parameters.AddWithValue("@pattern3", $"{date2} {"21%"}");
+                        myCommand.Parameters.AddWithValue("@pattern4", $"{date2} {"22%"}");
+                        myCommand.Parameters.AddWithValue("@pattern5", $"{date2} {"23%"}");
+                        myCommand.CommandText = query2;
+                        MySqlDataReader result = myCommand.ExecuteReader();
+                        if (result.HasRows)
                         {
-                            tasksDone.Add(new TaskDoneModel(result.GetInt32(0), result.GetString(1), result.GetString(2), result.GetString(3), result.GetString(4)));
+                            while (result.Read())
+                            {
+                                tasksDone.Add(new TaskDoneModel(result.GetInt32(0), result.GetString(1), result.GetString(2), result.GetString(3), result.GetString(4)));
+                            }
                         }
-                    }
-                    Database.CloseConnection();
+                        Database.CloseConnection();
 
-                }
-            } 
+                    }
+                } 
+            }
         }
 
         public void StartTask(TaskAvailableModel task, string employeeID)
@@ -253,7 +260,7 @@
 
             if (start.Date == end.Date && start.TimeOfDay >= shiftEnd && end.TimeOfDay <= shfitStart)
             {
-                return "0";
+                return "-";
             }
 
             if (start.Date == end.Date)
@@ -405,7 +412,7 @@
         public string CalcDay(DateTime start, DateTime stop)
         {
             if (start == stop)
-                return "0";
+                return "-";
 
             double total;
             int hours;

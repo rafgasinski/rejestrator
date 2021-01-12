@@ -107,10 +107,10 @@
             }
         }
 
-        public void GetLogsTasksForEmployee(List<string> tasks, string id)
+        public void GetLogsTasksForEmployee(List<TaskAvailableModel> tasks, string id)
         {
 
-            string query = @"SELECT task FROM `tasks` WHERE `employeeID`=@id";
+            string query = @"SELECT id, task FROM `tasks` WHERE `employeeID`=@id";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
@@ -121,7 +121,7 @@
                 {
                     while (result.Read())
                     {
-                        tasks.Add(result.GetString(0));
+                        tasks.Add(new TaskAvailableModel(result.GetInt32(0), result.GetString(1)));
                     }
                 }
                 Database.CloseConnection();
@@ -251,6 +251,27 @@
             return employeeId;
         }
 
+        public bool SameTaskAdded(string id)
+        {
+            bool sameTaskAdded = false;
+
+            string query = @"SELECT COUNT(`task`) FROM `tasks` WHERE `employeeID`=@id GROUP BY `id`";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    sameTaskAdded = true;
+                }
+                Database.CloseConnection();
+            }
+            return sameTaskAdded;
+        }
+
         public void InsertEmployee(string id, string pin, string name, string surname, string shift)
         {
             string query = @"INSERT INTO `employees`(`employeeID`, `pin`, `name`, `surname`, `shift`) VALUES(@id,@pin,@name,@surname,@shift)";
@@ -289,6 +310,7 @@
                 Database.CloseConnection();
             }
         }
+
         public void DeleteEmployee(string oldId)
         {
             string query = @"DELETE FROM `logs` WHERE `employeeID`=@oldId; 
@@ -300,6 +322,19 @@
             {
                 Database.OpenConnection();
                 myCommand.Parameters.AddWithValue("@oldId", oldId);
+                myCommand.CommandText = query;
+                myCommand.ExecuteNonQuery();
+                Database.CloseConnection();
+            }
+        }
+
+        public void DeleteTask(string id)
+        {
+            string query = @"DELETE FROM `tasks` WHERE `id`=@id";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
                 myCommand.CommandText = query;
                 myCommand.ExecuteNonQuery();
                 Database.CloseConnection();

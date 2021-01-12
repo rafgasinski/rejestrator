@@ -237,7 +237,10 @@
                     string temp = getCurrentListItem();
                     string[] words = temp.Split(' ');
 
-                    adminModel.InsertTask(words[0], item.Task);
+                    if (!adminModel.SameTaskAdded(words[0]))
+                        adminModel.InsertTask(words[0], item.Task);
+                    else
+                        MessageBox.Show("To zadanie jest juz przydzielone temu pracownikowi.");
                 }
             }
             IsDialogAddOpen = false;

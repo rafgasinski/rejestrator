@@ -10,7 +10,6 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Windows;
-    using System.Windows.Data;
     using System.Windows.Input;
 
     public class AdminEmployeesViewModel : ViewModelBase, IPageViewModel
@@ -32,8 +31,8 @@
             }
         }
 
-        private static ObservableCollection<string> _tasks = new ObservableCollection<string>();
-        public static ObservableCollection<string> Tasks
+        private static ObservableCollection<TaskAvailableModel> _tasks = new ObservableCollection<TaskAvailableModel>();
+        public static ObservableCollection<TaskAvailableModel> Tasks
         {
             get { return _tasks; }
             set
@@ -109,7 +108,7 @@
                 string[] words = _selectedEmployee.Split(' ');
 
                 List<string> datesToAdd = new List<string>();
-                List<string> tasksToAdd = new List<string>();
+                List<TaskAvailableModel> tasksToAdd = new List<TaskAvailableModel>();
                 List<TaskInProgressModel> taskInProgressToAdd = new List<TaskInProgressModel>();
                 List<TaskDoneModel> tasksDoneToAdd = new List<TaskDoneModel>();
 
@@ -143,7 +142,7 @@
                 string[] words = _selectedEmployee.Split(' ');
 
                 List<string> datesToAdd = new List<string>();
-                List<string> tasksToAdd = new List<string>();
+                List<TaskAvailableModel> tasksToAdd = new List<TaskAvailableModel>();
                 List<TaskInProgressModel> taskInProgressToAdd = new List<TaskInProgressModel>();
                 List<TaskDoneModel> tasksDoneToAdd = new List<TaskDoneModel>();
 
@@ -171,7 +170,7 @@
             {
                 string[] words = _selectedEmployee.Split(' ');
 
-                List<string> tasksToAdd = new List<string>();
+                List<TaskAvailableModel> tasksToAdd = new List<TaskAvailableModel>();
 
                 Instance.adminModel.GetLogsTasksForEmployee(tasksToAdd, words[0]);
 
@@ -229,6 +228,20 @@
                     Employee.TwoWays = new ObservableCollection<string>(AdminDashboardViewModel.workItems);
 
                     OnAdd();
+                }));
+            }
+        }
+
+        private ICommand _deleteTask = null;
+        public ICommand DeleteTask
+        {
+            get
+            {
+                return _deleteTask ?? (_deleteTask = new RelayCommand(x =>
+                {
+                    TaskAvailableModel task = x as TaskAvailableModel;
+                    adminModel.DeleteTask(task.ID.ToString());
+                    PopulateLists();
                 }));
             }
         }
@@ -438,7 +451,11 @@
                     string temp = getCurrentListItem();
                     string[] words = temp.Split(' ');
 
-                    adminModel.InsertTask(words[0], item.Task);
+                    if (!adminModel.SameTaskAdded(words[0]))
+                        adminModel.InsertTask(words[0], item.Task);
+                    else
+                        MessageBox.Show("To zadanie jest juz przydzielone temu pracownikowi.");
+
                     PopulateTaskLists();
                 }
             }

@@ -616,18 +616,23 @@
                     string temp = getCurrentListItem();
                     string[] words = temp.Split(' ');
 
-                    adminModel.InsertTask(words[0], item.Task);
-
-                    if (EmployeeNames.Contains(temp))
+                    if (!adminModel.SameTaskAdded(words[0]))
                     {
-                        for (int i = 0; i < EmployeeNames.Count; i++)
+                        adminModel.InsertTask(words[0], item.Task);
+
+                        if (EmployeeNames.Contains(temp))
                         {
-                            if (EmployeeNames[i] == temp)
+                            for (int i = 0; i < EmployeeNames.Count; i++)
                             {
-                                EmployeeTaskCounts[i]++;
+                                if (EmployeeNames[i] == temp)
+                                {
+                                    EmployeeTaskCounts[i]++;
+                                }
                             }
                         }
                     }
+                    else
+                        MessageBox.Show("To zadanie jest juz przydzielone temu pracownikowi.");
                 }
             }
             IsDialogAddOpen = false;

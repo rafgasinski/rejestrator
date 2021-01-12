@@ -105,7 +105,7 @@
             }
         }
 
-        private bool _nextOnEnabled = false;
+        private bool _nextOnEnabled = true;
         public bool NextOnEnabled
         {
             get => _nextOnEnabled;
@@ -238,6 +238,19 @@
                 return _unchecked ?? (_unchecked = new RelayCommand(x =>
                 {
                     Reload.Execute(null);
+                }));
+            }
+        }
+
+        private ICommand _generateRaport;
+
+        public ICommand GenerateRaport
+        {
+            get
+            {
+                return _generateRaport ?? (_generateRaport = new RelayCommand(x =>
+                {
+
                 }));
             }
         }

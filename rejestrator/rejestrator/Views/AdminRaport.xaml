@@ -43,6 +43,9 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <Style x:Key="NoStyle" TargetType="CheckBox">
+            </Style>
         </ResourceDictionary>
 
     </UserControl.Resources>
@@ -220,7 +223,7 @@
                 </customcontrols:Menu>
 
                 <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Width="150" Height="35" Margin="30,0,0,0" HorizontalAlignment="Center">
-                    <CheckBox Foreground="Black" FontFamily="TW Cen MT" FontSize="18" Content="Dane z dzisiaj" IsChecked="{Binding CheckedBool, Mode=OneWay}" Style="{Binding NoStyle}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <CheckBox Foreground="Black" FontFamily="TW Cen MT" FontSize="18" Content="Dane z dzisiaj" IsChecked="{Binding CheckedBool, Mode=OneWay}" Style="{StaticResource NoStyle}" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Checked">
                                 <i:InvokeCommandAction Command="{Binding Checked}"/>

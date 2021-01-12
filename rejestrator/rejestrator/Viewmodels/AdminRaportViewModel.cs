@@ -499,7 +499,7 @@
             {
                 return _goToAdminRaport ?? (_goToAdminRaport = new RelayCommand(x =>
                 {
-                    Mediator.Notify(Token.GO_TO_ADMIN_RAPORT);
+
                 }));
             }
         }  

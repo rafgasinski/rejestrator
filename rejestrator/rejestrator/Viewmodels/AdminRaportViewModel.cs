@@ -222,8 +222,8 @@
 
                     PrevOnEnabled = false;
 
-                    if (employees.Count <= rightEmployeeNumber)
-                        NextOnEnabled = false;
+                    if (employees.Count > rightEmployeeNumber)
+                        NextOnEnabled = true;
 
                 }));
             }

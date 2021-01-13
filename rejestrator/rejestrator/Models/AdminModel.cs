@@ -251,15 +251,16 @@
             return employeeId;
         }
 
-        public bool SameTaskAdded(string id)
+        public bool SameTaskAdded(string id, string task)
         {
             bool sameTaskAdded = false;
 
-            string query = @"SELECT COUNT(`task`) FROM `tasks` WHERE `employeeID`=@id GROUP BY `id`";
+            string query = @"SELECT COUNT(`task`) FROM `tasks` WHERE `employeeID`=@id AND `task`=@task GROUP BY `id`";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
                 myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.Parameters.AddWithValue("@task", task);
                 myCommand.CommandText = query;
                 MySqlDataReader result = myCommand.ExecuteReader();
                 if (result.HasRows)

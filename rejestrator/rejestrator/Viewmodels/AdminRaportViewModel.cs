@@ -723,7 +723,7 @@
                     string temp = getCurrentListItem();
                     string[] words = temp.Split(' ');
 
-                    if (!adminModel.SameTaskAdded(words[0]))
+                    if (!adminModel.SameTaskAdded(words[0], item.Task))
                     {
                         adminModel.InsertTask(words[0], item.Task);
 

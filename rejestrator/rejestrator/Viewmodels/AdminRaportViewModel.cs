@@ -186,6 +186,8 @@
             {
                 return _checked ?? (_checked = new RelayCommand(x =>
                 {
+                    CheckedBool = true;
+
                     employees.Clear();
                     Page = 1;
                     List<string> ids = new List<string>();
@@ -238,6 +240,7 @@
                 return _unchecked ?? (_unchecked = new RelayCommand(x =>
                 {
                     Reload.Execute(null);
+
                 }));
             }
         }
@@ -352,43 +355,87 @@
 
                     if ((rightEmployeeNumber < adminModel.GetEmployeeCount()))
                     {
-                        List<string> ids = new List<string>();
-                        employees.Clear();
-
-                        adminModel.GetEmployeesIDs(ids);
-
-                        for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
+                        if(CheckedBool == false)
                         {
-                            var temp = ids[i].Split(' ');
-                            employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCount(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeTasksDoneCount(temp[0])));
-                        }
+                            List<string> ids = new List<string>();
+                            employees.Clear();
 
-                        Page++;
-                        EmployeeNames.Clear();
-                        EmployeeLogsCounts.Clear();
-                        EmployeeTaskCounts.Clear();
-                        EmployeeTasksInProgressCounts.Clear();
-                        EmployeeTasksDoneCounts.Clear();
+                            adminModel.GetEmployeesIDs(ids);
 
-                        for (int i = leftEmployeeNumber + 4; i < rightEmployeeNumber + 4; i++)
-                        {
-                            if (i < employees.Count())
+                            for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
                             {
-                                EmployeeLogsCounts.Add(employees[i].NumberofLogins);
-                                EmployeeTaskCounts.Add(employees[i].NumberofTasks);
-                                EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
-                                EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
-                                EmployeeNames.Add(employees[i].Name);
+                                var temp = ids[i].Split(' ');
+                                employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCount(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeTasksDoneCount(temp[0])));
                             }
+
+                            Page++;
+                            EmployeeNames.Clear();
+                            EmployeeLogsCounts.Clear();
+                            EmployeeTaskCounts.Clear();
+                            EmployeeTasksInProgressCounts.Clear();
+                            EmployeeTasksDoneCounts.Clear();
+
+                            for (int i = leftEmployeeNumber + 4; i < rightEmployeeNumber + 4; i++)
+                            {
+                                if (i < employees.Count())
+                                {
+                                    EmployeeLogsCounts.Add(employees[i].NumberofLogins);
+                                    EmployeeTaskCounts.Add(employees[i].NumberofTasks);
+                                    EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
+                                    EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
+                                    EmployeeNames.Add(employees[i].Name);
+                                }
+                            }
+                            leftEmployeeNumber += 4;
+                            rightEmployeeNumber += 4;
+
+                            PrevOnEnabled = true;
+                            NextOnEnabled = false;
+
+                            if (employees.Count > rightEmployeeNumber)
+                                NextOnEnabled = true;
                         }
-                        leftEmployeeNumber += 4;
-                        rightEmployeeNumber += 4;
+                        else
+                        {
+                            List<string> ids = new List<string>();
+                            employees.Clear();
 
-                        PrevOnEnabled = true;
-                        NextOnEnabled = false;
+                            adminModel.GetEmployeesIDs(ids);
 
-                        if (employees.Count > rightEmployeeNumber)
-                            NextOnEnabled = true;
+                            for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
+                            {
+                                var temp = ids[i].Split(' ');
+                                employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCountToday(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeLogsCountToday(temp[0])));
+                            }
+
+                            Page++;
+                            EmployeeNames.Clear();
+                            EmployeeLogsCounts.Clear();
+                            EmployeeTaskCounts.Clear();
+                            EmployeeTasksInProgressCounts.Clear();
+                            EmployeeTasksDoneCounts.Clear();
+
+                            for (int i = leftEmployeeNumber + 4; i < rightEmployeeNumber + 4; i++)
+                            {
+                                if (i < employees.Count())
+                                {
+                                    EmployeeLogsCounts.Add(employees[i].NumberofLogins);
+                                    EmployeeTaskCounts.Add(employees[i].NumberofTasks);
+                                    EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
+                                    EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
+                                    EmployeeNames.Add(employees[i].Name);
+                                }
+                            }
+                            leftEmployeeNumber += 4;
+                            rightEmployeeNumber += 4;
+
+                            PrevOnEnabled = true;
+                            NextOnEnabled = false;
+
+                            if (employees.Count > rightEmployeeNumber)
+                                NextOnEnabled = true;
+                        }
+
 
                     }
                 }));
@@ -405,46 +452,93 @@
                 {
                     if (leftEmployeeNumber != 0)
                     {
-                        List<string> ids = new List<string>();
-                        employees.Clear();
-
-                        adminModel.GetEmployeesIDs(ids);
-
-                        for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
+                        if (CheckedBool == false)
                         {
-                            var temp = ids[i].Split(' ');
-                            employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCount(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeTasksDoneCount(temp[0])));
-                        }
+                            List<string> ids = new List<string>();
+                            employees.Clear();
 
-                        Page--;
-                        EmployeeNames.Clear();
-                        EmployeeLogsCounts.Clear();
-                        EmployeeTaskCounts.Clear();
-                        EmployeeTasksInProgressCounts.Clear();
-                        EmployeeTasksDoneCounts.Clear();
+                            adminModel.GetEmployeesIDs(ids);
 
-                        for (int i = leftEmployeeNumber - 4; i < rightEmployeeNumber - 4; i++)
-                        {
-                            if (i < employees.Count())
+                            for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
                             {
-                                EmployeeLogsCounts.Add(employees[i].NumberofLogins);
-                                EmployeeTaskCounts.Add(employees[i].NumberofTasks);
-                                EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
-                                EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
-                                EmployeeNames.Add(employees[i].Name);                               
+                                var temp = ids[i].Split(' ');
+                                employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCount(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeTasksDoneCount(temp[0])));
                             }
+
+                            Page--;
+                            EmployeeNames.Clear();
+                            EmployeeLogsCounts.Clear();
+                            EmployeeTaskCounts.Clear();
+                            EmployeeTasksInProgressCounts.Clear();
+                            EmployeeTasksDoneCounts.Clear();
+
+                            for (int i = leftEmployeeNumber - 4; i < rightEmployeeNumber - 4; i++)
+                            {
+                                if (i < employees.Count())
+                                {
+                                    EmployeeLogsCounts.Add(employees[i].NumberofLogins);
+                                    EmployeeTaskCounts.Add(employees[i].NumberofTasks);
+                                    EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
+                                    EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
+                                    EmployeeNames.Add(employees[i].Name);
+                                }
+                            }
+
+                            leftEmployeeNumber -= 4;
+                            rightEmployeeNumber -= 4;
+
+                            PrevOnEnabled = true;
+                            NextOnEnabled = false;
+
+                            if (employees.Count > rightEmployeeNumber)
+                                NextOnEnabled = true;
+                            if (leftEmployeeNumber == 0)
+                                PrevOnEnabled = false;
                         }
+                        else
+                        {
+                            List<string> ids = new List<string>();
+                            employees.Clear();
 
-                        leftEmployeeNumber -= 4;
-                        rightEmployeeNumber -= 4;
+                            adminModel.GetEmployeesIDs(ids);
 
-                        PrevOnEnabled = true;
-                        NextOnEnabled = false;
+                            for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
+                            {
+                                var temp = ids[i].Split(' ');
+                                employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCountToday(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeTasksDoneCountToday(temp[0])));
+                            }
 
-                        if (employees.Count > rightEmployeeNumber)
-                            NextOnEnabled = true;
-                        if (leftEmployeeNumber == 0)
-                            PrevOnEnabled = false;
+                            Page--;
+                            EmployeeNames.Clear();
+                            EmployeeLogsCounts.Clear();
+                            EmployeeTaskCounts.Clear();
+                            EmployeeTasksInProgressCounts.Clear();
+                            EmployeeTasksDoneCounts.Clear();
+
+                            for (int i = leftEmployeeNumber - 4; i < rightEmployeeNumber - 4; i++)
+                            {
+                                if (i < employees.Count())
+                                {
+                                    EmployeeLogsCounts.Add(employees[i].NumberofLogins);
+                                    EmployeeTaskCounts.Add(employees[i].NumberofTasks);
+                                    EmployeeTasksInProgressCounts.Add(employees[i].NumberofTasksInProgress);
+                                    EmployeeTasksDoneCounts.Add(employees[i].NumberofTasksDone);
+                                    EmployeeNames.Add(employees[i].Name);
+                                }
+                            }
+
+                            leftEmployeeNumber -= 4;
+                            rightEmployeeNumber -= 4;
+
+                            PrevOnEnabled = true;
+                            NextOnEnabled = false;
+
+                            if (employees.Count > rightEmployeeNumber)
+                                NextOnEnabled = true;
+                            if (leftEmployeeNumber == 0)
+                                PrevOnEnabled = false;
+                        }
+                            
                     }
                 }));
             }

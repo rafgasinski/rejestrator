@@ -236,7 +236,7 @@
                                 EmployeeModel.Instance.Shift = loginModel.GetEmployeeShift(ID);
                                 GoToDashboard.Execute(null);
 
-                                loginModel.InsertLoginDate(ID, loginModel.GetEmployeeName(ID), loginModel.GetEmployeeSurname(ID), DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
+                                loginModel.InsertLoginDate(ID, DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
 
                                 ClearFields();
                                 ResetLoginMethod();

@@ -215,15 +215,13 @@
             return employeeSurnname;
         }
 
-        public void InsertLoginDate(string id, string name, string surname, string date)
+        public void InsertLoginDate(string id, string date)
         {
-            string query = @"INSERT INTO `logs`(`employeeID`, `name`, `surname`, `date`) VALUES(@id,@name,@surname,@date)";
+            string query = @"INSERT INTO `logs`(`employeeID`, `date`) VALUES(@id,@date)";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
                 myCommand.Parameters.AddWithValue("@id", id);
-                myCommand.Parameters.AddWithValue("@name", name);
-                myCommand.Parameters.AddWithValue("@surname", surname);
                 myCommand.Parameters.AddWithValue("@date", date);
                 myCommand.CommandText = query;
                 myCommand.ExecuteNonQuery();

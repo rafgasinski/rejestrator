@@ -175,7 +175,7 @@
         public void GetLogsNames(List<string> names)
         {
 
-            string query = @"SELECT name,surname FROM `logs` ORDER BY date DESC ";
+            string query = @"SELECT name,surname FROM `employees` JOIN `logs` ON employees.employeeID=logs.employeeID ORDER BY logs.date DESC ";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();

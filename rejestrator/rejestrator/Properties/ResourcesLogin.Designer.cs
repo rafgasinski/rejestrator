@@ -70,7 +70,7 @@ namespace rejestrator.Properties {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Błąd logowania!.
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Niepoprawne dane!.
         /// </summary>
         public static string Error {
             get {

@@ -121,7 +121,7 @@
     <value>Zaloguj</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Błąd logowania!</value>
+    <value>Niepoprawne dane!</value>
   </data>
   <data name="LabelID" xml:space="preserve">
     <value>ID:</value>

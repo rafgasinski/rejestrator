@@ -56,7 +56,7 @@
         public void GetTasksInProgress(ref List<TaskInProgressModel> tasksInProgress, string id)
         {
 
-            string query = @"SELECT id, task, date FROM `tasksinprogress` WHERE `employeeID`=@id ORDER BY date DESC ";
+            string query = @"SELECT id, task, date FROM `tasksinprogress` WHERE `employeeID`=@id ORDER BY date ASC ";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();

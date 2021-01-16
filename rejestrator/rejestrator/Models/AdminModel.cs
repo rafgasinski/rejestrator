@@ -131,7 +131,7 @@
         public void GetLogsTasksInProgressForEmployee(List<TaskInProgressModel> tasks, string id)
         {
 
-            string query = @"SELECT id, task, date FROM `tasksinprogress` WHERE `employeeID`=@id ORDER BY date DESC ";
+            string query = @"SELECT id, task, date FROM `tasksinprogress` WHERE `employeeID`=@id ORDER BY date ASC ";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
@@ -184,25 +184,6 @@
                 if (result.HasRows)
                 {
                     while(result.Read())
-                    {
-                        names.Add($"{result.GetString(0)} {result.GetString(1)}");
-                    }
-                }
-                Database.CloseConnection();
-            }
-        }
-
-        public void GetEmployeesFullNames(List<string> names)
-        {
-            string query = @"SELECT name,surname FROM `employees`";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    while (result.Read())
                     {
                         names.Add($"{result.GetString(0)} {result.GetString(1)}");
                     }

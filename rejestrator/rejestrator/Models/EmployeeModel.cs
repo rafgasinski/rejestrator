@@ -254,18 +254,18 @@
             if (start > end)
                 throw new Exception();
 
-            TimeSpan shfitStart = new TimeSpan(startHour, startMin, 0);
+            TimeSpan shiftStart = new TimeSpan(startHour, startMin, 0);
             TimeSpan shiftEnd = new TimeSpan(endHour, endMin, 0);
 
 
-            if (start.Date == end.Date && start.TimeOfDay >= shiftEnd && end.TimeOfDay <= shfitStart)
+            if (start.Date == end.Date && start.TimeOfDay >= shiftEnd && end.TimeOfDay <= shiftStart)
             {
                 return "-";
             }
 
             if (start.Date == end.Date)
             {
-                if (start.TimeOfDay > shfitStart || end.TimeOfDay < shiftEnd)
+                if (start.TimeOfDay > shiftStart || end.TimeOfDay < shiftEnd)
                 {
                     var totalMin = (end - start).TotalMinutes;
 
@@ -299,9 +299,9 @@
                 {
                     total += (shiftEnd - start.TimeOfDay).TotalMinutes;
                 }
-                if (end.TimeOfDay > shfitStart)
+                if (end.TimeOfDay > shiftStart)
                 {
-                    total += (end.TimeOfDay - shfitStart).TotalMinutes;
+                    total += (end.TimeOfDay - shiftStart).TotalMinutes;
                 }
 
                 var hours = 0;
@@ -338,9 +338,9 @@
                     {
                         total += (shiftEnd - start.TimeOfDay).TotalMinutes;
                     }
-                    if (start.TimeOfDay < shfitStart)
+                    if (start.TimeOfDay < shiftStart)
                     {
-                        total += ((new TimeSpan(24, 0, 0)) - shfitStart).TotalMinutes;
+                        total += ((new TimeSpan(24, 0, 0)) - shiftStart).TotalMinutes;
                     }
                     else
                     {
@@ -350,9 +350,9 @@
 
                 if (CheckIfLoggedOnThisDay(end.ToString("dd/MM/yyyy"), ID))
                 {
-                    if (end.TimeOfDay > shfitStart)
+                    if (end.TimeOfDay > shiftStart)
                     {
-                        total += (end.TimeOfDay - shfitStart).TotalMinutes;
+                        total += (end.TimeOfDay - shiftStart).TotalMinutes;
                     }
                     if (end.TimeOfDay > shiftEnd)
                     {
@@ -373,7 +373,7 @@
                 {
                     for(int i = 1; i <= numberOfFullDays; i++)
                     {
-                        double hoursInFullDay = ((new TimeSpan(24, 0, 0)) - shfitStart).TotalMinutes + shiftEnd.TotalMinutes;
+                        double hoursInFullDay = ((new TimeSpan(24, 0, 0)) - shiftStart).TotalMinutes + shiftEnd.TotalMinutes;
 
                         var nextDay = start.AddDays(i);
                         if (CheckIfLoggedOnThisDay(nextDay.ToString("dd/MM/yyyy"), ID))

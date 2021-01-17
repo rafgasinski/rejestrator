@@ -1,8 +1,15 @@
 ﻿namespace rejestrator.Models
 {
     using MySql.Data.MySqlClient;
+    using rejestrator.API;
     using rejestrator.Database;
     using System.Collections.Generic;
+    using System;
+    using rejestrator.API.Entities;
+    using Newtonsoft.Json;
+    using Utils;
+    using Converters;
+    using System.Net.Http;
 
     public class LoginModel
     {
@@ -24,40 +31,39 @@
 
         public bool LoginEmployee(string id, string pin)
         {
-            bool canLogin = false;
-
-            string query = @"SELECT COUNT(`id`) FROM `employees` WHERE `employeeID`=@id AND `pin`=@pin GROUP BY `id`";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            var loginEmployee = new LoginEmployeeEntity
             {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", id);
-                myCommand.Parameters.AddWithValue("@pin", pin);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                    canLogin = true;
-                Database.CloseConnection();
-            }
-            return canLogin;
+                employeeID = id,
+                pin = pin
+            };
+
+            string response = APIService.makeRequest(HTTPMethod.POST, "loginEmployee", loginEmployee.ToKeyValueURL());
+
+            if (Error.IsResponseError(response))
+                return false;
+
+            EmployeeEntity employee = JsonConvert.DeserializeObject<EmployeeEntity>(response);
+
+            EmployeeModel.Instance.ID = employee.employeeID;
+            EmployeeModel.Instance.pin = employee.pin;
+            EmployeeModel.Instance.Name = $"{employee.name} {employee.surname}";
+            EmployeeModel.Instance.Shift = employee.shift;
+            return true;
         }
 
         public bool LoginAdmin(string username, string password)
         {
-            bool canLogin = false;
-
-            string query = @"SELECT COUNT(`id`) FROM `administrators` WHERE `username`=@username AND `password`=@password GROUP BY `id`";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            var loginAdmin = new LoginAdminEntity
             {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@username", username);
-                myCommand.Parameters.AddWithValue("@password", password);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                    canLogin = true;
-                Database.CloseConnection();
-            }
-            return canLogin;
+                username = username,
+                password = password
+            };
+
+            string response = APIService.makeRequest(HTTPMethod.POST, "loginAdmin", loginAdmin.ToKeyValueURL());
+
+            if (Error.IsResponseError(response))
+                return false;
+            return true;
         }
 
         public string GetAdminFullName(string username)
@@ -82,142 +88,20 @@
             return adminFullName;
         }
 
-        public string GetAdminID(string username, string password)
-        {
-            string id = string.Empty;
-
-            string query = @"SELECT COUNT(`id`) FROM `administrators` WHERE `username`=@username AND `password`=@password GROUP BY `id`";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@username", username);
-                myCommand.Parameters.AddWithValue("@password", password);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    result.Read();
-                    id = result.GetString(0);
-                }
-                Database.CloseConnection();
-            }
-            return id;
-        }
-
-        public string GetEmployeeID(string id, string pin)
-        {
-            string employeeId = string.Empty;
-
-            string query = @"SELECT COUNT(`id`) FROM `employees` WHERE `employeeID`=@id AND `pin`=@pin GROUP BY `id`";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", id);
-                myCommand.Parameters.AddWithValue("@pin", pin);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    result.Read();
-                    employeeId = result.GetString(0);
-                }
-                Database.CloseConnection();
-            }
-            return employeeId;
-        }
-
-
-        public string GetEmployeeFullName(string id)
-        {
-            string employeeFullName = string.Empty;
-
-            string query = @"SELECT name,surname FROM `employees` WHERE `employeeID`=@employeeID";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@employeeID", id);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    result.Read();
-                    employeeFullName = $"{result.GetString(0)} {result.GetString(1)}";
-                }
-                Database.CloseConnection();
-            }
-
-            return employeeFullName;
-        }
-
-        public string GetEmployeeShift(string employeeID)
-        {
-            string shift = string.Empty;
-
-            string query = @"SELECT shift FROM `employees` WHERE `employeeID`=@id";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", employeeID);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    result.Read();
-                    shift = result.GetString(0);
-                }
-                Database.CloseConnection();
-            }
-
-            return shift;
-        }
-
-        public string GetEmployeeName(string id)
-        {
-            string employeeName = string.Empty;
-
-            string query = @"SELECT name FROM `employees` WHERE `employeeID`=@employeeID";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@employeeID", id);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    result.Read();
-                    employeeName = result.GetString(0);
-                }
-                Database.CloseConnection();
-            }
-
-            return employeeName;
-        }
-
-        public string GetEmployeeSurname(string id)
-        {
-            string employeeSurnname = string.Empty;
-
-            string query = @"SELECT surname FROM `employees` WHERE `employeeID`=@employeeID";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@employeeID", id);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    result.Read();
-                    employeeSurnname = result.GetString(0);
-                }
-                Database.CloseConnection();
-            }
-
-            return employeeSurnname;
-        }
-
         public void InsertLoginDate(string id, string date)
         {
-            string query = @"INSERT INTO `logs`(`employeeID`, `date`) VALUES(@id,@date)";
+            var log = new LogEntity
+            {
+                employeeID = id,
+                date = date
+            };
+
+            string response = APIService.makeRequest(HTTPMethod.POST, "logs", log.ToKeyValueURL());
+
+            if (Error.IsResponseError(response))
+                throw new NotImplementedException();
+
+/*            string query = @"INSERT INTO `logs`(`employeeID`, `date`) VALUES(@id,@date)";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();
@@ -226,7 +110,7 @@
                 myCommand.CommandText = query;
                 myCommand.ExecuteNonQuery();
                 Database.CloseConnection();
-            }
+            }*/
         }
     }
 }

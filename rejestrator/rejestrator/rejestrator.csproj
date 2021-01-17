@@ -67,6 +67,9 @@
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=8.0.22.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -101,7 +104,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="API\APIService.cs" />
+    <Compile Include="API\Entities\EmployeeEntity.cs" />
+    <Compile Include="API\Entities\LogEntity.cs" />
+    <Compile Include="API\Entities\LoginAdminEntity.cs" />
+    <Compile Include="API\Entities\LoginEmployeeEntity.cs" />
+    <Compile Include="API\Entities\TaskAvailableEntity.cs" />
+    <Compile Include="API\Entities\TaskDoneEntity.cs" />
+    <Compile Include="API\Entities\TaskInProgressEntity.cs" />
     <Compile Include="Converters\BrushColorConverter.cs" />
+    <Compile Include="Converters\ObjectToUrlEncoded.cs" />
     <Compile Include="CustomControls\Chart.xaml.cs">
       <DependentUpon>Chart.xaml</DependentUpon>
     </Compile>
@@ -133,6 +145,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourcesLogin.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Error.cs" />
     <Compile Include="Utils\FocusAdvancement.cs" />
     <Compile Include="Utils\PasswordBoxAssistant.cs" />
     <Compile Include="Utils\ProgramInfo.cs" />
@@ -309,6 +322,7 @@
   <ItemGroup>
     <Resource Include="Assets\uptime.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

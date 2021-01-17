@@ -231,9 +231,6 @@
                         {
                             if (loginModel.LoginEmployee(ID, Pin))
                             {
-                                EmployeeModel.Instance.ID = ID;
-                                EmployeeModel.Instance.Name = loginModel.GetEmployeeFullName(ID);
-                                EmployeeModel.Instance.Shift = loginModel.GetEmployeeShift(ID);
                                 GoToDashboard.Execute(null);
 
                                 loginModel.InsertLoginDate(ID, DateTime.Now.ToString("dd/MM/yyyy HH:mm"));

@@ -301,14 +301,15 @@
             TasksDone.Clear();
 
             List<TaskDoneModel> tasksDone = new List<TaskDoneModel>();
-            if(Shift == "Nocny")
+            employeeModel.GetTasksDone(ref tasksDone, ID, DateTime.Now.ToString("dd/MM/yyyy"));
+            /*if(Shift == "Nocny")
             {
                 employeeModel.GetTasksDone(ref tasksDone, ID, DateTime.Now.ToString("dd/MM/yyyy"), DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy"));
             }
             else
             {
                 employeeModel.GetTasksDone(ref tasksDone, ID, DateTime.Now.ToString("dd/MM/yyyy"), DateTime.Now.ToString("dd/MM/yyyy"));
-            }
+            }*/
 
             foreach (var taskDone in tasksDone)
                 TasksDone.Add(taskDone);
@@ -318,7 +319,7 @@
         {
             if (await DialogHost.Show(new DashboardViewModel()) is DashboardViewModel item)
             {
-                if (item.PinConfirm == employeeModel.CanEmployeeStartEndTask(ID) && item.PinConfirm != string.Empty)
+                if (item.PinConfirm == employeeModel.pin && item.PinConfirm != string.Empty)
                 {                
                     employeeModel.StartTask(task, ID);
                     FillAvailable();
@@ -339,7 +340,7 @@
         {
             if (await DialogHost.Show(new DashboardViewModel()) is DashboardViewModel item)
             {
-                if (item.PinConfirm == employeeModel.CanEmployeeStartEndTask(ID) && item.PinConfirm != string.Empty)
+                if (item.PinConfirm == employeeModel.pin && item.PinConfirm != string.Empty)
                 {
                     employeeModel.EndTask(task, ID);
                     FillInProgress();

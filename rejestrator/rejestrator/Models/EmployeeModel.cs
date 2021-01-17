@@ -1,9 +1,12 @@
 ﻿namespace rejestrator.Models
 {
-    using MySql.Data.MySqlClient;
     using System.Collections.Generic;
-    using rejestrator.Database;
     using System;
+    using API;
+    using API.Entities;
+    using Utils;
+    using Newtonsoft.Json;
+    using rejestrator.Converters;
 
     public class EmployeeModel
     {
@@ -26,6 +29,7 @@
         #region Properties
 
         public string ID { get; set; }
+        public string pin { get; set; }
         public string Name { get; set; }
         public string Shift { get; set; }
 
@@ -35,67 +39,53 @@
 
         public void GetTasksAvailable(ref List<TaskAvailableModel> tasksAvailable, string id)
         {
-            string query = @"SELECT id, task FROM `tasks` WHERE `employeeID`=@id";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            string response = APIService.makeRequest(HTTPMethod.GET, $"tasksAvailable/{id}");
+
+            if (Error.IsResponseError(response))
+                throw new NotImplementedException();
+
+            List<TaskAvailableEntity> tasks = JsonConvert.DeserializeObject<List<TaskAvailableEntity>>(response);
+
+            foreach(var task in tasks)
             {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", id);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    while (result.Read())
-                    {
-                        tasksAvailable.Add(new TaskAvailableModel(result.GetInt32(0), result.GetString(1)));
-                    }
-                }
-                Database.CloseConnection();
+                tasksAvailable.Add(new TaskAvailableModel(task.id, task.task));
             }
         }
 
         public void GetTasksInProgress(ref List<TaskInProgressModel> tasksInProgress, string id)
         {
+            string response = APIService.makeRequest(HTTPMethod.GET, $"tasksInProgress/{id}");
 
+<<<<<<< Updated upstream
             string query = @"SELECT id, task, date FROM `tasksinprogress` WHERE `employeeID`=@id ORDER BY date ASC ";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+=======
+            if (Error.IsResponseError(response))
+                throw new NotImplementedException();
+
+            List<TaskInProgressEntity> tasks = JsonConvert.DeserializeObject<List<TaskInProgressEntity>>(response);
+
+            foreach (var task in tasks)
+>>>>>>> Stashed changes
             {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", id);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    while (result.Read()) 
-                    {
-                        tasksInProgress.Add(new TaskInProgressModel(result.GetInt32(0), result.GetString(1), result.GetString(2)));
-                    }
-                }
-                Database.CloseConnection();
+                tasksInProgress.Add(new TaskInProgressModel(task.id, task.task, task.date));
             }
         }
 
-        public void GetTasksDone(ref List<TaskDoneModel> tasksDone, string id, string date, string date2)
+        public void GetTasksDone(ref List<TaskDoneModel> tasksDone, string id, string date)
         {
-       
-            string query1 = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id AND `enddate` LIKE @pattern ORDER BY enddate DESC ";
-            using (MySqlCommand myCommand = new MySqlCommand(query1, Database.DBConnection()))
+            string response = APIService.makeRequest(HTTPMethod.GET, $"tasksDone/{id}/{date}");
+
+            if (Error.IsResponseError(response))
+                throw new NotImplementedException();
+
+            List<TaskDoneEntity> tasks = JsonConvert.DeserializeObject<List<TaskDoneEntity>>(response);
+
+            foreach (var task in tasks)
             {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", id);
-                myCommand.Parameters.AddWithValue("@pattern", $"{date}{'%'}");
-                myCommand.CommandText = query1;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    while (result.Read())
-                    {
-                        tasksDone.Add(new TaskDoneModel(result.GetInt32(0), result.GetString(1), result.GetString(2), result.GetString(3), result.GetString(4)));
-                    }
-                }
-                Database.CloseConnection();
-
+                tasksDone.Add(new TaskDoneModel(task.id, task.task, task.startdate, task.enddate, task.time));
             }
-
+/*
             TimeSpan start = new TimeSpan(0, 0, 0);
             TimeSpan end = new TimeSpan(4, 0, 0);
             TimeSpan now = DateTime.Now.TimeOfDay;
@@ -129,37 +119,51 @@
 
                     }
                 } 
-            }
+            }*/
         }
 
         public void StartTask(TaskAvailableModel task, string employeeID)
         {
-            string query1 = @"DELETE FROM `tasks` WHERE `id`=@id";
-            using (MySqlCommand myCommand = new MySqlCommand(query1, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", task.ID);
-                myCommand.CommandText = query1;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                Database.CloseConnection();
-            }
+            string response1 = APIService.makeRequest(HTTPMethod.DELETE, $"startTask/{task.ID}");
 
-            string query2 = @"INSERT INTO `tasksinprogress`(`employeeID`, `task`, `date`) VALUES (@employeeID, @task, @date)";
-            using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
+            if (Error.IsResponseError(response1))
+                throw new NotImplementedException();
+
+            var taskInProgress = new TaskInProgressEntity
             {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@employeeID", employeeID);
-                myCommand.Parameters.AddWithValue("@task", task.Task);
-                myCommand.Parameters.AddWithValue("@date", DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
-                myCommand.CommandText = query2;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                Database.CloseConnection();
-            }
+                employeeID = employeeID,
+                task = task.Task,
+                date = DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+            };
+
+            string response2 = APIService.makeRequest(HTTPMethod.POST, "tasksInProgress", taskInProgress.ToKeyValueURL());
+
+            if (Error.IsResponseError(response2))
+                throw new NotImplementedException();
         }
 
         public void EndTask(TaskInProgressModel task, string employeeID)
         {
             DateTime DateStart = DateTime.Parse(task.Date);
+            string response1 = APIService.makeRequest(HTTPMethod.DELETE, $"endTask/{task.ID}");
+
+            if (Error.IsResponseError(response1))
+                throw new NotImplementedException();
+
+            var taskDone = new TaskDoneEntity
+            {
+                employeeID = employeeID,
+                task = task.Task,
+                startdate = task.Date,
+                enddate = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
+                time = Shift == "Dzienny" ? CalcDay(DateStart, DateTime.Now) : CalcNight(DateStart, DateTime.Now, 18, 0, 4, 0)
+            };
+
+            string response2 = APIService.makeRequest(HTTPMethod.POST, "tasksDone", taskDone.ToKeyValueURL());
+
+            if (Error.IsResponseError(response2))
+                throw new NotImplementedException();
+            /*DateTime DateStart = DateTime.Parse(task.Date);
 
             string query1 = @"DELETE FROM `tasksinprogress` WHERE `id`=@id";
             using (MySqlCommand myCommand = new MySqlCommand(query1, Database.DBConnection()))
@@ -186,7 +190,6 @@
                     MySqlDataReader result = myCommand.ExecuteReader();
                     Database.CloseConnection();
                 }
-            }
             else if(Shift == "Nocny")
             {
                 string query2 = @"INSERT INTO `tasksdone`(`employeeID`, `task`, `startdate`, `enddate`, `time`) VALUES (@employeeID, @task, @startDate, @endDate, @time)";
@@ -202,51 +205,18 @@
                     MySqlDataReader result = myCommand.ExecuteReader();
                     Database.CloseConnection();
                 }
-            }
+            }*/
 
-        }
-
-        public string CanEmployeeStartEndTask(string id)
-        {
-            string canEmployeeStartEndTask = string.Empty;
-
-            string query = @"SELECT pin FROM `employees` WHERE `employeeID`=@id";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", id);
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    result.Read();
-                    canEmployeeStartEndTask = result.GetString(0);
-                }
-                Database.CloseConnection();
-            }
-            return canEmployeeStartEndTask;
         }
 
         public bool CheckIfLoggedOnThisDay(string date, string employeeID)
         {
-            bool loggenIn = false;
+            string response = APIService.makeRequest(HTTPMethod.GET, $"logs/{employeeID}/{date}");
 
-            string query = @"SELECT date FROM `logs` WHERE `employeeID`=@id AND date LIKE @pattern ORDER BY date ASC LIMIT 1";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", employeeID);
-                myCommand.Parameters.AddWithValue("@pattern", $"{date}{'%'}");
-                myCommand.CommandText = query;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                if (result.HasRows)
-                {
-                    loggenIn = true;
-                }
-                Database.CloseConnection();
-            }
+            if (Error.IsResponseError(response))
+                return false;
 
-            return loggenIn;
+            return true;
         }
 
         public string CalcNight(DateTime start, DateTime end, int startHour, int startMin, int endHour, int endMin)

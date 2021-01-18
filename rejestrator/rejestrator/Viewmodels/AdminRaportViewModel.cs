@@ -274,8 +274,8 @@
                         paragraph.Format.TabStops.Clear();
                         paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 10*3);
                         paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 3 * 2);
-                        paragraph.Format.Font.Size = 14;
-                        paragraph.AddText($"\nLogowania: {logsCountToday}\tLogowania-ogółem: {logsCount}\tZakończone-ogółem: {tasksDoneCount}");
+                        paragraph.Format.Font.Size = 13.5;
+                        paragraph.AddText($"\nLogowania: {logsCountToday}\tLogowania(ogółem): {logsCount}\tZakończone(ogółem): {tasksDoneCount}");
                         paragraph.Format.SpaceAfter = 24;
                         if(++recordsOnPage == 9)
                         {

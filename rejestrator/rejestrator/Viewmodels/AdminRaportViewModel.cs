@@ -366,7 +366,7 @@
                             for (int i = 0; i < adminModel.GetEmployeeCount(); i++)
                             {
                                 var temp = ids[i].Split(' ');
-                                employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCountToday(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeLogsCountToday(temp[0])));
+                                employees.Add(new EmployeeChartModel(ids[i], adminModel.GetEmployeeLogsCountToday(temp[0]), adminModel.GetEmployeeTasksCount(temp[0]), adminModel.GetEmployeeTasksInProgressCount(temp[0]), adminModel.GetEmployeeTasksDoneCountToday(temp[0])));
                             }
 
                             Page++;

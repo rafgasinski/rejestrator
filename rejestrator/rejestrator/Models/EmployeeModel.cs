@@ -396,10 +396,10 @@
             if (start > startCeil) start = startCeil;
 
             TimeSpan firstDayTime = startCeil - start;
-            bool loggenIn = true;
+            bool loggedIn = true;
             if (!CheckIfLoggedOnThisDay(start.ToString("dd/MM/yyyy"), ID))
             {
-                loggenIn = false;
+                loggedIn = false;
                 firstDayTime = TimeSpan.Zero;
             }
 
@@ -414,7 +414,7 @@
 
             if (start.Date == stop.Date)
             {
-                if (!loggenIn)
+                if (!loggedIn)
                     return "0min.";
 
                 total = (stop - start).TotalMinutes;

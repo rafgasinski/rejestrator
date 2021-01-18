@@ -242,12 +242,12 @@
                         </CheckBox.ToolTip>
                     </CheckBox>
                 </Border>
-                <Button Command="{Binding PrevOnClick}" IsEnabled="{Binding PrevOnEnabled}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Width="70" Height="40" Background="Transparent" BorderThickness="0" Margin="180,10,65,10">
+                <Button Command="{Binding PrevOnClick}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Width="70" Height="40" Background="Transparent" BorderThickness="0" Margin="180,10,65,10">
                     <Image Source="/rejestrator;component/Assets/left-arrow.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
                 </Button>
-                <Button Command="{Binding NextOnClick}" IsEnabled="{Binding NextOnEnabled}" Grid.Row="0" Grid.Column="1" Width="70" Height="40" Background="Transparent" HorizontalAlignment="Center" BorderThickness="0" Margin="296,15,284,15" Grid.ColumnSpan="2">
+                <Button Command="{Binding NextOnClick}" Grid.Row="0" Grid.Column="1" Width="70" Height="40" Background="Transparent" HorizontalAlignment="Center" BorderThickness="0" Margin="296,15,284,15" Grid.ColumnSpan="2">
                     <Image Source="/rejestrator;component/Assets/right-arrow.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>

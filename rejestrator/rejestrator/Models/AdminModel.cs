@@ -271,10 +271,32 @@
             }
         }
 
+        public string GetEmployeeFullNameShift(string id)
+        {
+            string employeeFullNameShift = string.Empty;
+
+            string query = @"SELECT name,surname,shift FROM `employees` WHERE `employeeID`=@id";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    employeeFullNameShift = $"{result.GetString(0)} {result.GetString(1)} {result.GetString(2)}";
+                }
+                Database.CloseConnection();
+            }
+
+            return employeeFullNameShift;
+        }
+
         public void EditEmployeeUpdate(string oldId, string id, string pin, string name, string surname, string shift)
         {
-            string query = @"UPDATE `logs` SET `employeeID`=@id, `name`=@name, `surname`=@surname WHERE `employeeID`=@oldId; 
-                            UPDATE `employees` SET `employeeID`=@id, `pin`=@pin, `name`=@name, `surname`=@surname, `shift`=@shift  WHERE `employeeID`=@oldId;
+            string query = @"UPDATE `logs` SET `employeeID`=@id WHERE `employeeID`=@oldId; 
+                            UPDATE `employees` SET `employeeID`=@id, `pin`=@pin, `name`=@name, `surname`=@surname, `shift`=@shift WHERE `employeeID`=@oldId;
                             UPDATE `tasks` SET `employeeID`=@id WHERE `employeeID`=@oldId; 
                             UPDATE `tasksinprogress` SET `employeeID`=@id WHERE `employeeID`=@oldId; 
                             UPDATE `tasksdone` SET `employeeID`=@id WHERE `employeeID`=@oldId;";

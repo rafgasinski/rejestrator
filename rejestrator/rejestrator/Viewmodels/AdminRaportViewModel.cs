@@ -94,28 +94,6 @@
             }
         }
 
-        private bool _prevOnEnabled = false;
-        public bool PrevOnEnabled
-        {
-            get => _prevOnEnabled;
-            set
-            {
-                _prevOnEnabled = value;
-                OnPropertyChanged(nameof(PrevOnEnabled));
-            }
-        }
-
-        private bool _nextOnEnabled = true;
-        public bool NextOnEnabled
-        {
-            get => _nextOnEnabled;
-            set
-            {
-                _nextOnEnabled = value;
-                OnPropertyChanged(nameof(NextOnEnabled));
-            }
-        }
-
         private static ChartValues<int> _employeeLogsCounts;
         public static ChartValues<int> EmployeeLogsCounts
         {
@@ -222,11 +200,6 @@
                         rightEmployeeNumber++;
                     }
 
-                    PrevOnEnabled = false;
-
-                    if (employees.Count > rightEmployeeNumber)
-                        NextOnEnabled = true;
-
                 }));
             }
         }
@@ -330,12 +303,6 @@
 
                     CheckedBool = false;
 
-                    PrevOnEnabled = false;
-                    NextOnEnabled = false;
-
-                    if (employees.Count > rightEmployeeNumber)
-                        NextOnEnabled = true;
-
                     Page = 1;
 
                 }));
@@ -388,12 +355,6 @@
                             }
                             leftEmployeeNumber += 4;
                             rightEmployeeNumber += 4;
-
-                            PrevOnEnabled = true;
-                            NextOnEnabled = false;
-
-                            if (employees.Count > rightEmployeeNumber)
-                                NextOnEnabled = true;
                         }
                         else
                         {
@@ -428,12 +389,6 @@
                             }
                             leftEmployeeNumber += 4;
                             rightEmployeeNumber += 4;
-
-                            PrevOnEnabled = true;
-                            NextOnEnabled = false;
-
-                            if (employees.Count > rightEmployeeNumber)
-                                NextOnEnabled = true;
                         }
 
 
@@ -486,14 +441,6 @@
 
                             leftEmployeeNumber -= 4;
                             rightEmployeeNumber -= 4;
-
-                            PrevOnEnabled = true;
-                            NextOnEnabled = false;
-
-                            if (employees.Count > rightEmployeeNumber)
-                                NextOnEnabled = true;
-                            if (leftEmployeeNumber == 0)
-                                PrevOnEnabled = false;
                         }
                         else
                         {
@@ -529,14 +476,6 @@
 
                             leftEmployeeNumber -= 4;
                             rightEmployeeNumber -= 4;
-
-                            PrevOnEnabled = true;
-                            NextOnEnabled = false;
-
-                            if (employees.Count > rightEmployeeNumber)
-                                NextOnEnabled = true;
-                            if (leftEmployeeNumber == 0)
-                                PrevOnEnabled = false;
                         }
                             
                     }

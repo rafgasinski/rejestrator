@@ -422,7 +422,7 @@
 
         private void CloseDialogHostAdd(object context)
         {
-            if (AdminEmployeesViewModel.IsDialogAddOpen == false || AdminDashboardViewModel.IsDialogAddOpen == false || AdminRaportViewModel.IsDialogAddOpen == false)
+            if (AdminEmployeesViewModel.IsDialogAddOpen == true || AdminDashboardViewModel.IsDialogAddOpen == true || AdminRaportViewModel.IsDialogAddOpen == true)
             {
                 DialogHost.Close("AddDialogHost");
                 AdminEmployeesViewModel.IsDialogAddOpen = false;
@@ -433,7 +433,7 @@
 
         private void CloseDialogHostAddAdmin(object context)
         {
-            if (AdminEmployeesViewModel.IsDialogAdminOpen == false || AdminDashboardViewModel.IsDialogAdminOpen == false || AdminRaportViewModel.IsDialogAdminOpen == false)
+            if (AdminEmployeesViewModel.IsDialogAdminOpen == true || AdminDashboardViewModel.IsDialogAdminOpen == true || AdminRaportViewModel.IsDialogAdminOpen == true)
             {
                 DialogHost.Close("AddAdminDialogHost");
                 AdminEmployeesViewModel.IsDialogAdminOpen = false;
@@ -444,7 +444,7 @@
 
         private void CloseDialogHostEdit(object context)
         {
-            if (AdminEmployeesViewModel.IsDialogEditOpen == false)
+            if (AdminEmployeesViewModel.IsDialogEditOpen == true)
             {
                 DialogHost.Close("EditDialogHost");
                 AdminEmployeesViewModel.IsDialogEditOpen = false;
@@ -453,7 +453,7 @@
 
         private void CloseDialogHostDelete(object context)
         {
-            if(AdminEmployeesViewModel.IsDialogDeleteOpen == false)
+            if(AdminEmployeesViewModel.IsDialogDeleteOpen == true)
             {
                 DialogHost.Close("DeleteDialogHost");
                 AdminEmployeesViewModel.IsDialogDeleteOpen = false;

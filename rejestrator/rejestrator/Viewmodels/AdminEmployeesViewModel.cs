@@ -471,13 +471,16 @@
 
             if(SelectedEmployee != string.Empty)
             {
-                var tempEmployee = SelectedEmployee.Split(' ');
+                var selectedEmployee = SelectedEmployee.Split(' ');
+                var tempEmployee = adminModel.GetEmployeeFullNameShift(selectedEmployee[0]);
+                var tempEmployeeTable = tempEmployee.Split(' ');
 
-                item.ID = tempEmployee[0];
+                item.ID = selectedEmployee[0];
                 item.Pin = adminModel.GetEmployeePin(item.ID);
-                item.Name = tempEmployee[1];
-                item.Surname = tempEmployee[2];
+                item.Name = tempEmployeeTable[0];
+                item.Surname = tempEmployeeTable[1];
                 Employee.TwoWays = new ObservableCollection<string> { "Dzienny", "Nocny" };
+                Employee.SelectedShift = tempEmployeeTable[2];
 
                 await DialogHost.Show(item, "EditDialogHost");
                 if (IsDialogEditOpen == true)
@@ -508,9 +511,9 @@
                         {
                             MessageBox.Show("Pin jest za krótki!");
                         }
-                        else if (!adminModel.EmployeeIDUsed(item.ID) || item.ID == tempEmployee[0])
+                        else if (!adminModel.EmployeeIDUsed(item.ID) || item.ID == selectedEmployee[0])
                         {
-                            adminModel.EditEmployeeUpdate(tempEmployee[0], item.ID, item.Pin, item.Name, item.Surname, getCurrentItemEmployee());
+                            adminModel.EditEmployeeUpdate(selectedEmployee[0], item.ID, item.Pin, item.Name, item.Surname, getCurrentItemEmployee());
 
                             for (int i = 0; i < ListOfEmployees.Count; i++)
                             {

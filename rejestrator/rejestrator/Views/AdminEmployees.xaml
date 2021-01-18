@@ -197,38 +197,38 @@
 
         <materialDesign:DialogHost Identifier="EditDialogHost" IsOpen="{Binding IsDialogEditOpen}">
             <materialDesign:DialogHost.DialogContentTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:Employee}">
-                <StackPanel Margin="30">
+                <DataTemplate DataType="{x:Type viewmodels:Employee}">
+                    <StackPanel Margin="30">
 
-                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDBox" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4" />
-                    <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="PinBox" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin (4 cyfry)" MaxLength="4"/>
-                    <TextBox x:Name="NameBox" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
-                    <TextBox x:Name="SurnameBox" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
-                    <ComboBox x:Name="ComboBoxEmployeeWorktime" MaxDropDownHeight="30" FontSize="16" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
+                        <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="IDBox" Text="{Binding ID}" FontSize="16" materialDesign:HintAssist.Hint="Id (4 cyfry)" MaxLength="4" />
+                        <TextBox PreviewTextInput="TextBox_PreviewTextInput" x:Name="PinBox" Text="{Binding Pin}" FontSize="16" materialDesign:HintAssist.Hint="Pin (4 cyfry)" MaxLength="4"/>
+                        <TextBox x:Name="NameBox" Text="{Binding Name}" FontSize="16" materialDesign:HintAssist.Hint="Imię" />
+                        <TextBox x:Name="SurnameBox" Text="{Binding Surname}" FontSize="16" materialDesign:HintAssist.Hint="Nazwisko" />
+                        <ComboBox x:Name="ComboBoxEmployeeWorktime" MaxDropDownHeight="30" FontSize="16" materialDesign:HintAssist.Hint="Tryb pracy" ItemsSource="{Binding Path=TwoWays}" SelectedItem="{Binding SelectedShift}" IsSynchronizedWithCurrentItem="True"/>
 
-                    <Grid Margin="0,0,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                        <Grid Margin="0,0,0,0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
 
-                        <Button Content="_Edytuj" 
+                            <Button Content="_Edytuj" 
                                 IsDefault="True"
                                 Width="80"
                                 Grid.Column="0"
                                 Command ="{Binding CloseDialogEditAndEditDatabase}"/>
-                        <Button Content="_Anuluj" 
+                            <Button Content="_Anuluj" 
                                 IsCancel="True"
                                 Width="80"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
                                 Command="{Binding CloseDialogEdit}"/>
 
-                    </Grid>
-                </StackPanel>
-            </DataTemplate>
-        </materialDesign:DialogHost.DialogContentTemplate>
+                        </Grid>
+                    </StackPanel>
+                </DataTemplate>
+            </materialDesign:DialogHost.DialogContentTemplate>
             <materialDesign:DialogHost Identifier="DeleteDialogHost" IsOpen="{Binding IsDialogDeleteOpen}">
                 <materialDesign:DialogHost.DialogContentTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:Employee}">
@@ -255,7 +255,7 @@
                                     <Button FontFamily="TW Cen MT" IsCancel="True" MinWidth="50" Margin="0,0,10,0" Content="Anuluj" Command="{Binding CloseDialogDelete}" Background="Gainsboro"/>
                                 </WrapPanel>
                             </Grid>
-                            
+
                         </StackPanel>
                     </DataTemplate>
                 </materialDesign:DialogHost.DialogContentTemplate>
@@ -290,277 +290,276 @@
                         </DataTemplate>
                     </materialDesign:DialogHost.DialogContentTemplate>
 
-        <Grid Background="Black">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="50"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+                    <Grid Background="Black">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="70"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-            <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Canvas.ZIndex="3"/>
+                        <customcontrols:Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Canvas.ZIndex="3"/>
 
-            <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Width="300" Height="50" Margin="70,10,140,0">
-                <ComboBox Grid.Row="0" Background="White" FontFamily="TW Cen MT" Text="{Binding SelectedEmployee}"
-                   FontSize="20" Foreground="Black" MaxDropDownHeight="135" Width="290"
+                        <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Width="380" Height="50" Margin="75,15,70,5">
+                            <ComboBox Grid.Row="0" Background="White" FontFamily="TW Cen MT" Text="{Binding SelectedEmployee}"
+                   FontSize="20" Foreground="Black" MaxDropDownHeight="135" Width="370"
                       ItemsSource="{Binding Path=ListOfEmployees}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True" Canvas.ZIndex="4">
-                </ComboBox>
-            </Border>
+                            </ComboBox>
+                        </Border>
 
-            <Button Command="{Binding EditEmployee}" Background="Transparent" Cursor="Hand" BorderThickness="0" ToolTip="Edytuj" Grid.Row="0" Grid.Column="1" Height="40" Width="65" VerticalAlignment="Center" Margin="178,22,87,12">
-                <StackPanel Orientation="Horizontal">
-
-                    <Image Source="/rejestrator;component/Assets/pages.png"
+                        <Button Command="{Binding EditEmployee}" Background="Transparent" Cursor="Hand" BorderThickness="0" ToolTip="Edytuj" Grid.Row="0" Grid.Column="1" Height="40" Width="65" VerticalAlignment="Center" Margin="260,20,0,10">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/rejestrator;component/Assets/pages.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
-                </StackPanel>
-            </Button>
+                            </StackPanel>
+                        </Button>
 
-                        <Button Command="{Binding DeleteEmployee}" Background="Transparent" Cursor="Hand" BorderThickness="0" ToolTip="Usuń" Grid.Row="0" Grid.Column="1" Height="40" Width="65" VerticalAlignment="Center" Margin="225,22,27,12">
-                <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding DeleteEmployee}" Background="Transparent" Cursor="Hand" BorderThickness="0" ToolTip="Usuń" Grid.Row="0" Grid.Column="2" Height="40" Width="65" VerticalAlignment="Center" Margin="0,20,260,10">
+                            <StackPanel Orientation="Horizontal">
 
-                    <Image Source="/rejestrator;component/Assets/delete.png"
+                                <Image Source="/rejestrator;component/Assets/delete.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
-                </StackPanel>
-            </Button>         
+                            </StackPanel>
+                        </Button>
 
-            <TextBlock Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
+                        <TextBlock Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
                    Foreground="White"
                    FontFamily="TW Cen MT"
                    FontSize="20"
                    Text="Logowania:" />
 
-            <TextBlock Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="150,0,0,0"
+                        <TextBlock Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="150,0,0,0"
                    Foreground="White"
                    FontFamily="TW Cen MT"
                    FontSize="20"
                    Text="Przydzielone zadania:" />
 
-            <TextBlock Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
+                        <TextBlock Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
                    Foreground="White"
                    FontFamily="TW Cen MT"
                    FontSize="20"
                    Text="Zadania w toku:" />
 
-            <TextBlock Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
+                        <TextBlock Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.ZIndex="1" Margin="75,0,0,0"
                    Foreground="White"
                    FontFamily="TW Cen MT"
                    FontSize="20"
                    Text="Zakończone zadania:" />
 
 
-            <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="15,15,10,15"/>
+                        <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="15,15,10,15"/>
 
-            <Button Command="{Binding SwitchPage}" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="55" Background="Black" Grid.Row="1" Grid.Column="3" Cursor="Hand" BorderThickness="0" Height="30" Grid.ColumnSpan="2">
-                <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding SwitchPage}" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="55" Background="Black" Grid.Row="1" Grid.Column="3" Cursor="Hand" BorderThickness="0" Height="30" Grid.ColumnSpan="2">
+                            <StackPanel Orientation="Horizontal">
 
-                    <Image Source="/rejestrator;component/Assets/right-arrow.png"
+                                <Image Source="/rejestrator;component/Assets/right-arrow.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
-                </StackPanel>
-            </Button>
+                            </StackPanel>
+                        </Button>
 
-            <Button Command="{Binding SwitchPage2}" Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="55" Background="Black" Grid.Row="1" Grid.Column="3" Cursor="Hand" BorderThickness="0" Height="30" Grid.ColumnSpan="2">
-                <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding SwitchPage2}" Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="55" Background="Black" Grid.Row="1" Grid.Column="3" Cursor="Hand" BorderThickness="0" Height="30" Grid.ColumnSpan="2">
+                            <StackPanel Orientation="Horizontal">
 
-                    <Image Source="/rejestrator;component/Assets/right-arrow.png"
+                                <Image Source="/rejestrator;component/Assets/right-arrow.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
-                </StackPanel>
-            </Button>
+                            </StackPanel>
+                        </Button>
 
-            <Button Command="{Binding SwitchBackPage}" Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="270,0,0,0" Width="55" Background="Black" Grid.Row="1" Grid.Column="2" Cursor="Hand" BorderThickness="0" Height="30">
-                <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding SwitchBackPage}" Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="270,0,0,0" Width="55" Background="Black" Grid.Row="1" Grid.Column="2" Cursor="Hand" BorderThickness="0" Height="30">
+                            <StackPanel Orientation="Horizontal">
 
-                    <Image Source="/rejestrator;component/Assets/left-arrow.png"
+                                <Image Source="/rejestrator;component/Assets/left-arrow.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
-                </StackPanel>
-            </Button>
+                            </StackPanel>
+                        </Button>
 
-            <Button Command="{Binding SwitchBackPage2}" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="270,0,0,0" Width="55" Background="Black" Grid.Row="1" Grid.Column="2" Cursor="Hand" BorderThickness="0" Height="30">
-                <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding SwitchBackPage2}" Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="270,0,0,0" Width="55" Background="Black" Grid.Row="1" Grid.Column="2" Cursor="Hand" BorderThickness="0" Height="30">
+                            <StackPanel Orientation="Horizontal">
 
-                    <Image Source="/rejestrator;component/Assets/left-arrow.png"
+                                <Image Source="/rejestrator;component/Assets/left-arrow.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>
-                </StackPanel>
-            </Button>
+                            </StackPanel>
+                        </Button>
 
-            <ListView Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="14" Margin="75,10,227,15"
+                        <ListView Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="14" Margin="75,10,227,15"
             BorderThickness="0" Width="230" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"
             ItemsSource="{Binding Dates}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="FontSize" Value="14" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
-                                        <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0,10,0,0" Content="{TemplateBinding Content}"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="FontSize" Value="14" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                    <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0,10,0,0" Content="{TemplateBinding Content}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
 
-                <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                        <GridViewColumn Width="220">
-                            <GridViewColumnHeader FontSize="16" Content="Data"/>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
+                                    <GridViewColumn Width="220">
+                                        <GridViewColumnHeader FontSize="16" Content="Data"/>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
 
                         <ListView x:Name="AvailableTasksList" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="14" Margin="150,10,40,15"
             BorderThickness="0" Width="500" ScrollViewer.VerticalScrollBarVisibility="Hidden"
             ItemsSource="{Binding Tasks}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="FontSize" Value="14" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
-                                        <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0,10,0,0" Content="{TemplateBinding Content}"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="FontSize" Value="14" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                    <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0,10,0,0" Content="{TemplateBinding Content}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
 
-                <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                        <GridViewColumn Width="480">
-                            <GridViewColumnHeader FontSize="16" Content="Zadanie"/>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid Width="480" Margin="0,0,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition Width="0.2*"/>
-                                        </Grid.ColumnDefinitions>
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
+                                    <GridViewColumn Width="480">
+                                        <GridViewColumnHeader FontSize="16" Content="Zadanie"/>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="480" Margin="0,0,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition Width="0.2*"/>
+                                                    </Grid.ColumnDefinitions>
                                                     <TextBlock Grid.Column="0" Text="{Binding Task}" FontSize="14" TextWrapping="Wrap"/>
                                                     <Button Background="White" FontSize="14" Grid.Column="1" Height="25" Command="{Binding ElementName=AvailableTasksList, Path=DataContext.DeleteTask}" CommandParameter="{Binding}" Content="Usuń" Style="{StaticResource TaskDeleteButton}"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
 
                         <ListView Visibility="{Binding ChangeControlVisibility2,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="14" Margin="75,10,0,15"
             BorderThickness="0" Width="830" Grid.Column="0" Grid.ColumnSpan="4" ScrollViewer.VerticalScrollBarVisibility="Hidden"
             ItemsSource="{Binding TasksInProgress}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="FontSize" Value="14" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
-                                        <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0,10,0,0" Content="{TemplateBinding Content}"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="FontSize" Value="14" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                    <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0,10,0,0" Content="{TemplateBinding Content}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
 
-                <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                        <GridViewColumn Width="520">
-                            <GridViewColumnHeader FontSize="16" Content="Zadanie"/>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Padding="0 0 50 0" Text="{Binding Task}" TextWrapping="Wrap"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="150">
-                            <GridViewColumnHeader FontSize="16" Content="Start"/>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Padding="0 0 50 0" Text="{Binding Date}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
+                                    <GridViewColumn Width="520">
+                                        <GridViewColumnHeader FontSize="16" Content="Zadanie"/>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Padding="0 0 50 0" Text="{Binding Task}" TextWrapping="Wrap"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="150">
+                                        <GridViewColumnHeader FontSize="16" Content="Start"/>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Padding="0 0 50 0" Text="{Binding Date}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
 
-            <ListView Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="12" Margin="70,10,10,15"
+                        <ListView Visibility="{Binding ChangeControlVisibility3,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Background="Black" Foreground="White" FontFamily="TW Cen MT" FontSize="12" Margin="70,10,10,15"
             BorderThickness="0" Width="810" Grid.Column="0" Grid.ColumnSpan="4" ScrollViewer.VerticalScrollBarVisibility="Hidden"
             ItemsSource="{Binding TasksDone}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="FontSize" Value="14" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
-                                        <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0,10,0,0" Content="{TemplateBinding Content}"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="FontSize" Value="14" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                <Border BorderBrush="Transparent" BorderThickness="0" Background="{TemplateBinding Background}">
+                                                    <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0,10,0,0" Content="{TemplateBinding Content}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
 
-                <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                        <GridViewColumn Width="400">
-                            <GridViewColumnHeader FontSize="16" Content="Zadanie"/>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Padding="0 0 50 0" Text="{Binding Task}" TextWrapping="Wrap"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="150">
-                            <GridViewColumnHeader FontSize="16" Content="Start"/>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Padding="0 0 50 0" Text="{Binding DateStart}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="150">
-                            <GridViewColumnHeader FontSize="16" Content="Koniec"/>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Padding="0 0 50 0" Text="{Binding DateEnd}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="80">
-                            <GridViewColumnHeader FontSize="16" Content="Czas"/>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Padding="0 0 50 0" Text="{Binding Time}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
+                                    <GridViewColumn Width="400">
+                                        <GridViewColumnHeader FontSize="16" Content="Zadanie"/>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Padding="0 0 50 0" Text="{Binding Task}" TextWrapping="Wrap"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="150">
+                                        <GridViewColumnHeader FontSize="16" Content="Start"/>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Padding="0 0 50 0" Text="{Binding DateStart}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="150">
+                                        <GridViewColumnHeader FontSize="16" Content="Koniec"/>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Padding="0 0 50 0" Text="{Binding DateEnd}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="80">
+                                        <GridViewColumnHeader FontSize="16" Content="Czas"/>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Padding="0 0 50 0" Text="{Binding Time}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
 
-        </Grid>
-                 </materialDesign:DialogHost>
+                    </Grid>
+                </materialDesign:DialogHost>
             </materialDesign:DialogHost>
         </materialDesign:DialogHost>
     </materialDesign:DialogHost>

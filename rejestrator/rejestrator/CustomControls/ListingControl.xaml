@@ -83,11 +83,11 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="210">
+                    <GridViewColumn Width="300">
                         <GridViewColumnHeader Content="Pracownik"/>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Padding="0 0 50 0" Text="{Binding Name}"/>
+                                <TextBlock Padding="0 0 50 0" Text="{Binding Name}" TextWrapping="Wrap"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

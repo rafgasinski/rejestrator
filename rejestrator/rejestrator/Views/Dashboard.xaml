@@ -137,9 +137,9 @@
                     <ColumnDefinition Width="0.2*"/>
                 </Grid.ColumnDefinitions>
 
-                <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="0" Margin="5,10,10,10" VerticalAlignment="Center"/>
+                <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="0" Margin="5,10,10,10" VerticalAlignment="Center" MaxWidth="253"/>
 
-                <Button Command="{Binding ResetTimer}" Grid.Row="0" Grid.Column="1" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="80" Height="50" Background="Transparent" BorderThickness="0" Margin="0,10,25,15">
+                <Button Command="{Binding ResetTimer}" Grid.Row="0" Grid.Column="1" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="80" Height="50" Background="Transparent" BorderThickness="0" Margin="186,10,305,5">
                     <Image Source="/rejestrator;component/Assets/uptime.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>

@@ -307,7 +307,7 @@
 
                         <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Width="380" Height="50" Margin="75,15,70,5">
                             <ComboBox Grid.Row="0" Background="White" FontFamily="TW Cen MT" Text="{Binding SelectedEmployee}"
-                   FontSize="20" Foreground="Black" MaxDropDownHeight="135" Width="370"
+                   FontSize="18.5" Foreground="Black" MaxDropDownHeight="135" Width="370"
                       ItemsSource="{Binding Path=ListOfEmployees}" SelectedItem="{Binding SelectedEmployee}" IsSynchronizedWithCurrentItem="True" Canvas.ZIndex="4">
                             </ComboBox>
                         </Border>
@@ -354,7 +354,7 @@
                    Text="Zakończone zadania:" />
 
 
-                        <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="15,15,10,15"/>
+                        <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" MaxWidth="280" Margin="15,15,10,15"/>
 
                         <Button Command="{Binding SwitchPage}" Visibility="{Binding ChangeControlVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="55" Background="Black" Grid.Row="1" Grid.Column="3" Cursor="Hand" BorderThickness="0" Height="30" Grid.ColumnSpan="2">
                             <StackPanel Orientation="Horizontal">

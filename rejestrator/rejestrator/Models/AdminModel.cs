@@ -605,5 +605,30 @@
             }
             return count;
         }
+
+        public void GetReportData(string employeeId,ref string fullNameShift,ref string tasksCount,ref string tasksInProgress,ref string tasksDoneCount,ref string logsCount,
+             ref string tasksDoneCountToday,ref string logsCountToday)
+        {
+            string query = @"SELECT name, surname, shift FROM `employees` WHERE employeeID=@id";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", employeeId);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    result.Read();
+                    fullNameShift = $"Id: {employeeId}\t{result.GetString(0)} {result.GetString(1)}\tZmiana: {result.GetString(2)}";
+                }
+                Database.CloseConnection();
+            }
+            tasksCount = GetEmployeeTasksCount(employeeId).ToString();
+            tasksInProgress = GetEmployeeTasksInProgressCount(employeeId).ToString();
+            tasksDoneCount = GetEmployeeTasksDoneCount(employeeId).ToString();
+            logsCount = GetEmployeeLogsCount(employeeId).ToString();
+            tasksDoneCountToday = GetEmployeeTasksDoneCountToday(employeeId).ToString();
+            logsCountToday = GetEmployeeLogsCountToday(employeeId).ToString();
+        }
     }
 }

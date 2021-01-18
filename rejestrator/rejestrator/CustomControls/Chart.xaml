@@ -10,10 +10,10 @@
     <Grid>
         <lvc:CartesianChart Grid.Row="1">
             <lvc:CartesianChart.Series>
-                <lvc:ColumnSeries Title="Logowania" Values="{Binding EmployeeLogsCounts}" Fill="#085F63"/>
-                <lvc:ColumnSeries Title="Przydzielone zadania" Values="{Binding EmployeeTaskCounts}" Fill="#49BEB7"/>
-                <lvc:ColumnSeries Title="Zadania w toku" Values="{Binding EmployeeTasksInProgressCounts}" Fill="#FACF5A"/>
-                <lvc:ColumnSeries Title="Wykonane zadania" Values="{Binding EmployeeTasksDoneCounts}" Fill="#FF5959"/>
+                <lvc:ColumnSeries Title="Logowania" Values="{Binding EmployeeLogsCounts}" Fill="#53b772"/>
+                <lvc:ColumnSeries Title="Przydzielone zadania" Values="{Binding EmployeeTaskCounts}" Fill="#ffdf82"/>
+                <lvc:ColumnSeries Title="Zadania w toku" Values="{Binding EmployeeTasksInProgressCounts}" Fill="#c7a84d"/>
+                <lvc:ColumnSeries Title="Wykonane zadania" Values="{Binding EmployeeTasksDoneCounts}" Fill="#8e7519"/>
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Title="Pracownicy" Labels="{Binding EmployeeNames}">

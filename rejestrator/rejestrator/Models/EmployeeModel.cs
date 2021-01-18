@@ -56,17 +56,12 @@
         {
             string response = APIService.makeRequest(HTTPMethod.GET, $"tasksInProgress/{id}");
 
-<<<<<<< Updated upstream
-            string query = @"SELECT id, task, date FROM `tasksinprogress` WHERE `employeeID`=@id ORDER BY date ASC ";
-            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
-=======
             if (Error.IsResponseError(response))
                 throw new NotImplementedException();
 
             List<TaskInProgressEntity> tasks = JsonConvert.DeserializeObject<List<TaskInProgressEntity>>(response);
 
             foreach (var task in tasks)
->>>>>>> Stashed changes
             {
                 tasksInProgress.Add(new TaskInProgressModel(task.id, task.task, task.date));
             }

@@ -421,59 +421,84 @@
         }
 
         private void CloseDialogHostAdd(object context)
-        {          
-            DialogHost.Close("AddDialogHost");
-            AdminEmployeesViewModel.IsDialogAddOpen = false;
-            AdminDashboardViewModel.IsDialogAddOpen = false;
-            AdminRaportViewModel.IsDialogAddOpen = false;
+        {
+            if (AdminEmployeesViewModel.IsDialogAddOpen == false || AdminDashboardViewModel.IsDialogAddOpen == false || AdminRaportViewModel.IsDialogAddOpen == false)
+            {
+                DialogHost.Close("AddDialogHost");
+                AdminEmployeesViewModel.IsDialogAddOpen = false;
+                AdminDashboardViewModel.IsDialogAddOpen = false;
+                AdminRaportViewModel.IsDialogAddOpen = false;
+            }
         }
 
         private void CloseDialogHostAddAdmin(object context)
         {
-            DialogHost.Close("AddAdminDialogHost");
-            AdminEmployeesViewModel.IsDialogAdminOpen = false;
-            AdminDashboardViewModel.IsDialogAdminOpen = false;
-            AdminRaportViewModel.IsDialogAdminOpen = false;
+            if (AdminEmployeesViewModel.IsDialogAdminOpen == false || AdminDashboardViewModel.IsDialogAdminOpen == false || AdminRaportViewModel.IsDialogAdminOpen == false)
+            {
+                DialogHost.Close("AddAdminDialogHost");
+                AdminEmployeesViewModel.IsDialogAdminOpen = false;
+                AdminDashboardViewModel.IsDialogAdminOpen = false;
+                AdminRaportViewModel.IsDialogAdminOpen = false;
+            }        
         }
 
         private void CloseDialogHostEdit(object context)
-        {          
-            DialogHost.Close("EditDialogHost");
-            AdminEmployeesViewModel.IsDialogEditOpen = false;
+        {
+            if (AdminEmployeesViewModel.IsDialogEditOpen == false)
+            {
+                DialogHost.Close("EditDialogHost");
+                AdminEmployeesViewModel.IsDialogEditOpen = false;
+            }
         }
 
         private void CloseDialogHostDelete(object context)
         {
-            DialogHost.Close("DeleteDialogHost");
-            AdminEmployeesViewModel.IsDialogDeleteOpen = false;
+            if(AdminEmployeesViewModel.IsDialogDeleteOpen == false)
+            {
+                DialogHost.Close("DeleteDialogHost");
+                AdminEmployeesViewModel.IsDialogDeleteOpen = false;
+            }
         }
 
         private void CloseDialogAddAndAdd(object context)
         {
-            DialogHost.Close("AddDialogHost");
-            AdminEmployeesViewModel.IsDialogAddOpen = true;
-            AdminDashboardViewModel.IsDialogAddOpen = true;
-            AdminRaportViewModel.IsDialogAddOpen = true;
+            if (AdminEmployeesViewModel.IsDialogAddOpen == true || AdminDashboardViewModel.IsDialogAddOpen == true || AdminRaportViewModel.IsDialogAddOpen == true)
+            {
+                DialogHost.Close("AddDialogHost");
+                AdminEmployeesViewModel.IsDialogAddOpen = true;
+                AdminDashboardViewModel.IsDialogAddOpen = true;
+                AdminRaportViewModel.IsDialogAddOpen = true;
+            }    
         }
 
         private void CloseDialogEditAndEdit(object context)
         {
-            DialogHost.Close("EditDialogHost");
-            AdminEmployeesViewModel.IsDialogEditOpen = true;
+            if(AdminEmployeesViewModel.IsDialogEditOpen == true)
+            {
+                DialogHost.Close("EditDialogHost");
+                AdminEmployeesViewModel.IsDialogEditOpen = true;
+
+            }
         }
 
         private void CloseDialogDeleteAndDelete(object context)
         {
-            DialogHost.Close("DeleteDialogHost");
-            AdminEmployeesViewModel.IsDialogDeleteOpen = true;
+            if(AdminEmployeesViewModel.IsDialogDeleteOpen == true)
+            {
+                DialogHost.Close("DeleteDialogHost");
+                AdminEmployeesViewModel.IsDialogDeleteOpen = true;
+            }
         }
 
         private void CloseDialogAdminAndAdd(object context)
         {
-            DialogHost.Close("AddAdminDialogHost");
-            AdminEmployeesViewModel.IsDialogAdminOpen = true;
-            AdminDashboardViewModel.IsDialogAdminOpen = true;
-            AdminRaportViewModel.IsDialogAdminOpen = true;
+            if(AdminEmployeesViewModel.IsDialogAdminOpen == true || AdminDashboardViewModel.IsDialogAdminOpen == true || AdminRaportViewModel.IsDialogAdminOpen == true)
+            {
+                DialogHost.Close("AddAdminDialogHost");
+                AdminEmployeesViewModel.IsDialogAdminOpen = true;
+                AdminDashboardViewModel.IsDialogAdminOpen = true;
+                AdminRaportViewModel.IsDialogAdminOpen = true;
+            }
         }
 
         private ICommand _myCommand;

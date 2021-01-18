@@ -282,10 +282,6 @@
                             section.AddPageBreak();
                             recordsOnPage = 0;
                         }
-                        //paragraph = section.AddParagraph($"Logs: {logsCountToday}\tLogs total: {logsCount}\tTasks done total: {tasksDoneCount}");
-                        // paragraph.Format.TabStops.Clear();
-                        // paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 3, TabAlignment.Left);
-                        //paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 3 * 2, TabAlignment.Left);
                     }
                     
 
@@ -296,7 +292,7 @@
 
 
                     string filename = $"Report_{fileDate}.pdf";
-                    string fullpath = $"{path}\\dupaTestowy\\{filename}";
+                    string fullpath = $"{path}\\{filename}";
                     try
                     {
                         pdfRenderer.PdfDocument.Save(fullpath);

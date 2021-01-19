@@ -104,18 +104,6 @@
             }
         }
 
-        private Visibility _visibility;
-
-        public Visibility ChangeControlVisibility
-        {
-            get { return _visibility; }
-            set
-            {
-                _visibility = value;
-                this.OnPropertyChanged(nameof(ChangeControlVisibility));
-            }
-        }
-
         private ICommand _resetTimer;
 
         public ICommand ResetTimer
@@ -125,7 +113,6 @@
                 return _resetTimer ?? (_resetTimer = new RelayCommand(x =>
                 {
                     StopTimer();
-                    ChangeControlVisibility = Visibility.Collapsed;
                     ForegroundColor = Brushes.White;
                     StartTimer();
 
@@ -226,7 +213,6 @@
             ID = employeeModel.ID;
             Name = employeeModel.Name;
             Shift = employeeModel.Shift;
-            ChangeControlVisibility = Visibility.Collapsed;
             ForegroundColor = Brushes.White;
             StartTimer();
             FillLists();
@@ -256,7 +242,6 @@
             Time--;
             if(Time <= 10)
             {
-                ChangeControlVisibility = Visibility.Visible;
                 ForegroundColor = Brushes.Red;
             }
 
@@ -302,14 +287,6 @@
 
             List<TaskDoneModel> tasksDone = new List<TaskDoneModel>();
             employeeModel.GetTasksDone(ref tasksDone, ID, DateTime.Now.ToString("dd/MM/yyyy"));
-            /*if(Shift == "Nocny")
-            {
-                employeeModel.GetTasksDone(ref tasksDone, ID, DateTime.Now.ToString("dd/MM/yyyy"), DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy"));
-            }
-            else
-            {
-                employeeModel.GetTasksDone(ref tasksDone, ID, DateTime.Now.ToString("dd/MM/yyyy"), DateTime.Now.ToString("dd/MM/yyyy"));
-            }*/
 
             foreach (var taskDone in tasksDone)
                 TasksDone.Add(taskDone);

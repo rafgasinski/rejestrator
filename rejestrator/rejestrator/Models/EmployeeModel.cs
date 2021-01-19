@@ -376,9 +376,11 @@
 
         public string CalcDay(DateTime start, DateTime stop)
         {
+            //Jeżeli daty są te same, nie upłynął:
             if (start == stop)
                 return "-";
 
+            //Inicjowanie zmiennych:
             double total;
             int hours;
 
@@ -389,11 +391,15 @@
                 stop = temp;
             }
 
+            //Ustalenie początku zmiany oraz końca zmiany z daty startu:
+
             DateTime startFloor = new DateTime(start.Year, start.Month, start.Day, 8, 0, 0);
             DateTime startCeil = new DateTime(start.Year, start.Month, start.Day, 18, 0, 0);
 
             if (start < startFloor) start = startFloor;
             if (start > startCeil) start = startCeil;
+
+            //Sprawdzenie czy użytkownik logował się w dniu rozpoczęcia zadania:
 
             TimeSpan firstDayTime = startCeil - start;
             bool loggedIn = true;
@@ -403,22 +409,31 @@
                 firstDayTime = TimeSpan.Zero;
             }
 
+            //Ustalenie początku zmiany oraz końca zmiany z daty zakończenia zadania:
+
             DateTime stopFloor = new DateTime(stop.Year, stop.Month, stop.Day, 8, 0, 0);
             DateTime stopCeil = new DateTime(stop.Year, stop.Month, stop.Day, 18, 0, 0);
             if (stop < stopFloor) stop = stopFloor;
             if (stop > stopCeil) stop = stopCeil;
 
+            //Sprawdzenie czy użytkownik logował się w dniu zakończenia zadania:
+
             TimeSpan lastDayTime = stop - stopFloor;
             if (!CheckIfLoggedOnThisDay(stop.ToString("dd/MM/yyyy"), ID))
                 lastDayTime = TimeSpan.Zero;
 
+            //Jeżęli data dzienna (bez godzin) jest taka sama dla startu i końca:
+
             if (start.Date == stop.Date)
             {
+                //Zwróc 0 min jeżeli uzytkownik nie logował się do systemu:
                 if (!loggedIn)
                     return "0min.";
 
+                //Obliczenie minut z różnycy dni
                 total = (stop - start).TotalMinutes;
 
+                //Wyliczenie godzin oraz minut z .TotalMinutes
                 hours = 0;
                 for (double i = total; i >= 60; i -= 60)
                 {
@@ -444,9 +459,11 @@
                 }
             }
 
+            //Ustawienie zmiennych, czasu między zadaniami oraz godzin w ciągu jednej zmiany
             TimeSpan timeInBetween = TimeSpan.Zero;
             TimeSpan hoursInAWholeDay = (startCeil - startFloor);
 
+            //Dodanie liczby wszystkich godzin w ciągu zmiany jeżeli użytkownik zalogował się w danym dniu
             for (DateTime itr = startFloor.AddDays(1); itr < stopFloor; itr = itr.AddDays(1))
             {
                 if (!CheckIfLoggedOnThisDay(itr.ToString("dd/MM/yyyy"), ID))
@@ -455,8 +472,10 @@
                 timeInBetween += hoursInAWholeDay;
             }
 
+            //Wyliczenie wszystkich minut
             total =  (firstDayTime + lastDayTime + timeInBetween).TotalMinutes;
 
+            ////Wyliczenie godzin oraz minut z .TotalMinutes
             hours = 0;
             for (double i = total; i >= 60; i -= 60)
             {

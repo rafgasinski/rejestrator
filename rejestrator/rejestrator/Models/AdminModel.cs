@@ -619,7 +619,7 @@
                 if (result.HasRows)
                 {
                     result.Read();
-                    fullNameShift = $"Id: {employeeId}\t{result.GetString(0)} {result.GetString(1)}\tZmiana: {result.GetString(2)}";
+                    fullNameShift = $"Id: {employeeId}\t{result.GetString(0)} {result.GetString(1)}\tTryb: {result.GetString(2)}";
                 }
                 Database.CloseConnection();
             }

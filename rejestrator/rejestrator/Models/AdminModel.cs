@@ -194,7 +194,7 @@
 
         public void GetEmployeesFullNamesandID(List<string> names)
         {
-            string query = @"SELECT employeeID,name,surname FROM `employees`";
+            string query = @"SELECT employeeID,name,surname FROM `employees` ORDER BY employeeID ASC";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
             {
                 Database.OpenConnection();

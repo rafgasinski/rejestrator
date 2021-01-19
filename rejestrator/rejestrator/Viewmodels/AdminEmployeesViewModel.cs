@@ -256,6 +256,7 @@
                 {
 
                     List<string> employeeList = new List<string>();
+                    ListOfEmployees.Clear();
 
                     adminModel.GetEmployeesFullNamesandID(employeeList);
 
@@ -264,13 +265,6 @@
                         if(!ListOfEmployees.Contains(employee))
                         {
                             ListOfEmployees.Add(employee);
-                        }
-                    }
-                    foreach (var employee in ListOfEmployees)
-                    {
-                        if (!employeeList.Contains(employee))
-                        {
-                            ListOfEmployees.Remove(employee);
                         }
                     }
 

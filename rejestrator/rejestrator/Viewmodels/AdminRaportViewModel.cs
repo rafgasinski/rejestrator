@@ -232,56 +232,77 @@
             {
                 return _generateRaport ?? (_generateRaport = new RelayCommand(x =>
                 {
-                    DateTime dateTime = DateTime.Now;
-                    string fileDate = dateTime.ToString("yyyy-MM-dd_HH-mm");
-                    string date = dateTime.ToString("dd.MM.yyyy HH:mm");
-                    string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                    List<string> ids = new List<string>();
-                    adminModel.GetEmployeesIDs(ids);
-                    Document document = new Document();
-                    document.DefaultPageSetup.LeftMargin = document.DefaultPageSetup.LeftMargin / 2;
-                    document.DefaultPageSetup.LeftMargin = document.DefaultPageSetup.RightMargin / 2;
-                    Section section = document.AddSection();
-                    Paragraph paragraph = section.AddParagraph("Raport");
-                    paragraph.Format.Font.Size = 48;
-                    paragraph.Format.SpaceAfter = 6;
+                DateTime dateTime = DateTime.Now;
+                string fileDate = dateTime.ToString("yyyy-MM-dd_HH-mm");
+                string date = dateTime.ToString("dd.MM.yyyy HH:mm");
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                List<string> ids = new List<string>();
+                adminModel.GetEmployeesIDs(ids);
+                Document document = new Document();
+                document.DefaultPageSetup.LeftMargin = document.DefaultPageSetup.LeftMargin / 2;
+                document.DefaultPageSetup.LeftMargin = document.DefaultPageSetup.RightMargin / 2;
+                Section section = document.AddSection();
+                Paragraph paragraph = section.AddParagraph("Raport");
+                paragraph.Format.Font.Size = 48;
+                paragraph.Format.SpaceAfter = 6;
 
-                    paragraph = section.AddParagraph(date);
-                    paragraph.Format.Font.Size = 24;
-                    paragraph.Format.SpaceAfter = 24;
-                    int recordsOnPage = 2;
-                    foreach(string id in ids)
+                paragraph = section.AddParagraph(date);
+                paragraph.Format.Font.Size = 24;
+                paragraph.Format.SpaceAfter = 24;
+                /*int recordsOnPage = 2;*/
+                foreach (string id in ids)
+                {
+                    var temp = id.Split(' ');
+                    string fullNameShift = string.Empty;
+                    string tasksCount = string.Empty;
+                    string tasksInProgress = string.Empty;
+                    string tasksDoneCount = string.Empty;
+                    string logsCount = string.Empty;
+                    string tasksDoneCountToday = string.Empty;
+                    string logsCountToday = string.Empty;
+                    List<TaskDoneModel> tasks = new List<TaskDoneModel>();
+                    adminModel.GetReportData(temp[0], ref fullNameShift, ref tasksCount, ref tasksInProgress, ref tasksDoneCount, ref logsCount, ref tasksDoneCountToday, ref logsCountToday, tasks);
+
+                    paragraph = section.AddParagraph(fullNameShift);
+                    paragraph.Format.LeftIndent = 6;
+                    paragraph.Format.Font.Size = 18;
+                    paragraph.Format.TabStops.Clear();
+                    paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 4);
+                    paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 7 * 5);
+                    paragraph.Format.SpaceAfter = 3;
+
+                    paragraph = section.AddParagraph($"Przydzielone: {tasksCount}\tW trakcie: {tasksInProgress}\tZakończone: {tasksDoneCountToday}");
+                    paragraph.Format.TabStops.Clear();
+                    paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 10 * 3);
+                    paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 3 * 2);
+                    paragraph.Format.Font.Size = 13.5;
+                    paragraph.AddText($"\nLogowania: {logsCountToday}\tLogowania(ogółem): {logsCount}\tZakończone(ogółem): {tasksDoneCount}");
+
+                    paragraph = section.AddParagraph();
+                    if(tasks.Count != 0)
                     {
-                        var temp = id.Split(' ');
-                        string fullNameShift = string.Empty;
-                        string tasksCount = string.Empty;
-                        string tasksInProgress = string.Empty;
-                        string tasksDoneCount = string.Empty;
-                        string logsCount = string.Empty;
-                        string tasksDoneCountToday = string.Empty;
-                        string logsCountToday = string.Empty;
-                        adminModel.GetReportData(temp[0], ref fullNameShift,ref tasksCount,ref tasksInProgress,ref tasksDoneCount,ref logsCount,ref tasksDoneCountToday,ref logsCountToday);
-
-                        paragraph = section.AddParagraph(fullNameShift);
-                        paragraph.Format.LeftIndent = 6;
-                        paragraph.Format.Font.Size = 18;
-                        paragraph.Format.TabStops.Clear();
-                        paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 4);
-                        paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 7* 5);
-                        paragraph.Format.SpaceAfter = 3;
-
-                        paragraph = section.AddParagraph($"Przydzielone: {tasksCount}\tW trakcie: {tasksInProgress}\tZakończone: {tasksDoneCountToday}");
-                        paragraph.Format.TabStops.Clear();
-                        paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 10*3);
-                        paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 3 * 2);
+                        paragraph.AddFormattedText("Ukończone dzisiejsze zadania:", TextFormat.Bold);
+                    }
+                    paragraph.Format.Font.Size = 13.5;
+                    paragraph.Format.SpaceAfter = 6;
+                    foreach (TaskDoneModel task in tasks)
+                    {
+                        paragraph = section.AddParagraph($"{task.Task}:\n");
                         paragraph.Format.Font.Size = 13.5;
-                        paragraph.AddText($"\nLogowania: {logsCountToday}\tLogowania(ogółem): {logsCount}\tZakończone(ogółem): {tasksDoneCount}");
-                        paragraph.Format.SpaceAfter = 24;
-                        if(++recordsOnPage == 9)
-                        {
-                            section.AddPageBreak();
-                            recordsOnPage = 0;
-                        }
+                        paragraph = section.AddParagraph($"\"{task.DateStart}\" - \"{task.DateEnd}\"\tCzas: {task.Time}");
+                        paragraph.Format.Font.Size = 13.5;
+                        paragraph.Format.LeftIndent = 6;
+                        paragraph.Format.TabStops.Clear();
+                        paragraph.Format.TabStops.AddTabStop((document.DefaultPageSetup.PageWidth - document.DefaultPageSetup.LeftMargin - document.DefaultPageSetup.RightMargin) / 4 * 3);
+
+                    }
+
+                    paragraph.Format.SpaceAfter = 24;
+                    /*if(++recordsOnPage == 9)
+                    {
+                        section.AddPageBreak();
+                        recordsOnPage = 0;
+                    }*/
                     }
                     
 

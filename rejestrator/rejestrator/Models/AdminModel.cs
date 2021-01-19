@@ -607,7 +607,7 @@
         }
 
         public void GetReportData(string employeeId,ref string fullNameShift,ref string tasksCount,ref string tasksInProgress,ref string tasksDoneCount,ref string logsCount,
-             ref string tasksDoneCountToday,ref string logsCountToday)
+             ref string tasksDoneCountToday, ref string logsCountToday, List<TaskDoneModel> tasks)
         {
             string query = @"SELECT name, surname, shift FROM `employees` WHERE employeeID=@id";
             using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
@@ -629,6 +629,46 @@
             logsCount = GetEmployeeLogsCount(employeeId).ToString();
             tasksDoneCountToday = GetEmployeeTasksDoneCountToday(employeeId).ToString();
             logsCountToday = GetEmployeeLogsCountToday(employeeId).ToString();
+
+            query = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id AND enddate LIKE @pattern ORDER BY enddate DESC ";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", employeeId);
+                myCommand.Parameters.AddWithValue("@pattern", $"{DateTime.Now.ToString("dd/MM/yyyy")}{"%"}");
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        var temp = new TaskDoneModel(result.GetInt32(0), result.GetString(1), result.GetString(2), result.GetString(3), result.GetString(4));
+                        tasks.Add(temp);
+                    }
+                }
+                Database.CloseConnection();
+            }
         }
+        /*public void GetLogsTasksDoneForEmployee(List<TaskDoneModel> tasks, string id)
+        {
+
+            string query = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id ORDER BY enddate DESC ";
+            using (MySqlCommand myCommand = new MySqlCommand(query, Database.DBConnection()))
+            {
+                Database.OpenConnection();
+                myCommand.Parameters.AddWithValue("@id", id);
+                myCommand.CommandText = query;
+                MySqlDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        var temp = new TaskDoneModel(result.GetInt32(0), result.GetString(1), result.GetString(2), result.GetString(3), result.GetString(4));
+                        tasks.Add(temp);
+                    }
+                }
+                Database.CloseConnection();
+            }
+        }*/
     }
 }

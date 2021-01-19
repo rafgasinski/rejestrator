@@ -139,7 +139,7 @@
 
                 <customcontrols:FullNameLabel Grid.Row="0" Grid.Column="0" Margin="5,10,10,10" VerticalAlignment="Center" MaxWidth="253"/>
 
-                <Button Command="{Binding ResetTimer}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="80" Height="50" Background="Transparent" BorderThickness="0" Margin="180,10,200,5">
+                <Button Command="{Binding ResetTimer}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="80" Height="50" Background="Transparent" BorderThickness="0" Margin="298,10,333,5">
                     <Image Source="/rejestrator;component/Assets/uptime.png"
                                        Stretch="Fill"
                                        Margin="0,0,0,0"/>

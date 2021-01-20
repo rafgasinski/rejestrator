@@ -131,6 +131,9 @@
 
             LogEntity log = JsonConvert.DeserializeObject<LogEntity>(response);
 
+            if (Error.IsResponseError(response))
+                throw new NotImplementedException();
+
             if (log == null)
                 return false;
 
@@ -345,7 +348,7 @@
             if (!CheckIfLoggedOnThisDay(stop.ToString("dd/MM/yyyy"), ID))
                 lastDayTime = TimeSpan.Zero;
 
-            //Jeżęli data dzienna (bez godzin) jest taka sama dla startu i końca:
+            //Jeżeli data dzienna (bez godzin) jest taka sama dla startu i końca:
 
             if (start.Date == stop.Date)
             {

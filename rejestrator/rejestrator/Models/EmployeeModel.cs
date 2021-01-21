@@ -80,41 +80,6 @@
             {
                 tasksDone.Add(new TaskDoneModel(task.id, task.task, task.startdate, task.enddate, task.time));
             }
-/*
-            TimeSpan start = new TimeSpan(0, 0, 0);
-            TimeSpan end = new TimeSpan(4, 0, 0);
-            TimeSpan now = DateTime.Now.TimeOfDay;
-
-            if(date2 != date)
-            {
-                if ((now > start) && (now < end))
-                {
-                    string query2 = @"SELECT id, task, startdate, enddate, time FROM `tasksdone` WHERE `employeeID`=@id AND (`enddate` LIKE @pattern OR `enddate` LIKE @pattern1 OR `enddate` LIKE @pattern2 OR `enddate` LIKE @pattern3 OR `enddate` LIKE @pattern4 OR `enddate` LIKE @pattern5)
-                                        ORDER BY enddate DESC ";
-                    using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
-                    {
-                        Database.OpenConnection();
-                        myCommand.Parameters.AddWithValue("@id", id);
-                        myCommand.Parameters.AddWithValue("@pattern", $"{date2} {"18%"}");
-                        myCommand.Parameters.AddWithValue("@pattern1", $"{date2} {"19%"}");
-                        myCommand.Parameters.AddWithValue("@pattern2", $"{date2} {"20%"}");
-                        myCommand.Parameters.AddWithValue("@pattern3", $"{date2} {"21%"}");
-                        myCommand.Parameters.AddWithValue("@pattern4", $"{date2} {"22%"}");
-                        myCommand.Parameters.AddWithValue("@pattern5", $"{date2} {"23%"}");
-                        myCommand.CommandText = query2;
-                        MySqlDataReader result = myCommand.ExecuteReader();
-                        if (result.HasRows)
-                        {
-                            while (result.Read())
-                            {
-                                tasksDone.Add(new TaskDoneModel(result.GetInt32(0), result.GetString(1), result.GetString(2), result.GetString(3), result.GetString(4)));
-                            }
-                        }
-                        Database.CloseConnection();
-
-                    }
-                } 
-            }*/
         }
 
         public void StartTask(TaskAvailableModel task, string employeeID)
@@ -157,58 +122,16 @@
             string response2 = APIService.makeRequest(HTTPMethod.POST, "tasksDone", taskDone.ToKeyValueURL());
 
             if (Error.IsResponseError(response2))
-                throw new NotImplementedException();
-            /*DateTime DateStart = DateTime.Parse(task.Date);
-
-            string query1 = @"DELETE FROM `tasksinprogress` WHERE `id`=@id";
-            using (MySqlCommand myCommand = new MySqlCommand(query1, Database.DBConnection()))
-            {
-                Database.OpenConnection();
-                myCommand.Parameters.AddWithValue("@id", task.ID);
-                myCommand.CommandText = query1;
-                MySqlDataReader result = myCommand.ExecuteReader();
-                Database.CloseConnection();
-            }
-
-            if (Shift == "Dzienny")
-            {
-                string query2 = @"INSERT INTO `tasksdone`(`employeeID`, `task`, `startdate`, `enddate`, `time`) VALUES (@employeeID, @task, @startDate, @endDate, @time)";
-                using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
-                {
-                    Database.OpenConnection();
-                    myCommand.Parameters.AddWithValue("@employeeID", employeeID);
-                    myCommand.Parameters.AddWithValue("@task", task.Task);
-                    myCommand.Parameters.AddWithValue("@startDate", task.Date);
-                    myCommand.Parameters.AddWithValue("@endDate", DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
-                    myCommand.Parameters.AddWithValue("@time", CalcDay(DateStart, DateTime.Now));
-                    myCommand.CommandText = query2;
-                    MySqlDataReader result = myCommand.ExecuteReader();
-                    Database.CloseConnection();
-                }
-            else if(Shift == "Nocny")
-            {
-                string query2 = @"INSERT INTO `tasksdone`(`employeeID`, `task`, `startdate`, `enddate`, `time`) VALUES (@employeeID, @task, @startDate, @endDate, @time)";
-                using (MySqlCommand myCommand = new MySqlCommand(query2, Database.DBConnection()))
-                {
-                    Database.OpenConnection();
-                    myCommand.Parameters.AddWithValue("@employeeID", employeeID);
-                    myCommand.Parameters.AddWithValue("@task", task.Task);
-                    myCommand.Parameters.AddWithValue("@startDate", task.Date);
-                    myCommand.Parameters.AddWithValue("@endDate", DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
-                    myCommand.Parameters.AddWithValue("@time", CalcNight(DateStart, DateTime.Now, 18, 0, 4, 0));
-                    myCommand.CommandText = query2;
-                    MySqlDataReader result = myCommand.ExecuteReader();
-                    Database.CloseConnection();
-                }
-            }*/
-
+                throw new NotImplementedException();  
         }
 
         public bool CheckIfLoggedOnThisDay(string date, string employeeID)
         {
             string response = APIService.makeRequest(HTTPMethod.GET, $"logs/{employeeID}/{date}");
 
-            if (Error.IsResponseError(response))
+            LogEntity log = JsonConvert.DeserializeObject<LogEntity>(response);
+
+            if (log == null)
                 return false;
 
             return true;
@@ -466,7 +389,7 @@
             //Dodanie liczby wszystkich godzin w ciągu zmiany jeżeli użytkownik zalogował się w danym dniu
             for (DateTime itr = startFloor.AddDays(1); itr < stopFloor; itr = itr.AddDays(1))
             {
-                if (!CheckIfLoggedOnThisDay(itr.ToString("dd/MM/yyyy"), ID))
+                if (!CheckIfLoggedOnThisDay(itr.ToString("dd.MM.yyyy"), ID))
                     continue;
 
                 timeInBetween += hoursInAWholeDay;

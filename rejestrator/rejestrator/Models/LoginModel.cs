@@ -31,13 +31,10 @@
 
         public bool LoginEmployee(string id, string pin)
         {
-            var loginEmployee = new LoginEmployeeEntity
-            {
-                employeeID = id,
-                pin = pin
-            };
+            string credentials = $"{id}:{pin}";
+            byte[] credentialBytes = System.Text.Encoding.UTF8.GetBytes(credentials);
 
-            string response = APIService.makeRequest(HTTPMethod.POST, "loginEmployee", loginEmployee.ToKeyValueURL());
+            string response = APIService.makeRequest(HTTPMethod.GET, "loginEmployee", null, credentialBytes); ;
 
             if (Error.IsResponseError(response))
                 return false;
@@ -53,13 +50,10 @@
 
         public bool LoginAdmin(string username, string password)
         {
-            var loginAdmin = new LoginAdminEntity
-            {
-                username = username,
-                password = password
-            };
+            string credentials = $"{username}:{password}";
+            byte[] credentialBytes = System.Text.Encoding.UTF8.GetBytes(credentials);
 
-            string response = APIService.makeRequest(HTTPMethod.POST, "loginAdmin", loginAdmin.ToKeyValueURL());
+            string response = APIService.makeRequest(HTTPMethod.GET, "loginAdmin", null, credentialBytes);
 
             if (Error.IsResponseError(response))
                 return false;

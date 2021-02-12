@@ -296,7 +296,9 @@
         {
             if (await DialogHost.Show(new DashboardViewModel()) is DashboardViewModel item)
             {
-                if (item.PinConfirm == employeeModel.pin && item.PinConfirm != string.Empty)
+                byte[] pinBytes = System.Text.Encoding.UTF8.GetBytes(item.PinConfirm);
+                string pinBase64 = Convert.ToBase64String(pinBytes);
+                if (pinBase64 == employeeModel.pin && item.PinConfirm != string.Empty)
                 {                
                     employeeModel.StartTask(task, ID);
                     FillAvailable();
@@ -317,7 +319,9 @@
         {
             if (await DialogHost.Show(new DashboardViewModel()) is DashboardViewModel item)
             {
-                if (item.PinConfirm == employeeModel.pin && item.PinConfirm != string.Empty)
+                byte[] pinBytes = System.Text.Encoding.UTF8.GetBytes(item.PinConfirm);
+                string pinBase64 = Convert.ToBase64String(pinBytes);
+                if (pinBase64 == employeeModel.pin && item.PinConfirm != string.Empty)
                 {
                     employeeModel.EndTask(task, ID);
                     FillInProgress();

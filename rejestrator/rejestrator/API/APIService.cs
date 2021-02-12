@@ -9,7 +9,7 @@
     {
         private const string BASE_URL = "http://localhost:80/rejestrator/api/";
 
-        public static string makeRequest(HTTPMethod method, string endPoint, string bodyJSON = null)
+        public static string makeRequest(HTTPMethod method, string endPoint, string bodyJSON = null, byte[] token = null)
         {
             string responseValue = string.Empty;
 
@@ -28,6 +28,15 @@
                 {
                     writer.Write(bodyJSON);
                     writer.Close();
+                }
+            }
+
+            if(token != null)
+            {
+                if (token.Length > 0)
+                {
+                    request.PreAuthenticate = true;
+                    request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(token)}");
                 }
             }
 
